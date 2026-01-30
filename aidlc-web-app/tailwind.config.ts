@@ -1,71 +1,57 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        // Dark theme colors
-        dark: {
-          primary: '#0f172a',    // Slate 900
-          secondary: '#1e293b',  // Slate 800
-          tertiary: '#334155',   // Slate 700
+        // "Deep Space" Theme Palette
+        background: {
+          DEFAULT: "rgb(var(--background) / <alpha-value>)",
+          secondary: "rgb(var(--background-secondary) / <alpha-value>)",
+          tertiary: "rgb(var(--background-tertiary) / <alpha-value>)",
         },
-        // Light theme colors
-        light: {
-          primary: '#ffffff',
-          secondary: '#f8fafc',  // Slate 50
-          tertiary: '#e2e8f0',   // Slate 200
+        foreground: {
+          DEFAULT: "rgb(var(--foreground) / <alpha-value>)",
+          muted: "rgb(var(--foreground-muted) / <alpha-value>)",
         },
-        // Accent colors
         accent: {
-          primary: '#3b82f6',    // Blue 500
-          success: '#22c55e',    // Green 500
-          warning: '#f59e0b',    // Amber 500
-          error: '#ef4444',      // Red 500
+          primary: "rgb(var(--accent-primary) / <alpha-value>)",
+          secondary: "rgb(var(--accent-secondary) / <alpha-value>)",
+          glow: "rgb(var(--accent-glow) / <alpha-value>)",
         },
-        // Phase colors
-        phase: {
-          inception: '#3b82f6',   // Blue
-          construction: '#22c55e', // Green
-          operations: '#f59e0b',   // Amber
+        status: {
+          success: "rgb(var(--status-success) / <alpha-value>)",
+          warning: "rgb(var(--status-warning) / <alpha-value>)",
+          error: "rgb(var(--status-error) / <alpha-value>)",
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ["var(--font-inter)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "hero-glow": "radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, rgba(15, 23, 42, 0) 70%)",
       },
       animation: {
-        'fade-in': 'fadeIn 0.25s ease-out',
-        'slide-up': 'slideUp 0.25s ease-out',
-        'progress': 'progress 1s ease-out forwards',
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(10px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        progress: {
-          '0%': { width: '0%' },
-          '100%': { width: 'var(--progress-width)' },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
     },
   },
   plugins: [],
 };
-
 export default config;
