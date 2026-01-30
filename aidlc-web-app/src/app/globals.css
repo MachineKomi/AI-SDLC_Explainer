@@ -17,12 +17,12 @@
     --foreground-muted: 148 163 184;
     /* #94a3b8 - Muted text */
 
-    /* Electric Blue & Violet Accents */
-    --accent-primary: 56 189 248;
-    /* #38bdf8 - Cyan/Blue */
-    --accent-secondary: 139 92 246;
-    /* #8b5cf6 - Violet */
-    --accent-glow: 56 189 248;
+    /* Rave Pink & Orange Accents */
+    --accent-primary: 236 72 153;
+    /* #ec4899 - Hot Pink */
+    --accent-secondary: 249 115 22;
+    /* #f97316 - Orange */
+    --accent-glow: 236 72 153;
 
     /* Status Indicators */
     --status-success: 34 197 94;
@@ -48,12 +48,12 @@
     --foreground-muted: 71 85 105;
     /* #475569 - Muted dark text */
 
-    /* Slightly deeper accents for light mode contrast */
-    --accent-primary: 14 165 233;
-    /* #0ea5e9 - Deeper cyan */
-    --accent-secondary: 124 58 237;
-    /* #7c3aed - Deeper violet */
-    --accent-glow: 14 165 233;
+    /* Deeper accents for light mode contrast */
+    --accent-primary: 219 39 119;
+    /* #db2777 - Deeper pink */
+    --accent-secondary: 234 88 12;
+    /* #ea580c - Deeper orange */
+    --accent-glow: 219 39 119;
 
     /* Status - slightly adjusted for light bg */
     --status-success: 22 163 74;
@@ -65,31 +65,57 @@
 @layer base {
   body {
     @apply bg-background text-foreground antialiased selection:bg-accent-primary/20 selection:text-foreground;
+    font-family: var(--font-inter);
   }
 }
 
 @layer components {
 
-  /* Premium Glassmorphism Card */
+  /* TUI-Inspired Card Style */
   .glass-card {
-    @apply bg-background-secondary/40 backdrop-blur-xl border border-white/10 shadow-xl;
+    @apply bg-background-secondary/60 backdrop-blur-xl border border-white/10 shadow-xl;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      0 4px 6px -1px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .glass-card:hover {
-    @apply border-accent-primary/30 bg-background-secondary/60 transition-all duration-300;
+    @apply border-accent-primary/40 transition-all duration-300;
+    box-shadow:
+      0 0 20px rgba(236, 72, 153, 0.15),
+      0 0 0 1px rgba(236, 72, 153, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
-  /* Neon Button Styles */
+  /* Feature Tile - TUI inspired */
+  .feature-tile {
+    @apply relative bg-background-secondary/80 border border-white/10 rounded-lg p-4 transition-all duration-200;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .feature-tile:hover {
+    @apply border-accent-primary/50 bg-background-secondary;
+    box-shadow:
+      0 0 20px rgba(236, 72, 153, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Neon Button Styles - Pink glow */
   .btn-primary {
-    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/20 hover:bg-accent-primary/20 hover:border-accent-primary/50 active:scale-95 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/30 hover:bg-accent-primary/20 hover:border-accent-primary/60 active:scale-95 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
   }
 
   .btn-primary:hover {
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), 0 0 40px rgba(236, 72, 153, 0.2);
   }
 
   .btn-secondary {
     @apply bg-white/5 text-foreground-muted border border-white/10 hover:bg-white/10 hover:text-foreground hover:border-white/20 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+  }
+
+  .btn-secondary:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   }
 
   /* Interactive Elements */
@@ -97,8 +123,33 @@
     @apply text-foreground-muted hover:text-accent-primary transition-colors duration-200;
   }
 
+  /* XP Bar with Pink glow */
   .xp-bar-glow {
-    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.5));
+    filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.6));
+  }
+
+  /* Keyboard shortcuts badge */
+  .kbd {
+    @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-mono bg-background-tertiary border border-white/20 rounded text-foreground-muted;
+  }
+
+  /* Terminal/TUI inspired styles */
+  .terminal-header {
+    @apply flex items-center gap-2 px-4 py-2 bg-background-tertiary/50 border-b border-white/10 rounded-t-lg;
+  }
+
+  .terminal-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  /* Scanline effect for retro feel */
+  .scanlines {
+    background: repeating-linear-gradient(0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px);
+    pointer-events: none;
   }
 }
 
@@ -107,10 +158,34 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-secondary;
   }
 
+  /* Enhanced grid pattern - more prominent */
   .bg-grid-pattern {
-    background-size: 40px 40px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    background-size: 50px 50px;
+    background-image:
+      linear-gradient(to right, rgba(236, 72, 153, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(236, 72, 153, 0.08) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+
+  /* Glow text effect */
+  .text-glow {
+    text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
+  }
+
+  /* Pulse animation for accents */
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
   }
 }

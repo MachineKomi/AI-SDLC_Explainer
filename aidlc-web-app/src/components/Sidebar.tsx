@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, BookOpen, Calculator, BarChart3, Dumbbell, ChevronLeft, ChevronRight, Menu, X, Sun, Moon } from "lucide-react";
+import {
+    Cpu, BookOpen, Calculator, BarChart3, Dumbbell, ChevronLeft, ChevronRight,
+    Menu, X, Sun, Moon, ArrowRightLeft, Target, BookMarked, FileText, Link2, FolderOpen
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useTheme } from "@/context/ThemeContext";
@@ -19,10 +22,17 @@ export default function Sidebar() {
 
     const links = [
         { href: "/", label: "Home", icon: Cpu },
-        { href: "/methodology/inception", label: "Methodology", icon: BookOpen },
+        { href: "/lessons", label: "Lessons", icon: BookOpen },
+        { href: "/methodology/inception", label: "Methodology", icon: FileText },
+        { href: "/practice", label: "Practice", icon: Target },
         { href: "/gym", label: "The Gym", icon: Dumbbell },
         { href: "/simulator", label: "Simulator", icon: Calculator },
-        { href: "/comparison", label: "Comparison", icon: BarChart3 },
+        { href: "/comparison", label: "Compare", icon: BarChart3 },
+        { href: "/transition", label: "Transition", icon: ArrowRightLeft },
+        { href: "/glossary", label: "Glossary", icon: BookMarked },
+        { href: "/reference", label: "Reference", icon: FileText },
+        { href: "/artifacts", label: "Artifacts", icon: FolderOpen },
+        { href: "/sources", label: "Sources", icon: Link2 },
     ];
 
     if (!mounted) return null;

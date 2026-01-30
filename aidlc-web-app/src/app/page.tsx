@@ -1,12 +1,28 @@
 "use client";
 
 import HeroSection from "@/components/HeroSection";
+import NavigationGrid from "@/components/NavigationGrid";
+import XPBar from "@/components/XPBar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
-      <div className="fixed inset-0 z-0 opacity-20 bg-grid-pattern pointer-events-none" />
-      <HeroSection />
+    <div className="min-h-screen bg-background text-foreground overflow-hidden relative">
+      {/* Enhanced grid background */}
+      <div className="fixed inset-0 z-0 opacity-50 bg-grid-pattern pointer-events-none" />
+
+      {/* Subtle scanlines for retro feel */}
+      <div className="fixed inset-0 z-0 scanlines opacity-30 pointer-events-none" />
+
+      {/* Main content */}
+      <div className="relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <XPBar />
+        </div>
+        <HeroSection />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <NavigationGrid />
+        </div>
+      </div>
     </div>
   );
 }

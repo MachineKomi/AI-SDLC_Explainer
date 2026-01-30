@@ -1,80 +1,79 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Code2, ShieldCheck } from "lucide-react";
+import { ArrowRight, Terminal, Code2 } from "lucide-react";
 import Link from "next/link";
 
 export default function HeroSection() {
     return (
-        <div className="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
-            {/* Background Gradients */}
+        <div className="relative py-16 sm:py-24 overflow-hidden">
+            {/* Background Glow Effects */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl z-0 pointer-events-none">
-                <div className="absolute top-20 left-20 w-72 h-72 bg-accent-primary/20 rounded-full blur-[100px] animate-pulse-slow" />
-                <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent-secondary/20 rounded-full blur-[100px] animate-pulse-slow delay-1000" />
+                <div className="absolute top-10 left-10 w-64 h-64 bg-accent-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
+                <div className="absolute bottom-10 right-10 w-80 h-80 bg-accent-secondary/20 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.6 }}
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
-                        <Sparkles className="w-4 h-4 text-accent-primary" />
-                        <span className="text-sm font-medium text-foreground-muted">AI-Driven Development Lifecycle</span>
+                    {/* Terminal-style header */}
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary/80 border border-white/10 mb-8 font-mono text-sm">
+                        <Terminal className="w-4 h-4 text-accent-primary" />
+                        <span className="text-foreground-muted">$</span>
+                        <span className="text-accent-primary">learn</span>
+                        <span className="text-foreground">ai-dlc</span>
+                        <span className="text-accent-secondary">--interactive</span>
                     </div>
 
-                    <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-8">
-                        Learn <span className="text-gradient">AI-SDLC</span>
+                    <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
+                        <span className="text-foreground">AI-Driven</span>{" "}
+                        <span className="text-gradient text-glow">Development</span>
+                        <br />
+                        <span className="text-foreground">Lifecycle</span>
                     </h1>
 
-                    <p className="max-w-2xl mx-auto text-xl text-foreground-muted mb-10 leading-relaxed">
+                    <p className="max-w-2xl mx-auto text-lg text-foreground-muted mb-10 leading-relaxed">
                         A structured workflow where AI proposes plans, asks clarifying questions,
                         and implements only after validation. Master the{" "}
-                        <span className="text-foreground font-semibold">Inception → Construction → Operations</span>{" "}
+                        <span className="text-accent-primary font-mono">Inception</span>
+                        <span className="text-foreground-muted"> → </span>
+                        <span className="text-accent-secondary font-mono">Construction</span>
+                        <span className="text-foreground-muted"> → </span>
+                        <span className="text-foreground font-mono">Operations</span>{" "}
                         lifecycle with persisted artifacts and approval gates.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link href="/lessons" className="btn-primary flex items-center gap-2 text-lg px-8 py-4">
-                            Start Learning <ArrowRight className="w-5 h-5" />
+                        <Link href="/lessons" className="btn-primary flex items-center gap-2 text-base px-6 py-3">
+                            <Code2 className="w-4 h-4" />
+                            Start Learning
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
-                        <Link href="/simulator" className="btn-secondary flex items-center gap-2 text-lg px-8 py-4">
-                            Try the Simulator <Code2 className="w-5 h-5" />
+                        <Link href="/simulator" className="btn-secondary flex items-center gap-2 text-base px-6 py-3">
+                            <Terminal className="w-4 h-4" />
+                            Try Simulator
                         </Link>
                     </div>
                 </motion.div>
 
-                {/* Feature Grid */}
+                {/* Core principles - compact */}
                 <motion.div
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-24"
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left"
                 >
                     {[
-                        {
-                            icon: Code2,
-                            title: "Plan-First Execution",
-                            desc: "Every step starts with an explicit plan and approval gate before execution. Decompose work into verifiable units."
-                        },
-                        {
-                            icon: ShieldCheck,
-                            title: "Proof Over Prose",
-                            desc: "'Done' requires objective evidence: tests passing, checks green, runtime behavior validated."
-                        },
-                        {
-                            icon: Sparkles,
-                            title: "Human Accountability",
-                            desc: "Humans own decisions and outcomes. AI proposes and executes within bounds set by approval gates."
-                        }
-                    ].map((feature, idx) => (
-                        <div key={idx} className="glass-card p-8 rounded-2xl text-left hover:-translate-y-2 transition-transform duration-300">
-                            <div className="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center mb-6">
-                                <feature.icon className="w-6 h-6 text-accent-primary" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                            <p className="text-foreground-muted">{feature.desc}</p>
+                        { title: "Plan-First", desc: "Explicit plans and gates before execution" },
+                        { title: "Proof Over Prose", desc: "Tests passing, checks green, behavior validated" },
+                        { title: "Human Accountability", desc: "AI proposes, humans own decisions" },
+                    ].map((item, idx) => (
+                        <div key={idx} className="p-4 rounded-lg bg-background-secondary/40 border border-white/5">
+                            <h3 className="font-mono text-sm text-accent-primary mb-1">{item.title}</h3>
+                            <p className="text-sm text-foreground-muted">{item.desc}</p>
                         </div>
                     ))}
                 </motion.div>
