@@ -7,18 +7,54 @@ import {
     Cpu, BookOpen, Calculator, BarChart3, Dumbbell, ChevronLeft, ChevronRight,
     Menu, X, Sun, Moon, ArrowRightLeft, Target, BookMarked, FileText, Link2, FolderOpen
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function Sidebar() {
     const pathname = usePathname();
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    // Start collapsed by default to avoid overlap
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isPinned, setIsPinned] = useState(false); // User manually expanded
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const { theme, toggleTheme } = useTheme();
+    const sidebarRef = useRef<HTMLDivElement>(null);
+    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => setMounted(true), []);
+
+    // Handle mouse enter - expand on hover
+    const handleMouseEnter = () => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+        }
+        if (!isPinned) {
+            setIsCollapsed(false);
+        }
+    };
+
+    // Handle mouse leave - collapse if not pinned
+    const handleMouseLeave = () => {
+        if (!isPinned) {
+            hoverTimeoutRef.current = setTimeout(() => {
+                setIsCollapsed(true);
+            }, 200); // Small delay to prevent flicker
+        }
+    };
+
+    // Toggle pin state
+    const handleTogglePin = () => {
+        if (isPinned) {
+            // Unpin and collapse
+            setIsPinned(false);
+            setIsCollapsed(true);
+        } else {
+            // Pin in expanded state
+            setIsPinned(true);
+            setIsCollapsed(false);
+        }
+    };
 
     const links = [
         { href: "/", label: "Home", icon: Cpu },
@@ -36,6 +72,8 @@ export default function Sidebar() {
     ];
 
     if (!mounted) return null;
+
+    const sidebarWidth = isCollapsed ? 80 : 280;
 
     return (
         <>
@@ -100,8 +138,11 @@ export default function Sidebar() {
 
             {/* Desktop Sidebar */}
             <motion.div
-                animate={{ width: isCollapsed ? 80 : 280 }}
-                className="hidden md:flex fixed top-0 left-0 bottom-0 z-40 bg-background-secondary/50 backdrop-blur-xl border-r border-white/5 flex-col"
+                ref={sidebarRef}
+                animate={{ width: sidebarWidth }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className="hidden md:flex fixed top-0 left-0 bottom-0 z-40 bg-background-secondary/80 backdrop-blur-xl border-r border-white/5 flex-col"
             >
                 <div className="h-20 flex items-center px-6 border-b border-white/5">
                     <div className={clsx("flex items-center gap-3 overflow-hidden transition-all", isCollapsed && "justify-center w-full")}>
@@ -116,7 +157,7 @@ export default function Sidebar() {
                     </div>
                 </div>
 
-                <div className="flex-1 py-8 px-4 flex flex-col gap-2">
+                <div className="flex-1 py-8 px-4 flex flex-col gap-2 overflow-y-auto">
                     {links.map((link) => {
                         const isActive = pathname === link.href;
                         return (
@@ -159,15 +200,34 @@ export default function Sidebar() {
                         {!isCollapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
                     </button>
 
-                    {/* Collapse Toggle */}
+                    {/* Pin/Unpin Toggle */}
                     <button
-                        onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="w-full flex items-center justify-center p-2 rounded-lg text-foreground-muted hover:bg-white/5 transition-colors"
+                        onClick={handleTogglePin}
+                        className={clsx(
+                            "w-full flex items-center justify-center gap-2 p-2 rounded-lg transition-colors",
+                            isPinned
+                                ? "text-accent-primary bg-accent-primary/10 hover:bg-accent-primary/20"
+                                : "text-foreground-muted hover:bg-white/5"
+                        )}
+                        title={isPinned ? "Unpin sidebar (auto-collapse)" : "Pin sidebar open"}
                     >
-                        {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <div className="flex items-center gap-2"><ChevronLeft className="w-5 h-5" /> <span>Collapse</span></div>}
+                        {isCollapsed ? (
+                            <ChevronRight className="w-5 h-5" />
+                        ) : (
+                            <div className="flex items-center gap-2">
+                                <ChevronLeft className="w-5 h-5" />
+                                <span>{isPinned ? "Unpin" : "Pin"}</span>
+                            </div>
+                        )}
                     </button>
                 </div>
             </motion.div>
+
+            {/* Spacer for content - prevents overlap */}
+            <div
+                className="hidden md:block flex-shrink-0 transition-all duration-200"
+                style={{ width: isPinned ? sidebarWidth : 80 }}
+            />
         </>
     );
 }
