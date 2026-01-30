@@ -5,6 +5,8 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useProgress } from '@/context/ProgressContext';
 import { getLessonById } from '@/content/lessons';
+import DiagramRenderer from '@/components/DiagramRenderer';
+import type { DiagramType } from '@/components/DiagramRenderer';
 
 interface LessonClientProps {
   lessonId: string;
@@ -34,7 +36,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
     const newIndex = Math.max(0, Math.min(index, lesson.sections.length - 1));
     setCurrentSection(newIndex);
     updateLessonProgress(lessonId, newIndex);
-    
+
     // Mark complete if on last section
     if (newIndex === lesson.sections.length - 1) {
       markLessonCompleted(lessonId);
@@ -43,7 +45,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!lesson) return;
-    
+
     if (e.key === 'Escape') {
       router.push('/lessons');
     } else if (e.key === 'ArrowRight' || e.key === 'l') {
@@ -88,8 +90,16 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
             {section.content}
           </pre>
         </div>
-        
-        {section.diagram && (
+
+        {/* Visual Diagram - prefer diagramType over ASCII */}
+        {section.diagramType && (
+          <div className="mt-6 p-4 bg-background-tertiary/30 rounded-xl">
+            <DiagramRenderer type={section.diagramType as DiagramType} />
+          </div>
+        )}
+
+        {/* Fallback to ASCII diagram if no diagramType but diagram exists */}
+        {!section.diagramType && section.diagram && (
           <div className="mt-6">
             <pre className="ascii-diagram text-xs md:text-sm overflow-x-auto">
               {section.diagram}
@@ -107,25 +117,24 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
         >
           ← Previous
         </button>
-        
+
         {/* Progress dots */}
         <div className="flex gap-1">
           {lesson.sections.map((_, i) => (
             <button
               key={i}
               onClick={() => goToSection(i)}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                i === currentSection
+              className={`w-2 h-2 rounded-full transition-colors ${i === currentSection
                   ? 'bg-accent-primary'
                   : i < currentSection
-                  ? 'bg-accent-success'
-                  : 'bg-slate-600'
-              }`}
+                    ? 'bg-accent-success'
+                    : 'bg-slate-600'
+                }`}
               aria-label={`Go to section ${i + 1}`}
             />
           ))}
         </div>
-        
+
         <button
           onClick={() => goToSection(currentSection + 1)}
           disabled={isLastSection}

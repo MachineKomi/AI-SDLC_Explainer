@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, BookOpen, Calculator, BarChart3, Dumbbell, Settings, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
+import { Cpu, BookOpen, Calculator, BarChart3, Dumbbell, ChevronLeft, ChevronRight, Menu, X, Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
 import clsx from "clsx";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Sidebar() {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => setMounted(true), []);
 
@@ -30,9 +32,18 @@ export default function Sidebar() {
             {/* Mobile Toggle */}
             <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5 px-4 h-16 flex items-center justify-between">
                 <span className="font-bold text-lg tracking-tight">AI-SDLC <span className="text-accent-primary">Explainer</span></span>
-                <button onClick={() => setIsMobileOpen(true)} className="p-2">
-                    <Menu className="w-6 h-6 text-foreground-muted" />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-colors"
+                        title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
+                    <button onClick={() => setIsMobileOpen(true)} className="p-2">
+                        <Menu className="w-6 h-6 text-foreground-muted" />
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Drawer */}
@@ -45,7 +56,14 @@ export default function Sidebar() {
                         transition={{ type: "spring", damping: 20 }}
                         className="fixed inset-0 z-50 bg-background-secondary md:hidden flex flex-col"
                     >
-                        <div className="flex justify-end p-4">
+                        <div className="flex justify-between p-4">
+                            <button
+                                onClick={toggleTheme}
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-colors"
+                            >
+                                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                                <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                            </button>
                             <button onClick={() => setIsMobileOpen(false)} className="p-2">
                                 <X className="w-6 h-6 text-foreground-muted" />
                             </button>
@@ -117,7 +135,21 @@ export default function Sidebar() {
                     })}
                 </div>
 
-                <div className="p-4 border-t border-white/5">
+                <div className="p-4 border-t border-white/5 space-y-2">
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        className={clsx(
+                            "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-foreground-muted hover:text-foreground hover:bg-white/5 transition-colors",
+                            isCollapsed && "justify-center"
+                        )}
+                        title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                        {!isCollapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
+                    </button>
+
+                    {/* Collapse Toggle */}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
                         className="w-full flex items-center justify-center p-2 rounded-lg text-foreground-muted hover:bg-white/5 transition-colors"
@@ -129,3 +161,4 @@ export default function Sidebar() {
         </>
     );
 }
+

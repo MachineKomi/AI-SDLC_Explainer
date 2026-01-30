@@ -21,17 +21,18 @@ export default function HeroSection() {
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
                         <Sparkles className="w-4 h-4 text-accent-primary" />
-                        <span className="text-sm font-medium text-foreground-muted">Vesta AI-SDLC Methodology</span>
+                        <span className="text-sm font-medium text-foreground-muted">AI-Driven Development Lifecycle</span>
                     </div>
 
                     <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-8">
-                        Build Software <span className="text-gradient">With AI</span>,<br />
-                        Not Just For AI.
+                        Learn <span className="text-gradient">AI-SDLC</span>
                     </h1>
 
                     <p className="max-w-2xl mx-auto text-xl text-foreground-muted mb-10 leading-relaxed">
-                        Move from &ldquo;prompt &amp; pray&rdquo; to a structured, audit-ready engineering workflow.
-                        Master the <span className="text-foreground font-semibold">Inception → Construction → Operations</span> lifecycle designed for high-scale teams.
+                        A structured workflow where AI proposes plans, asks clarifying questions,
+                        and implements only after validation. Master the{" "}
+                        <span className="text-foreground font-semibold">Inception → Construction → Operations</span>{" "}
+                        lifecycle with persisted artifacts and approval gates.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -39,7 +40,7 @@ export default function HeroSection() {
                             Start Learning <ArrowRight className="w-5 h-5" />
                         </Link>
                         <Link href="/simulator" className="btn-secondary flex items-center gap-2 text-lg px-8 py-4">
-                            Enter Simulator <Code2 className="w-5 h-5" />
+                            Try the Simulator <Code2 className="w-5 h-5" />
                         </Link>
                     </div>
                 </motion.div>
@@ -54,18 +55,18 @@ export default function HeroSection() {
                     {[
                         {
                             icon: Code2,
-                            title: "AI-Native Construct",
-                            desc: "Decompose work into verifiable units that AI agents can reliably execute."
+                            title: "Plan-First Execution",
+                            desc: "Every step starts with an explicit plan and approval gate before execution. Decompose work into verifiable units."
                         },
                         {
                             icon: ShieldCheck,
-                            title: "Evidence Gates",
-                            desc: "'Done' means proven. Automated validation for every step of the lifecycle."
+                            title: "Proof Over Prose",
+                            desc: "'Done' requires objective evidence: tests passing, checks green, runtime behavior validated."
                         },
                         {
                             icon: Sparkles,
-                            title: "Human-In-The-Loop",
-                            desc: "AI is the engine, you are the pilot. Maintain accountability while 10x'ing throughput."
+                            title: "Human Accountability",
+                            desc: "Humans own decisions and outcomes. AI proposes and executes within bounds set by approval gates."
                         }
                     ].map((feature, idx) => (
                         <div key={idx} className="glass-card p-8 rounded-2xl text-left hover:-translate-y-2 transition-transform duration-300">
@@ -81,3 +82,4 @@ export default function HeroSection() {
         </div>
     );
 }
+

@@ -8,6 +8,7 @@ export interface Section {
   title: string;
   content: string;
   diagram?: string;
+  diagramType?: 'phases' | 'gate-loop' | 'construction-loop' | 'artifact-tree';
 }
 
 export interface Lesson {

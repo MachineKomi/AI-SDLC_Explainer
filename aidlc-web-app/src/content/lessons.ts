@@ -45,15 +45,7 @@ This pattern repeats rapidly for every SDLC activity.`,
   - Infrastructure as Code
   - CI/CD pipelines
   - Observability setup`,
-        diagram: `┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│  INCEPTION  │ ───▶ │CONSTRUCTION │ ───▶ │ OPERATIONS  │
-│  (What/Why) │      │    (How)    │      │  (Run/Mon)  │
-└─────────────┘      └─────────────┘      └─────────────┘
-       │                   │                    │
-       ▼                   ▼                    ▼
-   ┌───────┐           ┌───────┐           ┌───────┐
-   │ GATE  │           │ GATE  │           │ GATE  │
-   └───────┘           └───────┘           └───────┘`,
+        diagramType: 'phases',
       },
       {
         id: 'gates',
@@ -74,13 +66,7 @@ Benefits of strict gates:
 • Prevents AI from "running away" with wrong assumptions
 • Creates audit trail of decisions
 • Ensures human accountability at every critical point`,
-        diagram: `   ┌──────────┐     ┌──────────┐     ┌──────────┐
-   │  PLAN    │ ──▶ │  GATE    │ ──▶ │ EXECUTE  │
-   │ (AI)     │     │ (Human)  │     │  (AI)    │
-   └──────────┘     └──────────┘     └──────────┘
-        ▲                                  │
-        └──────────────────────────────────┘
-                    repeat`,
+        diagramType: 'gate-loop',
       },
       {
         id: 'artifacts',
