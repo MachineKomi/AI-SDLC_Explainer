@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lightbulb, Target, FileText, CheckCircle2 } from "lucide-react";
+import { Lightbulb, Target, FileText, CheckCircle2, ShieldCheck } from "lucide-react";
 import MethodologyCard from "@/components/MethodologyCard";
 
 export default function InceptionPage() {
