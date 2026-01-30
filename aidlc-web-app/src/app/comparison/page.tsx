@@ -3,15 +3,21 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  METHODOLOGIES, 
-  COMPARISON_METRICS, 
-  PROJECT_SCENARIOS, 
+import {
+  METHODOLOGIES,
+  COMPARISON_METRICS,
+  PROJECT_SCENARIOS,
   simulateProject,
   Methodology,
   ProjectScenario,
-  SimulationResult 
+  SimulationResult
 } from '@/content/comparison';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Play, Pause, RotateCcw, User, Bot,
+  CheckCircle2, Clock, GitCommit, Search,
+  Server, ShieldCheck, Terminal, AlertTriangle
+} from 'lucide-react';
 
 type Tab = 'timeline' | 'metrics' | 'simulator';
 
@@ -20,23 +26,39 @@ export default function ComparisonPage() {
   const [activeTab, setActiveTab] = useState<Tab>('timeline');
   const [selectedScenario, setSelectedScenario] = useState<ProjectScenario>(PROJECT_SCENARIOS[0]);
   const [simulationResults, setSimulationResults] = useState<SimulationResult[]>([]);
-  const [animationProgress, setAnimationProgress] = useState(0);
 
+  // Animation State
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Auto-play on mount
   useEffect(() => {
-    if (activeTab === 'timeline') {
-      setAnimationProgress(0);
-      const timer = setInterval(() => {
-        setAnimationProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(timer);
-            return 100;
-          }
-          return prev + 2;
-        });
-      }, 50);
-      return () => clearInterval(timer);
-    }
-  }, [activeTab]);
+    setActiveTab('timeline');
+    setIsPlaying(true);
+  }, []);
+
+  // Timer for race animation
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          setIsPlaying(false);
+          return 100;
+        }
+        return prev + 0.5;
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  const togglePlay = () => setIsPlaying(!isPlaying);
+  const resetAnimation = () => {
+    setIsPlaying(false);
+    setProgress(0);
+  };
 
   useEffect(() => {
     if (activeTab === 'simulator') {
@@ -63,259 +85,317 @@ export default function ComparisonPage() {
   }, [handleKeyDown]);
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: 'timeline', label: 'Timeline', icon: '📊' },
-    { id: 'metrics', label: 'Metrics', icon: '📈' },
-    { id: 'simulator', label: 'Simulator', icon: '🔬' },
+    { id: 'timeline', label: 'Race Visualization', icon: '🏎️' },
+    { id: 'metrics', label: 'Data Comparison', icon: '📊' },
+    { id: 'simulator', label: 'Project Simulator', icon: '🔬' },
   ];
 
   return (
-    <main className="min-h-screen p-4 md:p-8">
-      <header className="mb-6">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
-          ← Back to Home
-        </Link>
-        <h1 className="text-2xl md:text-3xl font-bold">⚖️ Methodology Comparison</h1>
-        <p className="text-slate-400">Compare Waterfall, Agile, and AI-DLC</p>
-      </header>
+    <main className="min-h-screen p-4 md:p-8 bg-background relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="fixed inset-0 z-0 opacity-30 bg-grid-pattern pointer-events-none" />
+      <div className="fixed inset-0 z-0 scanlines opacity-20 pointer-events-none" />
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-6">
-        {tabs.map((tab, idx) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-              activeTab === tab.id 
-                ? 'bg-accent-primary text-white' 
-                : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
-            }`}
-          >
-            <kbd className="kbd text-xs">{idx + 1}</kbd>
-            <span>{tab.icon}</span>
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <header className="mb-8">
+          <Link href="/" className="text-foreground-muted hover:text-accent-primary text-sm mb-4 inline-flex items-center gap-2 transition-colors">
+            <span className="font-mono">&lt;</span> Back to Home
+          </Link>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 rounded-lg bg-accent-primary/10 border border-accent-primary/20">
+              <ShieldCheck className="w-6 h-6 text-accent-primary" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Why <span className="text-gradient">AI-DLC</span> Wins
+            </h1>
+          </div>
+          <p className="text-foreground-muted max-w-2xl text-lg">
+            See how the AI-Driven Lifecycle accelerates delivery through parallel execution and automated generation.
+          </p>
+        </header>
 
-      {/* Timeline Tab */}
-      {activeTab === 'timeline' && (
-        <div className="space-y-6">
-          {METHODOLOGIES.map(methodology => {
-            const totalDuration = methodology.phases.reduce((sum, p) => sum + p.durationUnits, 0);
-            
-            return (
-              <div key={methodology.id} className="card">
-                <div className="flex items-center gap-3 mb-4">
-                  <h3 className="font-bold text-lg">{methodology.name}</h3>
-                  <span className="text-sm text-slate-500">
-                    Cycle time: {methodology.cycleTimeFactor}x | Cost: {methodology.costFactor}x
-                  </span>
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2 mb-8">
+          {tabs.map((tab, idx) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-3 rounded-lg flex items-center gap-3 transition-all font-medium ${activeTab === tab.id
+                  ? 'bg-accent-primary text-white shadow-[0_0_20px_rgba(236,72,153,0.3)]'
+                  : 'bg-background-secondary border border-white/5 text-foreground-muted hover:text-foreground hover:bg-white/5'
+                }`}
+            >
+              <kbd className="hidden md:inline-flex items-center justify-center h-5 w-5 rounded bg-black/20 text-xs font-mono opacity-50 mr-2">{idx + 1}</kbd>
+              <span className="text-xl">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Timeline (Race) Animation */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'timeline' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="space-y-6"
+            >
+              <div className="glass-card p-6 rounded-xl border border-white/10">
+                <div className="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={togglePlay}
+                      className="p-3 rounded-full bg-accent-primary text-white hover:bg-accent-primary/80 transition-shadow hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]"
+                    >
+                      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-1" />}
+                    </button>
+                    <button
+                      onClick={resetAnimation}
+                      className="p-3 rounded-full bg-white/5 text-foreground-muted hover:text-white transition-colors"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                    </button>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-foreground-muted font-mono uppercase tracking-wider">Simulation Status</span>
+                      <span className="font-mono text-accent-primary">{isPlaying ? 'RUNNING...' : 'PAUSED'}</span>
+                    </div>
+                  </div>
+                  <div className="font-mono text-2xl font-bold tabular-nums text-foreground">
+                    Week {Math.floor(progress / 5)}
+                  </div>
                 </div>
-                
-                <div className="flex gap-1 mb-4 h-12">
-                  {methodology.phases.map((phase, idx) => {
-                    const width = (phase.durationUnits / totalDuration) * 100;
-                    const animatedWidth = Math.min(width, (animationProgress / 100) * width);
-                    const colors = ['bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500', 'bg-red-500', 'bg-slate-500'];
-                    
+
+                <div className="space-y-8">
+                  {METHODOLOGIES.map((method, idx) => {
+                    // Calculate relative speed (AI-DLC is fastest)
+                    const speedMultiplier = method.id === 'aidlc' ? 2.5 : method.id === 'agile' ? 1.5 : 1;
+                    const displayProgress = Math.min(100, progress * speedMultiplier);
+                    const isFinished = displayProgress >= 100;
+
                     return (
-                      <div
-                        key={phase.id}
-                        className={`${colors[idx % colors.length]} rounded flex items-center justify-center text-xs font-medium transition-all duration-300`}
-                        style={{ width: `${animatedWidth}%` }}
-                        title={`${phase.name}: ${phase.description}`}
-                      >
-                        {animatedWidth > 10 && phase.name}
+                      <div key={method.id} className="relative">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className={`font-bold text-lg ${method.id === 'aidlc' ? 'text-accent-primary text-glow' : 'text-foreground'}`}>
+                            {method.name}
+                          </h3>
+                          {isFinished && (
+                            <motion.span
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className="text-accent-success font-bold flex items-center gap-1"
+                            >
+                              <CheckCircle2 className="w-4 h-4" /> Delivered
+                            </motion.span>
+                          )}
+                        </div>
+
+                        {/* Track */}
+                        <div className="h-16 bg-background-tertiary rounded-lg relative overflow-hidden flex items-center px-4 border border-white/5">
+                          {/* Grid lines on track */}
+                          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_100%]" />
+
+                          {/* Progress Indicator */}
+                          <motion.div
+                            className="absolute top-0 bottom-0 left-0 bg-accent-primary/10 border-r border-accent-primary/30"
+                            style={{ width: `${displayProgress}%` }}
+                          />
+
+                          {/* Runner Icon */}
+                          <motion.div
+                            className="absolute z-10"
+                            style={{ left: `${displayProgress}%`, x: '-50%' }}
+                          >
+                            <div className={`
+                              p-2 rounded-lg border shadow-lg backdrop-blur-sm
+                              ${method.id === 'aidlc'
+                                ? 'bg-accent-primary text-white border-accent-primary shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                                : 'bg-background-secondary text-foreground-muted border-white/10'
+                              }
+                            `}>
+                              {method.id === 'aidlc' ? <Bot className="w-6 h-6" /> : <User className="w-6 h-6" />}
+                            </div>
+
+                            {/* Action Label */}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 whitespace-nowrap text-xs font-mono font-bold bg-background/80 px-2 py-0.5 rounded border border-white/10">
+                              {displayProgress < 30 ? 'PLANNING'
+                                : displayProgress < 70 ? (method.id === 'aidlc' ? 'GENERATING' : 'BUILDING')
+                                  : displayProgress < 100 ? 'TESTING' : 'DONE'}
+                            </div>
+                          </motion.div>
+                        </div>
+
+                        {/* Stats */}
+                        <div className="flex gap-6 mt-2 text-sm text-foreground-muted font-mono pl-1">
+                          <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> Time: {method.cycleTimeFactor}x</span>
+                          <span className="flex items-center gap-1.5"><Server className="w-3 h-3" /> Handoffs: {method.id === 'waterfall' ? 'Sequential' : method.id === 'agile' ? 'Sprint-based' : 'Instant'}</span>
+                        </div>
                       </div>
                     );
                   })}
                 </div>
+              </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div>
-                    <span className="text-slate-500">Feedback Loop:</span>
-                    <p className="font-medium">{methodology.feedbackLoopTime}</p>
+              {/* TUI Info Panel */}
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  { title: "Plan-First Execution", desc: "No code is written until the plan is explicit and verified.", icon: Terminal },
+                  { title: "Proof Over Prose", desc: "Progress isn't a status update; it's a passing test suite.", icon: CheckCircle2 },
+                  { title: "Human Accountability", desc: "AI generates the work; Humans verify and own the risk.", icon: ShieldCheck },
+                ].map((item, idx) => (
+                  <div key={idx} className="glass-card p-5 rounded-xl border border-white/5 hover:border-accent-primary/30 transition-colors">
+                    <item.icon className="w-8 h-8 text-accent-secondary mb-3" />
+                    <h3 className="font-bold text-foreground mb-1">{item.title}</h3>
+                    <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
                   </div>
-                  <div>
-                    <span className="text-slate-500">Key Traits:</span>
-                    <p className="font-medium">{methodology.keyCharacteristics[0]}</p>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 text-accent-success">Strength:</span>
-                    <p className="font-medium text-accent-success">{methodology.strengths[0]}</p>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 text-accent-error">Weakness:</span>
-                    <p className="font-medium text-accent-error">{methodology.weaknesses[0]}</p>
-                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Metrics Tab */}
+          {activeTab === 'metrics' && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="glass-card rounded-xl overflow-hidden border border-white/10"
+            >
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-background-tertiary">
+                      <th className="text-left p-4 text-foreground font-mono uppercase text-sm tracking-wider">Metric</th>
+                      <th className="text-center p-4 text-foreground-muted font-mono uppercase text-sm tracking-wider">Waterfall</th>
+                      <th className="text-center p-4 text-foreground-muted font-mono uppercase text-sm tracking-wider">Agile</th>
+                      <th className="text-center p-4 text-accent-primary font-bold font-mono uppercase text-sm tracking-wider bg-accent-primary/5">AI-DLC</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {COMPARISON_METRICS.map((metric, idx) => (
+                      <tr key={metric.name} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                        <td className="p-4">
+                          <div className="font-bold text-foreground">{metric.name}</div>
+                          <div className="text-sm text-foreground-muted mt-1">{metric.description}</div>
+                        </td>
+                        <td className={`p-4 text-center ${metric.winner === 'waterfall' ? 'text-accent-success font-bold' : 'text-foreground-muted'}`}>
+                          {metric.waterfall}
+                        </td>
+                        <td className={`p-4 text-center ${metric.winner === 'agile' ? 'text-accent-success font-bold' : 'text-foreground-muted'}`}>
+                          {metric.agile}
+                        </td>
+                        <td className={`p-4 text-center bg-accent-primary/5 ${metric.winner === 'aidlc' ? 'text-accent-primary font-bold text-lg' : 'text-foreground-muted'}`}>
+                          {metric.aidlc}
+                          {metric.winner === 'aidlc' && <span className="ml-2">🏆</span>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Simulator Tab */}
+          {activeTab === 'simulator' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="space-y-6"
+            >
+              {/* Scenario Selection */}
+              <div className="glass-card p-6 rounded-xl border border-white/10">
+                <h3 className="font-mono text-sm text-accent-primary mb-4 flex items-center gap-2">
+                  <Terminal className="w-4 h-4" /> SELECT_PROJECT_CONTEXT
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {PROJECT_SCENARIOS.map(scenario => (
+                    <button
+                      key={scenario.id}
+                      onClick={() => setSelectedScenario(scenario)}
+                      className={`p-4 rounded-lg border text-left transition-all ${selectedScenario.id === scenario.id
+                          ? 'border-accent-primary bg-accent-primary/10 shadow-[0_0_15px_rgba(236,72,153,0.1)]'
+                          : 'border-white/10 hover:border-white/20 hover:bg-white/5'
+                        }`}
+                    >
+                      <div className="font-bold text-lg mb-1">{scenario.name}</div>
+                      <div className="text-sm text-foreground-muted mb-3">{scenario.description}</div>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-background-tertiary rounded text-xs font-mono text-foreground-muted border border-white/5">
+                          Complex: {scenario.complexity}
+                        </span>
+                        <span className="px-2 py-1 bg-background-tertiary rounded text-xs font-mono text-foreground-muted border border-white/5">
+                          Reqs: {scenario.requirementsStability}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
-            );
-          })}
-        </div>
-      )}
 
-      {/* Metrics Tab */}
-      {activeTab === 'metrics' && (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-700">
-                <th className="text-left p-3 text-slate-400">Metric</th>
-                <th className="text-center p-3 text-slate-400">Waterfall</th>
-                <th className="text-center p-3 text-slate-400">Agile</th>
-                <th className="text-center p-3 text-slate-400">AI-DLC</th>
-              </tr>
-            </thead>
-            <tbody>
-              {COMPARISON_METRICS.map(metric => (
-                <tr key={metric.name} className="border-b border-slate-800 hover:bg-slate-800/50">
-                  <td className="p-3">
-                    <div className="font-medium">{metric.name}</div>
-                    <div className="text-sm text-slate-500">{metric.description}</div>
-                  </td>
-                  <td className={`p-3 text-center ${metric.winner === 'waterfall' ? 'text-accent-success font-bold' : 'text-slate-400'}`}>
-                    {metric.waterfall}
-                    {metric.winner === 'waterfall' && ' 🏆'}
-                  </td>
-                  <td className={`p-3 text-center ${metric.winner === 'agile' ? 'text-accent-success font-bold' : 'text-slate-400'}`}>
-                    {metric.agile}
-                    {metric.winner === 'agile' && ' 🏆'}
-                  </td>
-                  <td className={`p-3 text-center ${metric.winner === 'aidlc' ? 'text-accent-success font-bold' : 'text-slate-400'}`}>
-                    {metric.aidlc}
-                    {metric.winner === 'aidlc' && ' 🏆'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              {/* Results Cards */}
+              <div className="grid md:grid-cols-3 gap-6">
+                {simulationResults.map(result => {
+                  const methodology = METHODOLOGIES.find(m => m.id === result.methodologyId);
+                  if (!methodology) return null;
 
-      {/* Simulator Tab */}
-      {activeTab === 'simulator' && (
-        <div className="space-y-6">
-          {/* Scenario Selection */}
-          <div className="card">
-            <h3 className="font-semibold mb-3">Select Project Scenario</h3>
-            <div className="grid md:grid-cols-2 gap-3">
-              {PROJECT_SCENARIOS.map(scenario => (
-                <button
-                  key={scenario.id}
-                  onClick={() => setSelectedScenario(scenario)}
-                  className={`p-3 rounded-lg border text-left transition-colors ${
-                    selectedScenario.id === scenario.id 
-                      ? 'border-accent-primary bg-accent-primary/10' 
-                      : 'border-slate-700 hover:border-slate-600'
-                  }`}
-                >
-                  <div className="font-medium">{scenario.name}</div>
-                  <div className="text-sm text-slate-400">{scenario.description}</div>
-                  <div className="flex gap-2 mt-2 text-xs">
-                    <span className="px-2 py-0.5 bg-slate-700 rounded">
-                      {scenario.complexity} complexity
-                    </span>
-                    <span className="px-2 py-0.5 bg-slate-700 rounded">
-                      {scenario.requirementsStability} requirements
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
+                  const isBest = result.totalWeeks === Math.min(...simulationResults.map(r => r.totalWeeks));
 
-          {/* Results */}
-          <div className="grid md:grid-cols-3 gap-4">
-            {simulationResults.map(result => {
-              const methodology = METHODOLOGIES.find(m => m.id === result.methodologyId);
-              if (!methodology) return null;
-              
-              const isBest = result.totalWeeks === Math.min(...simulationResults.map(r => r.totalWeeks));
-              
-              return (
-                <div 
-                  key={result.methodologyId} 
-                  className={`card ${isBest ? 'border-accent-success' : ''}`}
-                >
-                  <h4 className="font-bold text-lg mb-3">
-                    {methodology.name}
-                    {isBest && <span className="ml-2 text-accent-success">🏆</span>}
-                  </h4>
-                  
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Duration:</span>
-                      <span className="font-medium">{result.totalWeeks} weeks</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Cost:</span>
-                      <span className="font-medium">{result.totalCostUnits} units</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Feedback Points:</span>
-                      <span className="font-medium">{result.feedbackPoints}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Handoffs:</span>
-                      <span className="font-medium">{result.handoffs}</span>
-                    </div>
-                    
-                    {result.riskEvents.length > 0 && (
-                      <div className="pt-2 border-t border-slate-700">
-                        <span className="text-sm text-accent-warning">⚠️ Risk Events:</span>
-                        <ul className="text-sm text-slate-400 mt-1">
-                          {result.riskEvents.map((event, idx) => (
-                            <li key={idx}>• {event}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Comparison Chart */}
-          <div className="card">
-            <h3 className="font-semibold mb-4">Duration Comparison</h3>
-            <div className="space-y-3">
-              {simulationResults.map(result => {
-                const methodology = METHODOLOGIES.find(m => m.id === result.methodologyId);
-                const maxWeeks = Math.max(...simulationResults.map(r => r.totalWeeks));
-                const width = (result.totalWeeks / maxWeeks) * 100;
-                
-                return (
-                  <div key={result.methodologyId} className="flex items-center gap-3">
-                    <span className="w-24 text-sm">{methodology?.name}</span>
-                    <div className="flex-1 bg-slate-700 rounded-full h-6">
-                      <div 
-                        className={`h-6 rounded-full flex items-center justify-end pr-2 text-xs font-medium ${
-                          result.methodologyId === 'aidlc' ? 'bg-accent-success' :
-                          result.methodologyId === 'agile' ? 'bg-accent-primary' : 'bg-slate-500'
+                  return (
+                    <div
+                      key={result.methodologyId}
+                      className={`glass-card p-6 rounded-xl border transition-all ${isBest
+                          ? 'border-accent-success/50 shadow-[0_0_20px_rgba(34,197,94,0.1)]'
+                          : 'border-white/10 opacity-80'
                         }`}
-                        style={{ width: `${width}%` }}
-                      >
-                        {result.totalWeeks}w
+                    >
+                      <h4 className="font-bold text-xl mb-4 flex items-center justify-between">
+                        {methodology.name}
+                        {isBest && <CheckCircle2 className="w-5 h-5 text-accent-success" />}
+                      </h4>
+
+                      <div className="space-y-4 font-mono text-sm">
+                        <div className="flex justify-between items-center py-2 border-b border-white/5">
+                          <span className="text-foreground-muted">Duration</span>
+                          <span className={isBest ? "text-accent-success font-bold" : "text-foreground"}>
+                            {result.totalWeeks} wks
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-white/5">
+                          <span className="text-foreground-muted">Cost</span>
+                          <span className="text-foreground">{result.totalCostUnits} units</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-white/5">
+                          <span className="text-foreground-muted">Handoffs</span>
+                          <span className="text-foreground">{result.handoffs}</span>
+                        </div>
+
+                        {result.riskEvents.length > 0 ? (
+                          <div className="pt-2">
+                            <span className="text-accent-error flex items-center gap-2 mb-2">
+                              <AlertTriangle className="w-4 h-4" /> Risks Detected:
+                            </span>
+                            <ul className="text-xs text-foreground-muted space-y-1 pl-4 list-disc">
+                              {result.riskEvents.map((event, idx) => (
+                                <li key={idx}>{event}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <div className="pt-2 text-accent-success flex items-center gap-2">
+                            <ShieldCheck className="w-4 h-4" /> Risk Mitigated
+                          </div>
+                        )}
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <footer className="mt-8 pt-4 border-t border-slate-700 text-sm text-slate-500">
-        <div className="flex justify-center gap-4">
-          <span><kbd className="kbd">1</kbd> Timeline</span>
-          <span><kbd className="kbd">2</kbd> Metrics</span>
-          <span><kbd className="kbd">3</kbd> Simulator</span>
-          <span><kbd className="kbd">Esc</kbd> Home</span>
-        </div>
-      </footer>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </main>
   );
 }

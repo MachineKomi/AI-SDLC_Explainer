@@ -89,22 +89,7 @@ Why artifacts matter:
 • Durable context (not lost in chat)
 • Reviewable by humans and future AI sessions
 • Auditable trail of decisions`,
-        diagram: `aidlc-docs/
-├── aidlc-state.md
-├── execution-plan.md  
-├── audit.md
-├── prompts.md
-├── inception/
-│   ├── intent.md
-│   ├── requirements.md
-│   ├── nfr.md
-│   └── units/
-├── construction/
-│   └── unit-01/
-│       ├── design.md
-│       └── tasks-plan.md
-└── operations/
-    └── deployment-plan.md`,
+        diagramType: 'artifact-tree',
       },
       {
         id: 'roles',
@@ -161,19 +146,7 @@ Key roles (minimal set):
 
 Key insight: AI proposes, humans decide. Each step produces
 richer artifacts that become context for the next step.`,
-        diagram: `        ┌─────────────────────────────────────┐
-        │                                     │
-        ▼                                     │
-   ┌─────────┐    ┌─────────┐    ┌─────────┐  │
-   │  PLAN   │───▶│   ASK   │───▶│VALIDATE │  │
-   │  (AI)   │    │  (AI)   │    │ (Human) │  │
-   └─────────┘    └─────────┘    └─────────┘  │
-                                      │       │
-                                      ▼       │
-                               ┌─────────┐    │
-                               │IMPLEMENT│────┘
-                               │ (BOLT)  │
-                               └─────────┘`,
+        diagramType: 'construction-loop',
       },
       {
         id: 'summary',
@@ -199,18 +172,7 @@ NEXT STEPS:
 • Explore the Phases section for deep dives
 • Review the 10 Principles  
 • Try the Quiz to test your knowledge`,
-        diagram: `╭───────────────────────────────────────────╮
-│                                           │
-│   ✓ Lesson Complete: AI-DLC Overview     │
-│                                           │
-│   You learned about:                      │
-│   • The three phases                      │
-│   • Gates and approvals                   │
-│   • Artifact model                        │
-│   • Team roles                            │
-│   • Core mental model                     │
-│                                           │
-╰───────────────────────────────────────────╯`,
+        diagramType: 'lesson-complete',
       },
     ],
   },
@@ -229,15 +191,7 @@ These principles are derived from AWS best practices and
 real-world practitioner experience.
 
 Let's explore each one in detail.`,
-        diagram: `╭─────────────────────────────────────────────────────────────╮
-│                    10 CORE PRINCIPLES                        │
-├─────────────────────────────────────────────────────────────┤
-│  1. Plan-First          │  6. Proof over Prose             │
-│  2. Human Accountability │  7. Auditable Trail              │
-│  3. Small Batches        │  8. Context Persistence          │
-│  4. Adaptive Depth       │  9. Fail Fast, Recover Fast      │
-│  5. Structured Q&A       │ 10. Prompts as Code              │
-╰─────────────────────────────────────────────────────────────╯`,
+        diagramType: 'principles-list',
       },
       {
         id: 'principle-1',
@@ -257,15 +211,7 @@ Why it matters:
 Anti-pattern:
 • "Just implement feature X" without seeing the plan first
 • AI coding without explicit approval of approach`,
-        diagram: `    ┌──────────────────────────────────────────────┐
-    │                                              │
-    │   ❌ BAD:   "Build me a login page"          │
-    │                                              │
-    │   ✓ GOOD:  "Create a plan for login page    │
-    │            with checkpoints. Stop for        │
-    │            approval before coding."          │
-    │                                              │
-    └──────────────────────────────────────────────┘`,
+        diagramType: 'plan-first-comparison',
       },
       {
         id: 'principle-2',
@@ -287,17 +233,7 @@ Why it matters:
 • Legal and ethical responsibility stays with humans
 • AI hallucinations don't become production bugs
 • Clear ownership of outcomes`,
-        diagram: `    ┌─────────────────────────────────────────┐
-    │           ACCOUNTABILITY MODEL          │
-    ├─────────────────────────────────────────┤
-    │                                         │
-    │   AI OWNS:          │   HUMAN OWNS:     │
-    │   • Execution       │   • Decisions     │
-    │   • Code generation │   • Approvals     │
-    │   • Test running    │   • Outcomes      │
-    │   • Documentation   │   • Accountability│
-    │                                         │
-    └─────────────────────────────────────────┘`,
+        diagramType: 'accountability-table',
       },
       {
         id: 'principle-3',
@@ -319,18 +255,7 @@ Sizing guidelines:
 • Too small: Overhead exceeds value
 • Too large: Can't review effectively
 • Just right: Reviewable in one sitting`,
-        diagram: `    ❌ BAD: One giant "Build the app" task
-    
-    ✓ GOOD: Decomposed units
-    
-    ┌──────────┐  ┌──────────┐  ┌──────────┐
-    │ Unit 1   │  │ Unit 2   │  │ Unit 3   │
-    │ Auth     │  │ Dashboard│  │ API      │
-    │ (2 days) │  │ (2 days) │  │ (1 day)  │
-    └────┬─────┘  └────┬─────┘  └────┬─────┘
-         │             │             │
-         ▼             ▼             ▼
-      Review        Review        Review`,
+        diagramType: 'small-batches',
       },
       {
         id: 'principle-4',
@@ -352,18 +277,7 @@ Factors influencing depth:
 Key insight from AWS:
 "Create exactly the detail needed for the problem at 
 hand - no more, no less."`,
-        diagram: `    STAGE SELECTION (Binary)      DETAIL LEVEL (Adaptive)
-    ─────────────────────         ─────────────────────────
-    
-    Workflow Planning decides:     Within each stage:
-    
-    ┌─────────────┐               Simple → Concise artifacts
-    │   EXECUTE   │               Complex → Comprehensive 
-    └─────────────┘                         artifacts
-          or
-    ┌─────────────┐               Model decides based on
-    │    SKIP     │               problem characteristics
-    └─────────────┘`,
+        diagramType: 'adaptive-depth',
       },
       {
         id: 'principle-5',
@@ -385,16 +299,7 @@ Format example:
 • Questions go in: requirement-verification-questions.md
 • Answers have structured tags: <!-- ANSWER: B -->
 • Both persist in repository`,
-        diagram: `    requirement-verification-questions.md:
-    ┌────────────────────────────────────────────┐
-    │ Q1: Primary deployment target?             │
-    │     A) AWS Lambda                          │
-    │     B) Kubernetes                          │
-    │     C) On-premise                          │
-    │                                            │
-    │ <!-- ANSWER: B -->                         │
-    │ <!-- RATIONALE: Existing K8s cluster -->   │
-    └────────────────────────────────────────────┘`,
+        diagramType: 'structured-qa',
       },
       {
         id: 'principle-6',
@@ -416,19 +321,7 @@ Why it matters:
 • AI can be confidently wrong
 • Prose can mask incomplete work
 • Evidence is verifiable`,
-        diagram: `    ❌ PROSE (not acceptable):
-    "I've implemented the login feature and it works."
-    
-    ✓ PROOF (acceptable):
-    ┌─────────────────────────────────────────┐
-    │ $ pytest tests/ -v                      │
-    │ ============================            │
-    │ test_login_success PASSED               │
-    │ test_login_invalid_password PASSED      │
-    │ test_login_rate_limit PASSED            │
-    │ ============================            │
-    │ 3 passed in 0.45s                       │
-    └─────────────────────────────────────────┘`,
+        diagramType: 'proof-over-prose',
       },
       {
         id: 'principle-7',
@@ -452,21 +345,7 @@ Why it matters:
 • Post-mortems and debugging
 • Knowledge transfer
 • Legal protection`,
-        diagram: `    audit.md (append-only):
-    ┌─────────────────────────────────────────────────┐
-    │ ## 2026-01-28 | Unit 01 Approved                │
-    │                                                 │
-    │ Decision: Approve unit for implementation       │
-    │ Rationale: Requirements clear, AC defined       │
-    │ Evidence: requirements.md reviewed              │
-    │ Approver: @tech-lead                            │
-    │ ─────────────────────────────────────────────── │
-    │ ## 2026-01-28 | Architecture Decision           │
-    │                                                 │
-    │ Decision: Use PostgreSQL over MongoDB           │
-    │ Rationale: Strong consistency requirements      │
-    │ ...                                             │
-    └─────────────────────────────────────────────────┘`,
+        diagramType: 'audit-trail',
       },
       {
         id: 'principle-8',
@@ -489,23 +368,7 @@ Benefits:
 • Team members can onboard easily
 • AI sessions are reproducible
 • Version control applies`,
-        diagram: `    ❌ EPHEMERAL (chat):
-    ┌─────────────────────────────────────┐
-    │ User: Build a login page            │
-    │ AI: Here's the code...              │
-    │ User: Add remember me               │
-    │ AI: Updated...                      │
-    │ [SESSION ENDS - CONTEXT LOST]       │
-    └─────────────────────────────────────┘
-    
-    ✓ PERSISTENT (artifacts):
-    ┌─────────────────────────────────────┐
-    │ aidlc-docs/                         │
-    │ ├── aidlc-state.md    ← position    │
-    │ ├── audit.md          ← history     │
-    │ └── construction/     ← work        │
-    │ [SESSION ENDS - CONTEXT PRESERVED]  │
-    └─────────────────────────────────────┘`,
+        diagramType: 'context-persistence',
       },
       {
         id: 'principle-9',
@@ -528,18 +391,7 @@ Recovery mechanisms:
 • Blue-green deployments
 • Feature flags for rollback
 • Database migrations with down path`,
-        diagram: `    FAIL FAST:
-    ┌───────┐   ┌───────┐   ┌───────┐   ┌───────┐
-    │ Code  │──▶│ Lint  │──▶│ Test  │──▶│Deploy │
-    └───────┘   └───┬───┘   └───┬───┘   └───┬───┘
-                    │           │           │
-                    ▼           ▼           ▼
-                   FAIL?       FAIL?       FAIL?
-                    │           │           │
-                    ▼           ▼           ▼
-                  STOP!       STOP!      ROLLBACK!
-                  
-    Early detection = Lower cost to fix`,
+        diagramType: 'fail-fast',
       },
       {
         id: 'principle-10',
@@ -561,21 +413,7 @@ Best practices:
 • Log which prompts produced which results
 • A/B test prompt changes
 • Add guardrails for known failure modes`,
-        diagram: `    prompts.md:
-    ┌─────────────────────────────────────────────────┐
-    │ ## PROMPT 1 - Initial Setup                     │
-    │                                                 │
-    │ You are the lead engineer running AI-DLC...    │
-    │                                                 │
-    │ Constraints:                                    │
-    │ - Do not implement without approval             │
-    │ - Small batches only                            │
-    │ - Stop at gates                                 │
-    │ ─────────────────────────────────────────────── │
-    │ ## PROMPT 2 - Unit 1 Approval                   │
-    │                                                 │
-    │ Approved. Execute Unit 1...                     │
-    └─────────────────────────────────────────────────┘`,
+        diagramType: 'prompts-as-code',
       },
       {
         id: 'principles-summary',
@@ -596,14 +434,7 @@ QUICK REFERENCE:
 
 These principles work together to create a safe,
 effective, and accountable AI-human collaboration.`,
-        diagram: `╭───────────────────────────────────────────╮
-│                                           │
-│   ✓ Lesson Complete: 10 Core Principles  │
-│                                           │
-│   Now try the Practice mode to test      │
-│   your understanding!                     │
-│                                           │
-╰───────────────────────────────────────────╯`,
+        diagramType: 'lesson-complete',
       },
     ],
   },
@@ -636,21 +467,7 @@ Inception answers:
 • Who are the users?
 • What are the constraints?
 • How will we measure success?`,
-        diagram: `╭───────────────────────────────────────────────────────────╮
-│                    INCEPTION PHASE                        │
-│              (WHAT + WHY via Mob Elaboration)             │
-├───────────────────────────────────────────────────────────┤
-│                                                           │
-│  INPUT:                     OUTPUT:                       │
-│  • User intent              • requirements.md             │
-│  • Business context         • nfr.md + risks.md           │
-│  • Constraints              • user-stories.md             │
-│                             • units/ (one per unit)       │
-│                             • execution-plan.md           │
-│                                                           │
-│  GATE: Requirements + Units Approved                      │
-│                                                           │
-╰───────────────────────────────────────────────────────────╯`,
+        diagramType: 'phases',
       },
       {
         id: 'inception-stages',
@@ -686,40 +503,7 @@ Inception answers:
 7. UNITS GENERATION (if decomposable)
    • Break into parallel units
    • Define acceptance criteria`,
-        diagram: `    INCEPTION FLOW:
-    
-    ┌──────────────┐
-    │  Workspace   │
-    │  Detection   │
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────┐    ┌──────────────┐
-    │   Reverse    │◀───│  Brownfield? │
-    │  Engineering │    └──────────────┘
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────┐
-    │ Requirements │ ◀── MANDATORY
-    │   Analysis   │
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────┐
-    │   Workflow   │ ◀── MANDATORY
-    │   Planning   │
-    └──────┬───────┘
-           │
-           ▼
-    ┌──────────────┐
-    │    Units     │
-    │  Generation  │
-    └──────┬───────┘
-           │
-           ▼
-       INCEPTION
-         EXIT`,
+        diagramType: 'inception-flow',
       },
       {
         id: 'inception-complete',
@@ -739,13 +523,7 @@ NEXT:
 • Explore Construction phase
 • Try the Stage Simulator
 • Test your knowledge with Practice mode`,
-        diagram: `╭───────────────────────────────────────────╮
-│                                           │
-│   ✓ Lesson Complete: Inception Phase     │
-│                                           │
-│   Ready to explore Construction?          │
-│                                           │
-╰───────────────────────────────────────────╯`,
+        diagramType: 'lesson-complete',
       },
     ],
   },

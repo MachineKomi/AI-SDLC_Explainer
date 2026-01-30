@@ -8,7 +8,11 @@ export interface Section {
   title: string;
   content: string;
   diagram?: string;
-  diagramType?: 'phases' | 'gate-loop' | 'construction-loop' | 'artifact-tree';
+  diagramType?: 'phases' | 'gate-loop' | 'construction-loop' | 'artifact-tree' |
+  'lesson-complete' | 'principles-list' | 'plan-first-comparison' |
+  'accountability-table' | 'small-batches' | 'adaptive-depth' |
+  'structured-qa' | 'proof-over-prose' | 'audit-trail' |
+  'context-persistence' | 'fail-fast' | 'prompts-as-code' | 'inception-flow';
 }
 
 export interface Lesson {
