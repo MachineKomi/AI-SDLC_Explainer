@@ -11,6 +11,8 @@ export const XP_REWARDS: Record<string, number> = {
   simulator_run: 20,
   simulator_new_type: 50,
   achievement_unlocked: 100,
+  gym_task_completed: 15,
+  gym_phase_completed: 50,
 };
 
 export const LEVEL_THRESHOLDS: Array<{ threshold: number; title: string }> = [
@@ -54,7 +56,7 @@ export function getXpToNextLevel(xp: number): { xpToNext: number; nextThreshold:
       };
     }
   }
-  
+
   // Max level reached
   return {
     xpToNext: 0,
@@ -64,7 +66,7 @@ export function getXpToNextLevel(xp: number): { xpToNext: number; nextThreshold:
 
 export function getProgressToNextLevel(xp: number): number {
   const { level } = calculateLevel(xp);
-  
+
   if (level >= LEVEL_THRESHOLDS.length) {
     return 100; // Max level
   }

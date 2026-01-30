@@ -30,7 +30,7 @@ export default function HeroSection() {
                     </h1>
 
                     <p className="max-w-2xl mx-auto text-xl text-foreground-muted mb-10 leading-relaxed">
-                        Move from "prompt & pray" to a structured, audit-ready engineering workflow.
+                        Move from &ldquo;prompt &amp; pray&rdquo; to a structured, audit-ready engineering workflow.
                         Master the <span className="text-foreground font-semibold">Inception → Construction → Operations</span> lifecycle designed for high-scale teams.
                     </p>
 

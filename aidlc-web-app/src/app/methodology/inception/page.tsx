@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Lightbulb, Target, FileText, CheckCircle2, ShieldCheck } from "lucide-react";
 import MethodologyCard from "@/components/MethodologyCard";
+import PhaseNavigation from "@/components/PhaseNavigation";
 
 export default function InceptionPage() {
     return (
@@ -87,9 +88,10 @@ export default function InceptionPage() {
                         </div>
                     </div>
                 </motion.div>
+
+                {/* Phase Navigation */}
+                <PhaseNavigation currentPhase="inception" />
             </div>
         </div>
     );
 }
-
-

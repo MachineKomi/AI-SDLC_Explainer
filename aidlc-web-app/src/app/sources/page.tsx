@@ -25,12 +25,6 @@ const SOURCES: Source[] = [
     type: 'blog',
   },
   {
-    title: 'AI-SDLC Best Practice Method Principles',
-    description: 'Core methodology document defining phases, principles, and practices',
-    url: 'https://github.com/awslabs/aidlc-workflows/blob/main/docs/AI-SDLC_best-practice_method_principles.md',
-    type: 'documentation',
-  },
-  {
     title: 'Amazon Q Developer',
     description: 'AI-powered coding assistant that integrates with AI-DLC workflows',
     url: 'https://aws.amazon.com/q/developer/',
@@ -41,24 +35,6 @@ const SOURCES: Source[] = [
     description: 'AI-native IDE with built-in AI-DLC support',
     url: 'https://kiro.dev',
     type: 'documentation',
-  },
-];
-
-const LOCAL_REFERENCES = [
-  {
-    title: 'AI-SDLC Best Practice Method Principles',
-    path: 'AI-SDLC_best-practice_method_principles.md',
-    description: 'Local copy of the methodology definition',
-  },
-  {
-    title: 'AIDLC Method Definition',
-    path: 'references/aidlc-docs/aidlc-method-definition.md',
-    description: 'Detailed method definition and workflows',
-  },
-  {
-    title: 'AIDLC Docs Structure Summary',
-    path: 'references/aidlc-docs/aidlc-docs-structure-summary.md',
-    description: 'Overview of documentation structure',
   },
 ];
 
@@ -126,42 +102,20 @@ export default function SourcesPage() {
         </div>
       </section>
 
-      {/* Local References */}
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Local References</h2>
-        <div className="card">
-          <p className="text-sm text-slate-400 mb-4">
-            These files are included in the project repository:
-          </p>
-          <div className="space-y-3">
-            {LOCAL_REFERENCES.map(ref => (
-              <div key={ref.path} className="flex items-start gap-3 p-3 bg-slate-800/50 rounded">
-                <span className="text-slate-400">📄</span>
-                <div>
-                  <h3 className="font-medium">{ref.title}</h3>
-                  <p className="text-sm text-slate-400">{ref.description}</p>
-                  <code className="text-xs text-slate-500 mt-1 block">{ref.path}</code>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Attribution */}
       <section className="card bg-accent-primary/10 border-accent-primary/30">
         <h2 className="font-semibold mb-3">📜 Attribution</h2>
         <p className="text-sm text-slate-300">
-          AI-DLC (AI-Driven Development Lifecycle) is a methodology developed by AWS. 
-          This educational application is based on the publicly available documentation 
+          AI-DLC (AI-Driven Development Lifecycle) is a methodology developed by AWS.
+          This educational application is based on the publicly available documentation
           and is intended for learning purposes.
         </p>
         <p className="text-sm text-slate-400 mt-2">
-          All content is derived from the official AI-DLC documentation and workflows 
+          All content is derived from the official AI-DLC documentation and workflows
           available at{' '}
-          <a 
-            href="https://github.com/awslabs/aidlc-workflows" 
-            target="_blank" 
+          <a
+            href="https://github.com/awslabs/aidlc-workflows"
+            target="_blank"
             rel="noopener noreferrer"
             className="text-accent-primary hover:underline"
           >
@@ -178,3 +132,4 @@ export default function SourcesPage() {
     </main>
   );
 }
+

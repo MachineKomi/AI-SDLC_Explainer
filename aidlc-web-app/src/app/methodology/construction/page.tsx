@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Hammer, Code, Search, FileCheck } from "lucide-react";
 import MethodologyCard from "@/components/MethodologyCard";
+import PhaseNavigation from "@/components/PhaseNavigation";
 
 export default function ConstructionPage() {
     return (
@@ -22,8 +23,8 @@ export default function ConstructionPage() {
                         Construction: <span className="text-gradient">Build with Proof</span>
                     </h1>
                     <p className="text-xl text-foreground-muted max-w-3xl mx-auto">
-                        Coding is no longer about typing; it's about orchestration and verification.
-                        We replace "trust me" with "prove it".
+                        Coding is no longer about typing; it&apos;s about orchestration and verification.
+                        We replace &ldquo;trust me&rdquo; with &ldquo;prove it&rdquo;.
                     </p>
                 </motion.div>
 
@@ -77,7 +78,11 @@ export default function ConstructionPage() {
                         delay={0.4}
                     />
                 </div>
+
+                {/* Phase Navigation */}
+                <PhaseNavigation currentPhase="construction" />
             </div>
         </div>
     );
 }
+

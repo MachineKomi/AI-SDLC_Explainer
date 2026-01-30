@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Activity, Gauge, Server, AlertTriangle } from "lucide-react";
 import MethodologyCard from "@/components/MethodologyCard";
+import PhaseNavigation from "@/components/PhaseNavigation";
 
 export default function OperationsPage() {
     return (
@@ -22,7 +23,7 @@ export default function OperationsPage() {
                         Operations: <span className="text-gradient">Run with Confidence</span>
                     </h1>
                     <p className="text-xl text-foreground-muted max-w-3xl mx-auto">
-                        Deployment isn't the finish line; it's the start of the race.
+                        Deployment isn&apos;t the finish line; it&apos;s the start of the race.
                         AI-generated systems require rigorous observability and cost discipline.
                     </p>
                 </motion.div>
@@ -57,7 +58,11 @@ export default function OperationsPage() {
                         delay={0.4}
                     />
                 </div>
+
+                {/* Phase Navigation */}
+                <PhaseNavigation currentPhase="operations" />
             </div>
         </div>
     );
 }
+

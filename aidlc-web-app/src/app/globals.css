@@ -4,27 +4,61 @@
 
 @layer base {
   :root {
-    /* Core Deep Space Theme Colors */
-    --background: 10 10 15; /* #0a0a0f - Deepest void */
-    --background-secondary: 17 24 39; /* #111827 - Panel bg */
-    --background-tertiary: 31 41 55; /* #1f2937 - Border/Hover */
+    /* Core Deep Space Theme Colors (Dark Mode - Default) */
+    --background: 10 10 15;
+    /* #0a0a0f - Deepest void */
+    --background-secondary: 17 24 39;
+    /* #111827 - Panel bg */
+    --background-tertiary: 31 41 55;
+    /* #1f2937 - Border/Hover */
 
-    --foreground: 248 250 252; /* #f8fafc - Bright text */
-    --foreground-muted: 148 163 184; /* #94a3b8 - Muted text */
+    --foreground: 248 250 252;
+    /* #f8fafc - Bright text */
+    --foreground-muted: 148 163 184;
+    /* #94a3b8 - Muted text */
 
     /* Electric Blue & Violet Accents */
-    --accent-primary: 56 189 248; /* #38bdf8 - Cyan/Blue */
-    --accent-secondary: 139 92 246; /* #8b5cf6 - Violet */
+    --accent-primary: 56 189 248;
+    /* #38bdf8 - Cyan/Blue */
+    --accent-secondary: 139 92 246;
+    /* #8b5cf6 - Violet */
     --accent-glow: 56 189 248;
 
     /* Status Indicators */
     --status-success: 34 197 94;
     --status-warning: 245 158 11;
     --status-error: 239 68 68;
-    
+
     /* Font Variables (mapped in layout.tsx) */
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  /* Light Mode Overrides */
+  .light {
+    --background: 248 250 252;
+    /* #f8fafc - Light background */
+    --background-secondary: 241 245 249;
+    /* #f1f5f9 - Light panel bg */
+    --background-tertiary: 226 232 240;
+    /* #e2e8f0 - Light border/hover */
+
+    --foreground: 15 23 42;
+    /* #0f172a - Dark text */
+    --foreground-muted: 71 85 105;
+    /* #475569 - Muted dark text */
+
+    /* Slightly deeper accents for light mode contrast */
+    --accent-primary: 14 165 233;
+    /* #0ea5e9 - Deeper cyan */
+    --accent-secondary: 124 58 237;
+    /* #7c3aed - Deeper violet */
+    --accent-glow: 14 165 233;
+
+    /* Status - slightly adjusted for light bg */
+    --status-success: 22 163 74;
+    --status-warning: 217 119 6;
+    --status-error: 220 38 38;
   }
 }
 
@@ -35,26 +69,27 @@
 }
 
 @layer components {
+
   /* Premium Glassmorphism Card */
   .glass-card {
     @apply bg-background-secondary/40 backdrop-blur-xl border border-white/10 shadow-xl;
   }
-  
+
   .glass-card:hover {
     @apply border-accent-primary/30 bg-background-secondary/60 transition-all duration-300;
   }
 
   /* Neon Button Styles */
   .btn-primary {
-    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/20 
-           hover:bg-accent-primary/20 hover:border-accent-primary/50 hover:shadow-[0_0_15px_rgba(56,189,248,0.3)]
-           active:scale-95 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/20 hover:bg-accent-primary/20 hover:border-accent-primary/50 active:scale-95 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
   }
 
   .btn-secondary {
-    @apply bg-white/5 text-foreground-muted border border-white/10
-           hover:bg-white/10 hover:text-foreground hover:border-white/20
-           transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+    @apply bg-white/5 text-foreground-muted border border-white/10 hover:bg-white/10 hover:text-foreground hover:border-white/20 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
   }
 
   /* Interactive Elements */
@@ -71,11 +106,11 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-secondary;
   }
-  
+
   .bg-grid-pattern {
     background-size: 40px 40px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
   }
 }
