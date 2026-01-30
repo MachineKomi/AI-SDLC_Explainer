@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aidlc-explainer"
+version = "0.1.0"
+description = "Interactive TUI learning tool for AI-Driven Development Lifecycle (AI-DLC)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = ["ai-dlc", "ai-sdlc", "tui", "learning", "education"]
+authors = [
+    { name = "AI-SDLC Explainer Team" }
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Education",
+]
+dependencies = [
+    "textual>=0.47.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+aidlc-explainer = "aidlc_explainer.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aidlc_explainer"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

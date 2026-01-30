@@ -1,0 +1,746 @@
+{
+  "$schema": "stages-v1",
+  "metadata": {
+    "version": "1.0.0",
+    "description": "AI-DLC stage definitions derived from AWS aidlc-workflows",
+    "source_document": "AI-SDLC_best-practice_method_principles.md",
+    "source_lines": "74-183",
+    "upstream_repo": "https://github.com/awslabs/aidlc-workflows"
+  },
+  "phases": [
+    {
+      "id": "inception",
+      "name": "INCEPTION",
+      "goal": "Convert intent into testable, decomposed work (WHAT + WHY)",
+      "ritual": "Mob Elaboration - team reviews AI's proposed breakdown into stories and units",
+      "color": "blue",
+      "icon": "🔵",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L80-99",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/tree/main/aidlc-rules/aws-aidlc-rule-details/inception"
+      }
+    },
+    {
+      "id": "construction",
+      "name": "CONSTRUCTION",
+      "goal": "Build units with proof (HOW) via Bolts (rapid iterations)",
+      "ritual": "Mob Construction - teams collocated, delivering Bolts, AI generates + humans validate",
+      "color": "green",
+      "icon": "🟢",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L101-122",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/tree/main/aidlc-rules/aws-aidlc-rule-details/construction"
+      }
+    },
+    {
+      "id": "operations",
+      "name": "OPERATIONS",
+      "goal": "Productionize with safety and observability (WHERE/WHEN)",
+      "ritual": "AI-driven operational efficiency with human oversight for SLA/compliance",
+      "color": "yellow",
+      "icon": "🟡",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L124-138",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/tree/main/aidlc-rules/aws-aidlc-rule-details/operations"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "id": "workspace-detection",
+      "phase": "inception",
+      "name": "Workspace Detection",
+      "description": "Analyze project structure to determine if greenfield or brownfield",
+      "always_execute": true,
+      "questions": [
+        {
+          "id": "wd-q1",
+          "text": "Is there an existing codebase in this workspace?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - existing project (brownfield)"},
+            {"id": "no", "label": "No - starting fresh (greenfield)"}
+          ],
+          "affects_stages": ["reverse-engineering"]
+        },
+        {
+          "id": "wd-q2",
+          "text": "What is the primary technology stack?",
+          "type": "single",
+          "options": [
+            {"id": "web", "label": "Web application (frontend + backend)"},
+            {"id": "api", "label": "API/Backend service"},
+            {"id": "frontend", "label": "Frontend only"},
+            {"id": "infra", "label": "Infrastructure/DevOps"},
+            {"id": "other", "label": "Other"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/aidlc-state.md", "description": "Project state tracking initialized"}
+      ],
+      "gate": {
+        "name": "Project Type Confirmed",
+        "criteria": [
+          "Project type determined (greenfield/brownfield)",
+          "Technology stack identified",
+          "Workspace structure analyzed"
+        ],
+        "evidence_required": ["aidlc-state.md exists with project type"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L86",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/workspace-detection.md"
+      }
+    },
+    {
+      "id": "reverse-engineering",
+      "phase": "inception",
+      "name": "Reverse Engineering",
+      "description": "Analyze existing codebase structure, architecture, and dependencies",
+      "always_execute": false,
+      "condition": "brownfield projects only",
+      "questions": [
+        {
+          "id": "re-q1",
+          "text": "What aspects need analysis?",
+          "type": "multiple",
+          "options": [
+            {"id": "arch", "label": "Architecture and component structure"},
+            {"id": "deps", "label": "Dependencies and integrations"},
+            {"id": "data", "label": "Data models and storage"},
+            {"id": "infra", "label": "Infrastructure and deployment"}
+          ]
+        },
+        {
+          "id": "re-q2",
+          "text": "Are there known technical debt areas?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - document them"},
+            {"id": "no", "label": "No known issues"},
+            {"id": "unknown", "label": "Unknown - needs investigation"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/architecture.md", "description": "Current architecture documentation"},
+        {"path": "aidlc-docs/inception/component-inventory.md", "description": "Component and dependency inventory"},
+        {"path": "aidlc-docs/inception/technology-stack.md", "description": "Technology stack analysis"}
+      ],
+      "gate": {
+        "name": "Codebase Understood",
+        "criteria": [
+          "Architecture documented",
+          "Dependencies mapped",
+          "Impact areas identified"
+        ],
+        "evidence_required": ["architecture.md exists", "component-inventory.md exists"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L89",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/reverse-engineering.md"
+      }
+    },
+    {
+      "id": "requirements-analysis",
+      "phase": "inception",
+      "name": "Requirements Analysis",
+      "description": "Elaborate intent into detailed functional and non-functional requirements",
+      "always_execute": true,
+      "questions": [
+        {
+          "id": "ra-q1",
+          "text": "What is the primary business goal?",
+          "type": "text",
+          "placeholder": "Describe the main objective..."
+        },
+        {
+          "id": "ra-q2",
+          "text": "Who are the primary users?",
+          "type": "multiple",
+          "options": [
+            {"id": "internal", "label": "Internal team members"},
+            {"id": "external", "label": "External customers"},
+            {"id": "api", "label": "API consumers/developers"},
+            {"id": "ops", "label": "Operations/support staff"}
+          ]
+        },
+        {
+          "id": "ra-q3",
+          "text": "What are the key constraints?",
+          "type": "multiple",
+          "options": [
+            {"id": "perf", "label": "Performance (latency, throughput)"},
+            {"id": "security", "label": "Security/compliance requirements"},
+            {"id": "budget", "label": "Budget limitations"},
+            {"id": "timeline", "label": "Timeline constraints"},
+            {"id": "compat", "label": "Backward compatibility"}
+          ],
+          "affects_stages": ["nfr-requirements", "nfr-design"]
+        },
+        {
+          "id": "ra-q4",
+          "text": "Is this a regulated domain?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - compliance required (HIPAA, PCI, SOC2, etc.)"},
+            {"id": "no", "label": "No regulatory requirements"}
+          ],
+          "affects_stages": ["nfr-requirements", "nfr-design"]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/intent.md", "description": "One paragraph intent + success metrics"},
+        {"path": "aidlc-docs/inception/requirements.md", "description": "Functional requirements + constraints"},
+        {"path": "aidlc-docs/inception/requirement-verification-questions.md", "description": "Clarifying questions and answers"}
+      ],
+      "gate": {
+        "name": "Requirements Approved",
+        "criteria": [
+          "Intent clearly stated",
+          "Requirements documented",
+          "All clarifying questions answered",
+          "Stakeholder approval obtained"
+        ],
+        "evidence_required": ["intent.md exists", "requirements.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L87",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/requirements-analysis.md"
+      }
+    },
+    {
+      "id": "user-stories",
+      "phase": "inception",
+      "name": "User Stories",
+      "description": "Define user personas and their journeys through the system",
+      "always_execute": false,
+      "condition": "UI/UX involved or multiple user types",
+      "questions": [
+        {
+          "id": "us-q1",
+          "text": "How many distinct user personas are there?",
+          "type": "single",
+          "options": [
+            {"id": "one", "label": "Single user type"},
+            {"id": "few", "label": "2-3 user types"},
+            {"id": "many", "label": "4+ user types"}
+          ]
+        },
+        {
+          "id": "us-q2",
+          "text": "What is the primary interaction mode?",
+          "type": "single",
+          "options": [
+            {"id": "web", "label": "Web interface"},
+            {"id": "mobile", "label": "Mobile app"},
+            {"id": "api", "label": "API/programmatic"},
+            {"id": "cli", "label": "Command line"},
+            {"id": "mixed", "label": "Multiple interfaces"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/user-stories.md", "description": "User stories with acceptance criteria"},
+        {"path": "aidlc-docs/inception/personas.md", "description": "User persona definitions"}
+      ],
+      "gate": {
+        "name": "User Stories Approved",
+        "criteria": [
+          "Personas defined",
+          "User journeys documented",
+          "Acceptance criteria clear"
+        ],
+        "evidence_required": ["user-stories.md exists", "personas reviewed"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L89",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/user-stories.md"
+      }
+    },
+    {
+      "id": "workflow-planning",
+      "phase": "inception",
+      "name": "Workflow Planning",
+      "description": "Determine which stages to execute and create execution plan",
+      "always_execute": true,
+      "questions": [
+        {
+          "id": "wp-q1",
+          "text": "What is the estimated complexity?",
+          "type": "single",
+          "options": [
+            {"id": "low", "label": "Low - straightforward implementation"},
+            {"id": "medium", "label": "Medium - some design decisions needed"},
+            {"id": "high", "label": "High - significant architecture work"}
+          ],
+          "affects_stages": ["application-design", "functional-design", "infrastructure-design"]
+        },
+        {
+          "id": "wp-q2",
+          "text": "What is the risk level?",
+          "type": "single",
+          "options": [
+            {"id": "low", "label": "Low - isolated change, easy rollback"},
+            {"id": "medium", "label": "Medium - multiple components, moderate rollback"},
+            {"id": "high", "label": "High - system-wide impact, complex rollback"}
+          ],
+          "affects_stages": ["nfr-requirements", "nfr-design", "infrastructure-design"]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/execution-plan.md", "description": "Stage sequence with rationale"},
+        {"path": "aidlc-docs/aidlc-state.md", "description": "Updated state with planned stages"}
+      ],
+      "gate": {
+        "name": "Execution Plan Approved",
+        "criteria": [
+          "All stages determined (execute/skip)",
+          "Rationale documented for each decision",
+          "Risk assessment complete"
+        ],
+        "evidence_required": ["execution-plan.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L88",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/workflow-planning.md"
+      }
+    },
+    {
+      "id": "application-design",
+      "phase": "inception",
+      "name": "Application Design",
+      "description": "High-level component design and architecture decisions",
+      "always_execute": false,
+      "condition": "new components or architectural changes",
+      "questions": [
+        {
+          "id": "ad-q1",
+          "text": "What architectural pattern will be used?",
+          "type": "single",
+          "options": [
+            {"id": "monolith", "label": "Monolithic"},
+            {"id": "micro", "label": "Microservices"},
+            {"id": "serverless", "label": "Serverless"},
+            {"id": "hybrid", "label": "Hybrid/Mixed"}
+          ]
+        },
+        {
+          "id": "ad-q2",
+          "text": "Are there external integrations?",
+          "type": "multiple",
+          "options": [
+            {"id": "db", "label": "Database systems"},
+            {"id": "api", "label": "Third-party APIs"},
+            {"id": "auth", "label": "Authentication providers"},
+            {"id": "messaging", "label": "Message queues/event systems"},
+            {"id": "none", "label": "No external integrations"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/application-design.md", "description": "Component architecture and design decisions"}
+      ],
+      "gate": {
+        "name": "Application Design Approved",
+        "criteria": [
+          "Architecture documented",
+          "Component responsibilities clear",
+          "Integration points identified"
+        ],
+        "evidence_required": ["application-design.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L89",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/application-design.md"
+      }
+    },
+    {
+      "id": "units-generation",
+      "phase": "inception",
+      "name": "Units Generation",
+      "description": "Break work into parallel units with acceptance criteria",
+      "always_execute": false,
+      "condition": "multiple components or parallel work possible",
+      "questions": [
+        {
+          "id": "ug-q1",
+          "text": "How should work be decomposed?",
+          "type": "single",
+          "options": [
+            {"id": "feature", "label": "By feature/user story"},
+            {"id": "layer", "label": "By architectural layer"},
+            {"id": "component", "label": "By component/service"},
+            {"id": "single", "label": "Single unit (no decomposition)"}
+          ]
+        },
+        {
+          "id": "ug-q2",
+          "text": "Can units be developed in parallel?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - independent units"},
+            {"id": "partial", "label": "Partially - some dependencies"},
+            {"id": "no", "label": "No - sequential required"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/units/", "description": "Unit definitions with scope and acceptance criteria"}
+      ],
+      "gate": {
+        "name": "INCEPTION EXIT",
+        "criteria": [
+          "All units defined with clear scope",
+          "Acceptance criteria for each unit",
+          "Dependencies documented",
+          "Ready to enter Construction"
+        ],
+        "evidence_required": ["units/*.md files exist", "All units have acceptance criteria"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L89,L99",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/inception/units-generation.md"
+      }
+    },
+    {
+      "id": "functional-design",
+      "phase": "construction",
+      "name": "Functional Design",
+      "description": "Detailed component design including APIs, data models, and algorithms",
+      "always_execute": false,
+      "condition": "complex components or API design needed",
+      "questions": [
+        {
+          "id": "fd-q1",
+          "text": "What design artifacts are needed?",
+          "type": "multiple",
+          "options": [
+            {"id": "api", "label": "API contracts/specifications"},
+            {"id": "data", "label": "Data model/schema design"},
+            {"id": "algo", "label": "Algorithm/logic design"},
+            {"id": "ui", "label": "UI/UX mockups"}
+          ]
+        },
+        {
+          "id": "fd-q2",
+          "text": "Is domain-driven design (DDD) being used?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - document aggregates and boundaries"},
+            {"id": "no", "label": "No - simpler design approach"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/construction/unit-XX/design.md", "description": "Domain model, APIs, data model, key tradeoffs"}
+      ],
+      "gate": {
+        "name": "Design Approved",
+        "criteria": [
+          "Design document complete",
+          "API contracts defined",
+          "Data models documented",
+          "Tradeoffs explained"
+        ],
+        "evidence_required": ["design.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L107",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/functional-design.md"
+      }
+    },
+    {
+      "id": "nfr-requirements",
+      "phase": "construction",
+      "name": "NFR Requirements",
+      "description": "Document non-functional requirements (security, performance, availability)",
+      "always_execute": false,
+      "condition": "performance, security, or compliance requirements",
+      "questions": [
+        {
+          "id": "nfr-q1",
+          "text": "What performance requirements exist?",
+          "type": "multiple",
+          "options": [
+            {"id": "latency", "label": "Response time targets"},
+            {"id": "throughput", "label": "Throughput/TPS targets"},
+            {"id": "scale", "label": "Scaling requirements"},
+            {"id": "none", "label": "No specific performance requirements"}
+          ]
+        },
+        {
+          "id": "nfr-q2",
+          "text": "What security requirements exist?",
+          "type": "multiple",
+          "options": [
+            {"id": "auth", "label": "Authentication/authorization"},
+            {"id": "encrypt", "label": "Data encryption"},
+            {"id": "audit", "label": "Audit logging"},
+            {"id": "compliance", "label": "Compliance standards"},
+            {"id": "none", "label": "Standard security only"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/inception/nfr.md", "description": "Non-functional requirements (security, performance, availability, compliance)"}
+      ],
+      "gate": {
+        "name": "NFR Requirements Approved",
+        "criteria": [
+          "Performance targets defined",
+          "Security requirements documented",
+          "Compliance requirements identified"
+        ],
+        "evidence_required": ["nfr.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L108",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/nfr-requirements.md"
+      }
+    },
+    {
+      "id": "nfr-design",
+      "phase": "construction",
+      "name": "NFR Design",
+      "description": "Design solutions for non-functional requirements",
+      "always_execute": false,
+      "condition": "NFR requirements defined",
+      "questions": [
+        {
+          "id": "nfrd-q1",
+          "text": "How will performance targets be achieved?",
+          "type": "multiple",
+          "options": [
+            {"id": "cache", "label": "Caching strategies"},
+            {"id": "async", "label": "Async processing"},
+            {"id": "scale", "label": "Horizontal scaling"},
+            {"id": "optimize", "label": "Algorithm optimization"}
+          ]
+        },
+        {
+          "id": "nfrd-q2",
+          "text": "How will security requirements be implemented?",
+          "type": "multiple",
+          "options": [
+            {"id": "oauth", "label": "OAuth/OIDC"},
+            {"id": "rbac", "label": "Role-based access control"},
+            {"id": "encrypt", "label": "Encryption at rest/transit"},
+            {"id": "waf", "label": "Web application firewall"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/construction/unit-XX/nfr-design.md", "description": "NFR implementation design"}
+      ],
+      "gate": {
+        "name": "NFR Design Approved",
+        "criteria": [
+          "Performance design documented",
+          "Security design documented",
+          "Trade-offs explained"
+        ],
+        "evidence_required": ["nfr-design.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L108",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/nfr-design.md"
+      }
+    },
+    {
+      "id": "infrastructure-design",
+      "phase": "construction",
+      "name": "Infrastructure Design",
+      "description": "Design infrastructure and deployment architecture",
+      "always_execute": false,
+      "condition": "infrastructure changes or new deployments",
+      "questions": [
+        {
+          "id": "id-q1",
+          "text": "What deployment model will be used?",
+          "type": "single",
+          "options": [
+            {"id": "container", "label": "Containers (ECS, EKS, etc.)"},
+            {"id": "serverless", "label": "Serverless (Lambda, etc.)"},
+            {"id": "vm", "label": "Virtual machines (EC2, etc.)"},
+            {"id": "paas", "label": "Platform as a Service"}
+          ]
+        },
+        {
+          "id": "id-q2",
+          "text": "Is Infrastructure as Code (IaC) being used?",
+          "type": "single",
+          "options": [
+            {"id": "cdk", "label": "AWS CDK"},
+            {"id": "terraform", "label": "Terraform"},
+            {"id": "cfn", "label": "CloudFormation"},
+            {"id": "other", "label": "Other IaC tool"},
+            {"id": "none", "label": "Manual/console deployment"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/construction/unit-XX/infrastructure-design.md", "description": "Infrastructure architecture and IaC approach"}
+      ],
+      "gate": {
+        "name": "Infrastructure Design Approved",
+        "criteria": [
+          "Deployment architecture documented",
+          "IaC approach defined",
+          "Resource requirements estimated"
+        ],
+        "evidence_required": ["infrastructure-design.md reviewed and approved"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L109",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/infrastructure-design.md"
+      }
+    },
+    {
+      "id": "code-generation",
+      "phase": "construction",
+      "name": "Code Generation",
+      "description": "Implement the code according to design specifications",
+      "always_execute": true,
+      "questions": [
+        {
+          "id": "cg-q1",
+          "text": "What coding standards apply?",
+          "type": "multiple",
+          "options": [
+            {"id": "lint", "label": "Linting rules enforced"},
+            {"id": "format", "label": "Code formatting rules"},
+            {"id": "review", "label": "Code review required"},
+            {"id": "tests", "label": "Tests required with code"}
+          ]
+        },
+        {
+          "id": "cg-q2",
+          "text": "Is the implementation complete?",
+          "type": "single",
+          "options": [
+            {"id": "yes", "label": "Yes - all features implemented"},
+            {"id": "partial", "label": "Partial - some features pending"},
+            {"id": "no", "label": "No - blocked or incomplete"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "src/", "description": "Source code implementation"},
+        {"path": "aidlc-docs/construction/unit-XX/tasks-plan.md", "description": "Checkbox plan with completion status"}
+      ],
+      "gate": {
+        "name": "Code Complete",
+        "criteria": [
+          "All planned features implemented",
+          "Code follows standards",
+          "No blocking issues"
+        ],
+        "evidence_required": ["Code committed", "tasks-plan.md checkboxes complete"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L110",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/code-generation.md"
+      }
+    },
+    {
+      "id": "build-and-test",
+      "phase": "construction",
+      "name": "Build and Test",
+      "description": "Validate implementation through building, testing, and verification",
+      "always_execute": true,
+      "questions": [
+        {
+          "id": "bt-q1",
+          "text": "What testing has been completed?",
+          "type": "multiple",
+          "options": [
+            {"id": "unit", "label": "Unit tests passing"},
+            {"id": "integration", "label": "Integration tests passing"},
+            {"id": "e2e", "label": "End-to-end tests passing"},
+            {"id": "manual", "label": "Manual testing completed"}
+          ]
+        },
+        {
+          "id": "bt-q2",
+          "text": "Are there any failing tests or known issues?",
+          "type": "single",
+          "options": [
+            {"id": "none", "label": "No - all tests passing"},
+            {"id": "minor", "label": "Minor issues documented"},
+            {"id": "major", "label": "Major issues need resolution"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/construction/unit-XX/validation-report.md", "description": "What ran, results, gaps"}
+      ],
+      "gate": {
+        "name": "UNIT COMPLETE",
+        "criteria": [
+          "Tests passing (green)",
+          "Acceptance criteria met",
+          "Review complete",
+          "Validation report written"
+        ],
+        "evidence_required": ["Test results showing pass", "validation-report.md exists", "Acceptance criteria checklist complete"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L111,L122",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/blob/main/aidlc-rules/aws-aidlc-rule-details/construction/build-and-test.md"
+      }
+    },
+    {
+      "id": "operations",
+      "phase": "operations",
+      "name": "Operations",
+      "description": "Productionize with safety and observability",
+      "always_execute": false,
+      "condition": "production deployment required",
+      "questions": [
+        {
+          "id": "ops-q1",
+          "text": "What deployment environment?",
+          "type": "single",
+          "options": [
+            {"id": "dev", "label": "Development only"},
+            {"id": "staging", "label": "Staging/pre-production"},
+            {"id": "prod", "label": "Production"}
+          ]
+        },
+        {
+          "id": "ops-q2",
+          "text": "What observability is configured?",
+          "type": "multiple",
+          "options": [
+            {"id": "logs", "label": "Logging"},
+            {"id": "metrics", "label": "Metrics/dashboards"},
+            {"id": "alerts", "label": "Alerting"},
+            {"id": "traces", "label": "Distributed tracing"}
+          ]
+        }
+      ],
+      "artifacts": [
+        {"path": "aidlc-docs/operations/deployment-plan.md", "description": "Deployment plan"},
+        {"path": "aidlc-docs/operations/runbooks.md", "description": "Operational runbooks"},
+        {"path": "aidlc-docs/operations/observability.md", "description": "Monitoring and alerting setup"},
+        {"path": "aidlc-docs/operations/cost.md", "description": "Cost model and scaling assumptions"}
+      ],
+      "gate": {
+        "name": "PRODUCTION READY",
+        "criteria": [
+          "Deployable",
+          "Observable",
+          "Rollbackable",
+          "Security review complete"
+        ],
+        "evidence_required": ["Deployment successful", "Monitoring active", "Rollback tested"]
+      },
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L124-138",
+        "upstream": "https://github.com/awslabs/aidlc-workflows/tree/main/aidlc-rules/aws-aidlc-rule-details/operations"
+      }
+    }
+  ]
+}

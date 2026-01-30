@@ -1,0 +1,218 @@
+{
+  "$schema": "request-types-v1",
+  "metadata": {
+    "version": "1.0.0",
+    "description": "Request type definitions with adaptive stage execution",
+    "source_document": "AI-SDLC_best-practice_method_principles.md",
+    "source_lines": "206-240"
+  },
+  "risk_profiles": [
+    {
+      "id": "low",
+      "name": "Low Risk",
+      "description": "Isolated change, easy rollback, well-understood",
+      "icon": "🟢",
+      "stage_modifiers": {
+        "nfr-requirements": {"weight": -1},
+        "nfr-design": {"weight": -1},
+        "infrastructure-design": {"weight": -1}
+      }
+    },
+    {
+      "id": "medium",
+      "name": "Medium Risk",
+      "description": "Multiple components, moderate rollback complexity",
+      "icon": "🟡",
+      "stage_modifiers": {}
+    },
+    {
+      "id": "high",
+      "name": "High Risk",
+      "description": "System-wide impact, complex rollback, significant unknowns",
+      "icon": "🔴",
+      "stage_modifiers": {
+        "nfr-requirements": {"weight": 1, "force_execute": true},
+        "nfr-design": {"weight": 1, "force_execute": true},
+        "infrastructure-design": {"weight": 1}
+      }
+    }
+  ],
+  "constraints": [
+    {
+      "id": "regulated",
+      "name": "Regulated Domain",
+      "description": "HIPAA, PCI, SOC2, or other compliance requirements",
+      "icon": "🏛️",
+      "stage_modifiers": {
+        "nfr-requirements": {"force_execute": true, "reason": "Compliance requirements must be documented"},
+        "nfr-design": {"force_execute": true, "reason": "Security design required for compliance"}
+      }
+    },
+    {
+      "id": "security-critical",
+      "name": "Security Critical",
+      "description": "Handles sensitive data or authentication",
+      "icon": "🔒",
+      "stage_modifiers": {
+        "nfr-requirements": {"force_execute": true},
+        "nfr-design": {"force_execute": true}
+      }
+    }
+  ],
+  "types": [
+    {
+      "id": "greenfield",
+      "name": "Greenfield Project",
+      "description": "Building a new application from scratch",
+      "icon": "🌱",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L208-216",
+        "upstream": "https://github.com/awslabs/aidlc-workflows"
+      },
+      "default_risk": "medium",
+      "stages": {
+        "workspace-detection": {"execute": true, "reason": "Detect empty project, initialize state"},
+        "reverse-engineering": {"execute": false, "reason": "No existing code to analyze"},
+        "requirements-analysis": {"execute": true, "reason": "Define what to build"},
+        "user-stories": {"execute": true, "reason": "Define user journeys for new system"},
+        "workflow-planning": {"execute": true, "reason": "Plan execution stages"},
+        "application-design": {"execute": true, "reason": "Design new architecture"},
+        "units-generation": {"execute": true, "reason": "Parallel work breakdown"},
+        "functional-design": {"execute": true, "reason": "Detailed component design"},
+        "nfr-requirements": {"execute": "conditional", "reason": "If performance/security concerns"},
+        "nfr-design": {"execute": "conditional", "reason": "If NFR requirements defined"},
+        "infrastructure-design": {"execute": "conditional", "reason": "If deployment needed"},
+        "code-generation": {"execute": true, "reason": "Always required"},
+        "build-and-test": {"execute": true, "reason": "Always required"},
+        "operations": {"execute": "conditional", "reason": "If production deployment"}
+      },
+      "typical_questions": [
+        "What is the primary business goal?",
+        "Who are the target users?",
+        "What technology stack?",
+        "What are the key constraints?"
+      ],
+      "key_gates": [
+        "Requirements Approved",
+        "INCEPTION EXIT (units approved)",
+        "Design Approved",
+        "UNIT COMPLETE"
+      ]
+    },
+    {
+      "id": "brownfield",
+      "name": "Brownfield Enhancement",
+      "description": "Enhance or modify an existing codebase",
+      "icon": "🔧",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L218-227",
+        "upstream": "https://github.com/awslabs/aidlc-workflows"
+      },
+      "default_risk": "medium",
+      "stages": {
+        "workspace-detection": {"execute": true, "reason": "Detect existing project structure"},
+        "reverse-engineering": {"execute": true, "reason": "Understand existing architecture"},
+        "requirements-analysis": {"execute": true, "reason": "Define enhancement scope"},
+        "user-stories": {"execute": "conditional", "reason": "If user-facing changes"},
+        "workflow-planning": {"execute": true, "reason": "Includes impact analysis"},
+        "application-design": {"execute": "conditional", "reason": "If new components needed"},
+        "units-generation": {"execute": "conditional", "reason": "If multiple changes needed"},
+        "functional-design": {"execute": "conditional", "reason": "If component changes"},
+        "nfr-requirements": {"execute": "conditional", "reason": "If NFR impact"},
+        "nfr-design": {"execute": "conditional", "reason": "If NFR requirements defined"},
+        "infrastructure-design": {"execute": "conditional", "reason": "If infra changes"},
+        "code-generation": {"execute": true, "reason": "Always required"},
+        "build-and-test": {"execute": true, "reason": "Always required"},
+        "operations": {"execute": "conditional", "reason": "If deployment changes"}
+      },
+      "typical_questions": [
+        "What aspects of existing code need analysis?",
+        "Are there known technical debt areas?",
+        "What is the impact scope?",
+        "Are there breaking changes?"
+      ],
+      "key_gates": [
+        "Codebase Understood",
+        "Requirements Approved",
+        "Execution Plan Approved",
+        "UNIT COMPLETE"
+      ]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend / UI Changes",
+      "description": "UI/UX focused changes with user experience impact",
+      "icon": "🎨",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md#L229-240",
+        "upstream": "https://github.com/awslabs/aidlc-workflows"
+      },
+      "default_risk": "low",
+      "stages": {
+        "workspace-detection": {"execute": true, "reason": "Detect UI framework and structure"},
+        "reverse-engineering": {"execute": "conditional", "reason": "If modifying existing UI"},
+        "requirements-analysis": {"execute": true, "reason": "Define UI requirements"},
+        "user-stories": {"execute": true, "reason": "Critical for UX changes"},
+        "workflow-planning": {"execute": true, "reason": "Plan UI implementation"},
+        "application-design": {"execute": "conditional", "reason": "If new pages/components"},
+        "units-generation": {"execute": "conditional", "reason": "If multiple UI areas"},
+        "functional-design": {"execute": true, "reason": "UI component design"},
+        "nfr-requirements": {"execute": false, "reason": "Typically not needed for UI"},
+        "nfr-design": {"execute": false, "reason": "Typically not needed for UI"},
+        "infrastructure-design": {"execute": false, "reason": "UI changes don't need infra"},
+        "code-generation": {"execute": true, "reason": "Always required"},
+        "build-and-test": {"execute": true, "reason": "Includes visual testing"},
+        "operations": {"execute": false, "reason": "UI deployment is standard"}
+      },
+      "typical_questions": [
+        "What is the primary interaction mode?",
+        "How many user personas?",
+        "What accessibility requirements?",
+        "Is responsive design needed?"
+      ],
+      "key_gates": [
+        "User Stories Approved",
+        "Design Approved (UI mockups)",
+        "UNIT COMPLETE (visual verification)"
+      ]
+    },
+    {
+      "id": "bugfix",
+      "name": "Bug Fix",
+      "description": "Fix a specific issue with minimal scope",
+      "icon": "🐛",
+      "source": {
+        "local": "AI-SDLC_best-practice_method_principles.md",
+        "upstream": "https://github.com/awslabs/aidlc-workflows"
+      },
+      "default_risk": "low",
+      "stages": {
+        "workspace-detection": {"execute": true, "reason": "Identify affected area"},
+        "reverse-engineering": {"execute": true, "reason": "Understand bug context"},
+        "requirements-analysis": {"execute": true, "reason": "Bug reproduction criteria"},
+        "user-stories": {"execute": false, "reason": "Not needed for bug fix"},
+        "workflow-planning": {"execute": true, "reason": "Minimal - focused plan"},
+        "application-design": {"execute": false, "reason": "No new architecture"},
+        "units-generation": {"execute": false, "reason": "Single fix, no decomposition"},
+        "functional-design": {"execute": false, "reason": "No new design needed"},
+        "nfr-requirements": {"execute": false, "reason": "Not applicable"},
+        "nfr-design": {"execute": false, "reason": "Not applicable"},
+        "infrastructure-design": {"execute": false, "reason": "Not applicable"},
+        "code-generation": {"execute": true, "reason": "Implement fix"},
+        "build-and-test": {"execute": true, "reason": "Verify fix + regression tests"},
+        "operations": {"execute": false, "reason": "Standard deployment"}
+      },
+      "typical_questions": [
+        "What is the bug reproduction steps?",
+        "What is the expected vs actual behavior?",
+        "Are there related issues?",
+        "What tests verify the fix?"
+      ],
+      "key_gates": [
+        "Bug Understood (reproduction confirmed)",
+        "Fix Implemented",
+        "UNIT COMPLETE (fix verified, no regression)"
+      ]
+    }
+  ]
+}
