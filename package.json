@@ -1,0 +1,24 @@
+{
+  "name": "ai-sdlc_explainer_webapp",
+  "version": "1.0.0",
+  "description": "An interactive TUI learning tool that teaches the AI-Driven Development Lifecycle (AI-DLC) methodology.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MachineKomi/AI-SDLC_Explainer_Modern_TUI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MachineKomi/AI-SDLC_Explainer_Modern_TUI/issues"
+  },
+  "homepage": "https://github.com/MachineKomi/AI-SDLC_Explainer_Modern_TUI#readme"
+}

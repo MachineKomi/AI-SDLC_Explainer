@@ -51,6 +51,10 @@ htmlcov/
 # Linting
 .ruff_cache/
 
+# Node.js
+node_modules/
+.next/
+
 # Misc
 *.log
 .DS_Store
