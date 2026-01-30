@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Cpu, BookOpen, Calculator, BarChart3, Menu, X } from "lucide-react";
+import { Cpu, BookOpen, Calculator, BarChart3, Menu, X, Dumbbell } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
 
@@ -13,9 +13,9 @@ export default function Navigation() {
 
     const links = [
         { href: "/", label: "Home", icon: Cpu },
-        { href: "/lessons", label: "Lessons", icon: BookOpen },
+        { href: "/methodology/inception", label: "Methodology", icon: BookOpen },
+        { href: "/gym", label: "The Gym", icon: Dumbbell },
         { href: "/simulator", label: "Simulator", icon: Calculator },
-        { href: "/comparison", label: "Comparison", icon: BarChart3 },
     ];
 
     return (
