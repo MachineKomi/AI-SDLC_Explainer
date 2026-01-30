@@ -47,7 +47,7 @@ function LessonCompleteDiagram() {
                 <CheckCircle className="w-8 h-8 text-accent-success" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Lesson Complete!</h3>
-            <p className="text-foreground-muted">You've mastered this concept. Ready for the next challenge?</p>
+            <p className="text-foreground-muted">You&apos;ve mastered this concept. Ready for the next challenge?</p>
         </motion.div>
     );
 }
@@ -88,7 +88,7 @@ function PlanFirstComparisonDiagram() {
                     <X className="w-5 h-5" /> BAD: Prose Request
                 </div>
                 <div className="font-mono text-sm text-foreground-muted bg-black/20 p-3 rounded">
-                    "Build me a login page"
+                    &quot;Build me a login page&quot;
                 </div>
                 <p className="text-xs text-red-300/70 mt-2">Vague, assumes AI knows context, no safety checks.</p>
             </div>
@@ -97,7 +97,7 @@ function PlanFirstComparisonDiagram() {
                     <Check className="w-5 h-5" /> GOOD: Plan Request
                 </div>
                 <div className="font-mono text-sm text-foreground-muted bg-black/20 p-3 rounded">
-                    "Create a plan for login page with checkpoints. Stop for approval."
+                    &quot;Create a plan for login page with checkpoints. Stop for approval.&quot;
                 </div>
                 <p className="text-xs text-green-300/70 mt-2">Explicit, verifiable, human-in-the-loop.</p>
             </div>
@@ -147,7 +147,7 @@ function SmallBatchesDiagram() {
             <div className="flex items-center gap-4 opacity-50 grayscale">
                 <div className="text-xs font-mono uppercase w-16 text-right">Monolithic</div>
                 <div className="h-16 flex-1 bg-red-500/20 border border-red-500/40 rounded-lg flex items-center justify-center text-red-300">
-                    Massive "Do Everything" Task (High Risk)
+                    Massive &quot;Do Everything&quot; Task (High Risk)
                 </div>
             </div>
             <div className="flex items-center gap-4">
@@ -281,8 +281,8 @@ function ContextPersistenceDiagram() {
                     <MessageSquare className="w-3 h-3" /> Chat (Ephemeral)
                 </div>
                 <div className="space-y-2 text-xs">
-                    <div className="bg-black/20 p-2 rounded">"Build login..."</div>
-                    <div className="bg-black/20 p-2 rounded">"Here's code..."</div>
+                    <div className="bg-black/20 p-2 rounded">&quot;Build login...&quot;</div>
+                    <div className="bg-black/20 p-2 rounded">&quot;Here&apos;s code...&quot;</div>
                     <div className="text-red-400 italic text-[10px] text-center mt-2">-- Session Closed / Context Lost --</div>
                 </div>
             </div>
