@@ -4,7 +4,9 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import { ProgressState, ProgressContextValue, StoredState } from '@/types';
 import { loadState, saveState, toProgressState, DEFAULT_STATE } from '@/lib/storage';
 import { calculateXpReward, calculateLevel } from '@/lib/xp';
-import { checkAchievements } from '@/lib/achievements';
+import { checkAchievements, getAchievementById } from '@/lib/achievements';
+import { toast } from 'sonner';
+import confetti from 'canvas-confetti';
 
 const ProgressContext = createContext<ProgressContextValue | undefined>(undefined);
 
@@ -41,12 +43,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     const xpGained = calculateXpReward(action, multiplier);
     const newXp = storedState.gamification.xp + xpGained;
     const { level, title } = calculateLevel(newXp);
-    
+
     const newState: StoredState = {
       ...storedState,
       gamification: { xp: newXp, level, title },
     };
-    
+
     // Check for new achievements
     const progressState = toProgressState(newState);
     const newAchievements = checkAchievements(progressState);
@@ -62,14 +64,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       newState.gamification.level = updated.level;
       newState.gamification.title = updated.title;
     }
-    
+
     persistState(newState);
     return xpGained;
   }, [storedState, persistState]);
 
   const markLessonCompleted = useCallback((lessonId: string) => {
     if (storedState.lessons.completed.includes(lessonId)) return;
-    
+
     const newState: StoredState = {
       ...storedState,
       lessons: {
@@ -78,10 +80,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         inProgress: { ...storedState.lessons.inProgress },
       },
     };
-    
+
     // Remove from in-progress
     delete newState.lessons.inProgress[lessonId];
-    
+
     persistState(newState);
     addXp('lesson_completed');
   }, [storedState, persistState, addXp]);
@@ -100,7 +102,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         },
       },
     };
-    
+
     persistState(newState);
     addXp('lesson_section');
   }, [storedState, persistState, addXp]);
@@ -116,9 +118,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         bestScore: Math.max(storedState.quiz.bestScore, score),
       },
     };
-    
+
     persistState(newState);
-    
+
     // Award XP
     addXp('quiz_correct', score);
     addXp('quiz_completed');
@@ -138,9 +140,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         bestScore: Math.max(storedState.gatekeeper.bestScore, score),
       },
     };
-    
+
     persistState(newState);
-    
+
     // Award XP
     addXp('gate_correct', score);
     addXp('gate_completed');
@@ -149,7 +151,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const recordSimulationRun = useCallback((requestType: string) => {
     const explored = storedState.simulator.requestTypesExplored;
     const isNewType = !explored.includes(requestType);
-    
+
     const newState: StoredState = {
       ...storedState,
       simulator: {
@@ -158,9 +160,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         lastRun: new Date().toISOString(),
       },
     };
-    
+
     persistState(newState);
-    
+
     addXp('simulator_run');
     if (isNewType) {
       addXp('simulator_new_type');

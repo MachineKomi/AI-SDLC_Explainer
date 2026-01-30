@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ProgressProvider } from '@/context/ProgressContext';
-import Navigation from '@/components/Navigation';
+import Sidebar from '@/components/Sidebar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,6 +27,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { Toaster } from 'sonner';
+
 export default function RootLayout({
   children,
 }: {
@@ -37,10 +39,13 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent-primary/30`}>
         <ThemeProvider>
           <ProgressProvider>
-            <Navigation />
-            <main className="relative z-0 min-h-screen pt-16">
-              {children}
-            </main>
+            <div className="flex min-h-screen">
+              <Sidebar />
+              <main className="flex-1 w-full min-h-screen transition-all duration-300 md:pl-[80px] pt-16 md:pt-0">
+                {children}
+              </main>
+            </div>
+            <Toaster position="bottom-right" theme="dark" />
           </ProgressProvider>
         </ThemeProvider>
       </body>
