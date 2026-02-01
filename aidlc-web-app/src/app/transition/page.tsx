@@ -12,12 +12,17 @@ import {
   getReadinessCategories
 } from '@/content/transition';
 
+import { useProgress } from '@/context/ProgressContext';
+
 type Tab = 'roles' | 'processes' | 'artifacts' | 'phases' | 'checklist';
 
 export default function TransitionPage() {
   const router = useRouter();
+  const { state, toggleTransitionItem } = useProgress();
   const [activeTab, setActiveTab] = useState<Tab>('roles');
-  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+
+  // Derived state
+  const checkedItems = new Set(state.transition?.checklist || []);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -34,14 +39,6 @@ export default function TransitionPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const toggleCheck = (item: string) => {
-    setCheckedItems(prev => {
-      const next = new Set(prev);
-      if (next.has(item)) next.delete(item);
-      else next.add(item);
-      return next;
-    });
-  };
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'roles', label: 'Roles', icon: '👥' },
@@ -281,7 +278,7 @@ export default function TransitionPage() {
                     <input
                       type="checkbox"
                       checked={checkedItems.has(item.item)}
-                      onChange={() => toggleCheck(item.item)}
+                      onChange={() => toggleTransitionItem(item.item)}
                       className="mt-1 w-5 h-5 rounded border-background-tertiary bg-background-secondary text-accent-success focus:ring-accent-primary"
                     />
                     <div className="flex-1">

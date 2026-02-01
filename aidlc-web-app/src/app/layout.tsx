@@ -4,6 +4,8 @@ import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { ProgressProvider } from '@/context/ProgressContext';
 import Sidebar from '@/components/Sidebar';
+import GlobalKeyboardShortcuts from '@/components/GlobalKeyboardShortcuts';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,7 +29,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { Toaster } from 'sonner';
 
 export default function RootLayout({
   children,
@@ -39,8 +40,10 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-accent-primary/30`}>
         <ThemeProvider>
           <ProgressProvider>
+            <GlobalKeyboardShortcuts />
             <div className="flex min-h-screen">
               <Sidebar />
+
               <main className="flex-1 w-full min-h-screen transition-all duration-300 md:pl-[80px] pt-16 md:pt-0">
                 {children}
               </main>

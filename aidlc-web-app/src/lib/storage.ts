@@ -41,6 +41,12 @@ export const DEFAULT_STATE: StoredState = {
     level: 1,
     title: 'Novice',
   },
+  gym: {
+    completedTasks: [],
+  },
+  transition: {
+    checklist: [],
+  },
   theme: 'dark',
   colorTheme: 'sunset',
 };
@@ -125,6 +131,8 @@ function migrateState(state: StoredState): StoredState {
     simulator: { ...DEFAULT_STATE.simulator, ...state.simulator },
     achievements: { ...DEFAULT_STATE.achievements, ...state.achievements },
     gamification: { ...DEFAULT_STATE.gamification, ...state.gamification },
+    gym: { ...DEFAULT_STATE.gym, ...(state.gym || {}) },
+    transition: { ...DEFAULT_STATE.transition, ...(state.transition || {}) },
   };
 }
 
@@ -159,6 +167,12 @@ export function toProgressState(stored: StoredState): ProgressState {
       runs: stored.simulator.runs,
       requestTypesExplored: stored.simulator.requestTypesExplored,
       lastRun: stored.simulator.lastRun,
+    },
+    gym: {
+      completedTasks: stored.gym?.completedTasks || [],
+    },
+    transition: {
+      checklist: stored.transition?.checklist || [],
     },
     achievements: stored.achievements.unlocked,
   };

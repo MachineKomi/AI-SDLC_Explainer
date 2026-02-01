@@ -25,12 +25,12 @@ export default function HeroSection() {
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary/80 border border-white/10 mb-8 font-mono text-sm">
                         <Terminal className="w-4 h-4 text-accent-primary" />
                         <span className="text-foreground-muted">$</span>
-                        <TypewriterText text="learn ai-dlc --interactive" delay={500} speed={50} />
+                        <TypewriterText text="learn ai-sdlc --interactive" delay={500} speed={50} />
                     </div>
 
                     <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
                         <span className="text-foreground">AI-Driven</span>{" "}
-                        <GlitchText text="Software Development" as="span" className="text-gradient text-glow" />
+                        <GlitchText text="Software Development" as="span" className="text-foreground" />
                         <br />
                         <span className="text-foreground">Lifecycle</span>
                     </h1>

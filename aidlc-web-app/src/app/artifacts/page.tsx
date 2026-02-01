@@ -78,6 +78,8 @@ const ARTIFACT_TREE: ArtifactNode = {
   ],
 };
 
+import { ARTIFACT_TEMPLATES } from '@/content/artifact-templates';
+
 export default function ArtifactsPage() {
   const router = useRouter();
   const [selectedNode, setSelectedNode] = useState<ArtifactNode | null>(null);
@@ -138,6 +140,25 @@ export default function ArtifactsPage() {
     );
   };
 
+  // Helper to match filenames to templates (handling wildcards like unit-01-*.md roughly)
+  const getTemplateContent = (filename: string) => {
+    // Exact match
+    if (ARTIFACT_TEMPLATES[filename]) return ARTIFACT_TEMPLATES[filename];
+
+    // Fuzzy match for unit files (e.g. unit-01-intent.md -> match generic if needed, or mapping)
+    // The tree has "unit-01-*.md" which is not a real file.
+    // Let's assume the user clicks the node named in the tree.
+    // If the tree node name is "unit-01-*.md", we might want a generic unit template.
+
+    // Try to find a partial match in keys if specific one not found?
+    // For now, let's map the tree names to keys in the constant.
+    // The tree has "unit-01-*.md". Let's update the tree to have cleaner names 
+    // or just map "unit-01-*.md" to something.
+    if (filename.includes('unit-')) return ARTIFACT_TEMPLATES['tasks-plan.md']; // Fallback for unit files to a plan
+
+    return null;
+  };
+
   return (
     <main className="min-h-screen p-4 md:p-8">
       <header className="mb-6">
@@ -191,23 +212,11 @@ export default function ArtifactsPage() {
 
                 {selectedNode.type === 'file' && (
                   <div className="pt-4 border-t border-background-tertiary">
-                    <h3 className="text-sm font-semibold text-foreground-muted mb-2">Template</h3>
-                    <div className="bg-background p-3 rounded font-mono text-xs text-foreground-muted">
-                      # {selectedNode.name.replace('.md', '').replace(/-/g, ' ').toUpperCase()}
-                      <br /><br />
-                      ## Overview
-                      <br />
-                      [Description of this artifact]
-                      <br /><br />
-                      ## Content
-                      <br />
-                      [Main content goes here]
-                      <br /><br />
-                      ## Evidence
-                      <br />
-                      - [ ] Criterion 1
-                      <br />
-                      - [ ] Criterion 2
+                    <h3 className="text-sm font-semibold text-foreground-muted mb-2">Template Preview</h3>
+                    <div className="bg-background-secondary p-4 rounded-lg font-mono text-xs text-foreground-muted whitespace-pre-wrap overflow-x-auto border border-white/5">
+                      {getTemplateContent(selectedNode.name) || (
+                        `# ${selectedNode.name.replace('.md', '').toUpperCase()}\n\n[Content definition not found for this artifact.]`
+                      )}
                     </div>
                   </div>
                 )}

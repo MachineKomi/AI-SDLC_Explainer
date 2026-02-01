@@ -57,8 +57,9 @@ export default function TypewriterText({
     return (
         <span className={className}>
             {displayedText.split("\n").map((line, i) => (
-                <span key={i} className="block">
+                <span key={i} className="inline">
                     {line}
+                    {i < displayedText.split("\n").length - 1 && <br />}
                 </span>
             ))}
             {cursor && isTyping && (

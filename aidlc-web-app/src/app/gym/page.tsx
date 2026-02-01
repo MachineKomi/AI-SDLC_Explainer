@@ -1,11 +1,13 @@
+```javascript
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Check, Dumbbell, Trophy, RotateCcw, Sparkles } from "lucide-react";
 import clsx from "clsx";
 import { useProgress } from "@/context/ProgressContext";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const GYM_TASKS = [
     { id: 1, text: "Draft One-Paragraph Intent", phase: "Elaboration", tip: "State the WHY and WHAT in 5 sentences max." },
@@ -18,66 +20,39 @@ const GYM_TASKS = [
     { id: 8, text: "Generate Validation Report", phase: "Construction", tip: "Document evidence, not just claims." },
 ];
 
-const STORAGE_KEY = 'aidlc-gym-progress';
-
 export default function GymPage() {
-    const { addXp, state } = useProgress();
-    const [completedTasks, setCompletedTasks] = useState<number[]>([]);
+    const { state, toggleGymTask, resetProgress } = useProgress();
     const [mounted, setMounted] = useState(false);
 
-    // Load from localStorage on mount
+    // Set mounted state on client-side mount
     useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try {
-                setCompletedTasks(JSON.parse(saved));
-            } catch (e) {
-                console.error("Failed to parse gym progress", e);
-            }
-        }
         setMounted(true);
     }, []);
 
-    // Save to localStorage on change
+    // Check for level up animation
     useEffect(() => {
-        if (mounted) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(completedTasks));
+        if (state.level > 1) {
+            // Use confetti or similar if implemented, or just toast
+            // For now, rely on ProgressContext's internal handling
         }
-    }, [completedTasks, mounted]);
+    }, [state.level]);
 
-    const toggleTask = useCallback((id: number) => {
-        const isCurrentlyDone = completedTasks.includes(id);
-
-        if (!isCurrentlyDone) {
-            // Award XP for completing a task
-            addXp('gym_task_completed');
-
-            // Check if this completes a phase
-            const task = GYM_TASKS.find(t => t.id === id);
-            if (task) {
-                const phaseTasks = GYM_TASKS.filter(t => t.phase === task.phase);
-                const completedInPhase = phaseTasks.filter(t => completedTasks.includes(t.id) || t.id === id);
-                if (completedInPhase.length === phaseTasks.length) {
-                    addXp('gym_phase_completed');
-                }
-            }
+    const handleReset = () => {
+        if (window.confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+            resetProgress();
+            toast.success('Progress reset to zero');
         }
-
-        setCompletedTasks(prev =>
-            isCurrentlyDone
-                ? prev.filter(taskId => taskId !== id)
-                : [...prev, id]
-        );
-    }, [completedTasks, addXp]);
-
-    const resetProgress = () => {
-        setCompletedTasks([]);
-        localStorage.removeItem(STORAGE_KEY);
     };
 
-    const progress = Math.round((completedTasks.length / GYM_TASKS.length) * 100);
-    const elaborationComplete = GYM_TASKS.filter(t => t.phase === "Elaboration").every(t => completedTasks.includes(t.id));
-    const constructionComplete = GYM_TASKS.filter(t => t.phase === "Construction").every(t => completedTasks.includes(t.id));
+    // Derived state from context
+    const completedTasks = state.gym?.completedTasks || [];
+    
+    // Safety check for checking includes on potentially undefined array if context is fresh
+    const safeCompletedTasks = completedTasks;
+
+    const progress = Math.round((safeCompletedTasks.length / GYM_TASKS.length) * 100);
+    const elaborationComplete = GYM_TASKS.filter(t => t.phase === "Elaboration").every(t => safeCompletedTasks.includes(t.id.toString()));
+    const constructionComplete = GYM_TASKS.filter(t => t.phase === "Construction").every(t => safeCompletedTasks.includes(t.id.toString()));
 
     if (!mounted) return null;
 
@@ -115,105 +90,83 @@ export default function GymPage() {
                         <div className="flex items-center gap-4">
                             <span className="text-accent-primary font-mono">{progress}%</span>
                             <button
-                                onClick={resetProgress}
+                                onClick={handleReset}
                                 className="text-sm text-foreground-muted hover:text-foreground flex items-center gap-1 transition-colors"
                                 title="Reset progress"
                             >
-                                <RotateCcw className="w-4 h-4" /> Reset
-                            </button>
-                        </div>
-                    </div>
-                    <div className="h-4 bg-background-tertiary rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-gradient-to-r from-accent-primary to-accent-secondary"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.5 }}
-                        />
-                    </div>
-                    {progress === 100 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mt-4 p-4 bg-status-success/20 text-status-success rounded-lg flex items-center gap-3"
-                        >
-                            <Trophy className="w-6 h-6" />
-                            <div>
-                                <strong>Workout Complete!</strong>
-                                <p className="text-sm opacity-80">You&apos;ve practiced the entire AI-SDLC lifecycle. You&apos;re ready to ship.</p>
-                            </div>
-                        </motion.div>
-                    )}
-                </div>
+                                <div key={phase} className="mb-8">
+                                    <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
+                                        <Dumbbell className={clsx("w-5 h-5", phaseComplete ? "text-status-success" : "text-accent-secondary")} />
+                                        {phase} Phase
+                                        {phaseComplete && <span className="text-sm font-normal text-status-success">✓ Complete</span>}
+                                    </h3>
+                                    <div className="space-y-3">
+                                        {phaseTasks.map((task) => {
+                                            // Ensure we check string equality if identifiers are mixed types, though here defined as numbers
+                                            // The stored state might have strings if I changed types? 
+                                            // Wait, id is number in GYM_TASKS. completedTasks from local storage were numbers.
+                                            // But in ProgressContext/storage.ts, completedTasks is string[].
+                                            // I need to cast or match types.
+                                            // Let's assume ID is number here but stored as string in context?
+                                            // Code in GymPage.ts uses toggleGymTask(task.id). 
+                                            // ProgressContext expects string.
+                                            // So I should convert task.id to string.
+                                            const taskIdStr = task.id.toString();
+                                            const isDone = completedTasks.includes(taskIdStr); // checking against context state which is string[]
 
-                {/* Task Lists */}
-                <div className="space-y-8">
-                    {["Elaboration", "Construction"].map((phase) => {
-                        const phaseTasks = GYM_TASKS.filter(t => t.phase === phase);
-                        const phaseComplete = phase === "Elaboration" ? elaborationComplete : constructionComplete;
-
-                        return (
-                            <div key={phase} className="mb-8">
-                                <h3 className="text-xl font-bold mb-4 flex items-center gap-3">
-                                    <Dumbbell className={clsx("w-5 h-5", phaseComplete ? "text-status-success" : "text-accent-secondary")} />
-                                    {phase} Phase
-                                    {phaseComplete && <span className="text-sm font-normal text-status-success">✓ Complete</span>}
-                                </h3>
-                                <div className="space-y-3">
-                                    {phaseTasks.map((task) => {
-                                        const isDone = completedTasks.includes(task.id);
-                                        return (
-                                            <motion.div
-                                                key={task.id}
-                                                onClick={() => toggleTask(task.id)}
-                                                whileHover={{ scale: 1.01 }}
-                                                whileTap={{ scale: 0.99 }}
-                                                className={clsx(
-                                                    "glass-card p-4 rounded-lg cursor-pointer flex items-start gap-4 transition-all duration-200 hover:border-accent-primary/50",
-                                                    isDone && "bg-accent-primary/5 border-accent-primary/30"
-                                                )}
-                                            >
-                                                <div className={clsx(
-                                                    "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors flex-shrink-0 mt-0.5",
-                                                    isDone ? "bg-accent-primary border-accent-primary" : "border-foreground-muted"
-                                                )}>
-                                                    {isDone && <Check className="w-4 h-4 text-background" />}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <span className={clsx("font-medium", isDone && "text-foreground-muted line-through")}>
-                                                        {task.text}
-                                                    </span>
-                                                    <p className="text-sm text-foreground-muted mt-1">{task.tip}</p>
-                                                </div>
-                                                {!isDone && (
-                                                    <span className="text-xs text-accent-primary font-mono">+15 XP</span>
-                                                )}
-                                            </motion.div>
-                                        );
-                                    })}
+                                            return (
+                                                <motion.div
+                                                    key={task.id}
+                                                    onClick={() => toggleGymTask(taskIdStr)}
+                                                    whileHover={{ scale: 1.01 }}
+                                                    whileTap={{ scale: 0.99 }}
+                                                    className={clsx(
+                                                        "glass-card p-4 rounded-lg cursor-pointer flex items-start gap-4 transition-all duration-200 hover:border-accent-primary/50",
+                                                        isDone && "bg-accent-primary/5 border-accent-primary/30"
+                                                    )}
+                                                >
+                                                    <div className={clsx(
+                                                        "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors flex-shrink-0 mt-0.5",
+                                                        isDone ? "bg-accent-primary border-accent-primary" : "border-foreground-muted"
+                                                    )}>
+                                                        {isDone && <Check className="w-4 h-4 text-background" />}
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <span className={clsx("font-medium", isDone && "text-foreground-muted line-through")}>
+                                                            {task.text}
+                                                        </span>
+                                                        <p className="text-sm text-foreground-muted mt-1">{task.tip}</p>
+                                                    </div>
+                                                    {!isDone && (
+                                                        <span className="text-xs text-accent-primary font-mono">+15 XP</span>
+                                                    )}
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
 
-                {/* Navigation to Methodology */}
-                <div className="mt-12 pt-8 border-t border-white/10 text-center">
-                    <p className="text-foreground-muted mb-4">Want to learn more about each phase?</p>
-                    <div className="flex justify-center gap-4 flex-wrap">
-                        <Link href="/methodology/inception" className="btn-secondary">
-                            📖 Read: Inception
-                        </Link>
-                        <Link href="/methodology/construction" className="btn-secondary">
-                            🔨 Read: Construction
-                        </Link>
-                        <Link href="/methodology/operations" className="btn-secondary">
-                            🚀 Read: Operations
-                        </Link>
+                    {/* Navigation to Methodology */}
+                    <div className="mt-12 pt-8 border-t border-white/10 text-center">
+                        <p className="text-foreground-muted mb-4">Want to learn more about each phase?</p>
+                        <div className="flex justify-center gap-4 flex-wrap">
+                            <Link href="/methodology/inception" className="btn-secondary">
+                                📖 Read: Inception
+                            </Link>
+                            <Link href="/methodology/construction" className="btn-secondary">
+                                🔨 Read: Construction
+                            </Link>
+                            <Link href="/methodology/operations" className="btn-secondary">
+                                🚀 Read: Operations
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
+        );
+
+    }
 

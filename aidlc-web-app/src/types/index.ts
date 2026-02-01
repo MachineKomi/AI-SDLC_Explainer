@@ -253,6 +253,14 @@ export interface SimulatorProgress {
   lastRun: string | null;
 }
 
+export interface GymProgress {
+  completedTasks: string[];
+}
+
+export interface TransitionProgress {
+  checklist: string[];
+}
+
 export interface ProgressState {
   xp: number;
   level: number;
@@ -261,6 +269,8 @@ export interface ProgressState {
   quiz: QuizProgress;
   gatekeeper: GatekeeperProgress;
   simulator: SimulatorProgress;
+  gym: GymProgress;
+  transition: TransitionProgress;
   achievements: string[];
 }
 
@@ -296,6 +306,12 @@ export interface StoredState {
     requestTypesExplored: string[];
     lastRun: string | null;
   };
+  gym: {
+    completedTasks: string[];
+  };
+  transition: {
+    checklist: string[];
+  };
   achievements: {
     unlocked: string[];
   };
@@ -330,6 +346,8 @@ export interface ProgressContextValue {
   saveQuizResult: (score: number, total: number) => void;
   saveGatekeeperResult: (score: number, total: number) => void;
   recordSimulationRun: (requestType: string) => void;
+  toggleGymTask: (taskId: string) => void;
+  toggleTransitionItem: (itemId: string) => void;
   resetProgress: () => void;
 }
 

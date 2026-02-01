@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import TypewriterText from '@/components/animations/TypewriterText';
 import { useProgress } from '@/context/ProgressContext';
-import { getLessonById } from '@/content/lessons';
+import { getLessonById, getAllLessons } from '@/content/lessons';
 import DiagramDispatcher from '@/components/DiagramDispatcher';
 
 interface LessonClientProps {
@@ -64,96 +64,115 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
     return <div className="p-8">Loading...</div>;
   }
 
-  const section = lesson.sections[currentSection];
-  const isFirstSection = currentSection === 0;
+  // Helper function to render diagrams
+  const renderDiagram = (section: any) => {
+    if (section.diagramType) {
+      return (
+        <div className="mt-6 p-4 bg-background-tertiary/30 rounded-xl">
+          <DiagramDispatcher type={section.diagramType} />
+        </div>
+      );
+    }
+    if (section.diagram) {
+      return (
+        <div className="mt-6">
+          <pre className="ascii-diagram text-xs md:text-sm overflow-x-auto">
+            {section.diagram}
+          </pre>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const isLastSection = currentSection === lesson.sections.length - 1;
+  const allLessons = getAllLessons();
+  const currentIndex = allLessons.findIndex(l => l.id === lessonId);
+  const isLastLesson = currentIndex === allLessons.length - 1;
 
   return (
-    <main className="min-h-screen p-4 md:p-8 max-w-4xl mx-auto">
-      <header className="mb-6">
-        <Link href="/lessons" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
-          ← Back to Lessons
-        </Link>
-
-        <div className="flex items-center justify-between">
-          <div className="text-xl md:text-2xl font-bold">
-            <TypewriterText text={lesson.title} speed={30} delay={200} cursor={false} />
+    <div className="flex flex-col h-full max-h-screen">
+      {/* Header */}
+      <header className="flex-none p-6 border-b border-white/10 bg-background/50 backdrop-blur-sm">
+        <div className="flex items-center gap-4">
+          <Link
+            href="/lessons"
+            className="p-2 rounded-lg hover:bg-white/5 text-foreground-muted hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              {lesson.title}
+              {isCompleted && <CheckCircle className="w-5 h-5 text-accent-success" />}
+            </h1>
+            <p className="text-sm text-foreground-muted">
+              Section {currentSection + 1} of {lesson.sections.length}
+            </p>
           </div>
-          <span className="text-sm text-foreground-muted">
-            Section {currentSection + 1} of {lesson.sections.length}
-          </span>
         </div>
       </header>
 
-      {/* Section Content */}
-      <article className="card mb-6">
-        <h2 className="text-lg font-semibold text-accent-primary mb-4">{section.title}</h2>
-        <div className="prose prose-invert max-w-none">
-          <pre className="whitespace-pre-wrap font-sans text-foreground-muted leading-relaxed">
-            {section.content}
-          </pre>
+      {/* Content Area */}
+      <main className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSection}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <h2 className="text-2xl font-bold mb-6 text-accent-primary">
+                {lesson.sections[currentSection].title}
+              </h2>
+
+              <div className="prose prose-invert max-w-none mb-8">
+                <div className="whitespace-pre-wrap font-sans text-lg leading-relaxed text-foreground/90">
+                  {lesson.sections[currentSection].content}
+                </div>
+              </div>
+
+              {/* Diagram Renderer */}
+              {renderDiagram(lesson.sections[currentSection])}
+
+            </motion.div>
+          </AnimatePresence>
         </div>
+      </main>
 
+      {/* Footer Navigation */}
+      <footer className="flex-none p-6 border-t border-white/10 bg-background/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <button
+            onClick={() => goToSection(currentSection - 1)}
+            disabled={currentSection === 0}
+            className={`btn ${currentSection === 0 ? 'opacity-50 cursor-not-allowed' : 'btn-secondary'}`}
+          >
+            ← Previous
+          </button>
 
-
-        {/* Visual Diagram - prefer diagramType over ASCII */}
-        {section.diagramType && (
-          <div className="mt-6 p-4 bg-background-tertiary/30 rounded-xl">
-            <DiagramDispatcher type={section.diagramType} />
+          <div className="flex gap-1">
+            {lesson.sections.map((_, idx) => (
+              <div
+                key={idx}
+                className={`h-1.5 w-8 rounded-full transition-colors ${idx === currentSection
+                  ? 'bg-accent-primary'
+                  : idx < currentSection
+                    ? 'bg-accent-primary/50'
+                    : 'bg-white/10'
+                  }`}
+              />
+            ))}
           </div>
-        )}
 
-        {/* Fallback to ASCII diagram if no diagramType but diagram exists */}
-        {!section.diagramType && section.diagram && (
-          <div className="mt-6">
-            <pre className="ascii-diagram text-xs md:text-sm overflow-x-auto">
-              {section.diagram}
-            </pre>
-          </div>
-        )}
-      </article>
-
-      {/* Navigation */}
-      <nav className="flex items-center justify-between">
-        <button
-          onClick={() => goToSection(currentSection - 1)}
-          disabled={isFirstSection}
-          className={`btn ${isFirstSection ? 'opacity-50 cursor-not-allowed' : 'btn-secondary'}`}
-        >
-          ← Previous
-        </button>
-
-        {/* Progress dots */}
-        <div className="flex gap-1">
-          {lesson.sections.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goToSection(i)}
-              className={`w-2 h-2 rounded-full transition-colors ${i === currentSection
-                ? 'bg-accent-primary'
-                : i < currentSection
-                  ? 'bg-accent-success'
-                  : 'bg-background-tertiary'
-                }`}
-              aria-label={`Go to section ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        <button
-          onClick={() => goToSection(currentSection + 1)}
-          disabled={isLastSection}
-          className={`btn ${isLastSection ? 'opacity-50 cursor-not-allowed' : 'btn-primary'}`}
-        >
-          Next →
-        </button>
-      </nav>
-
-      <footer className="mt-8 pt-4 border-t border-background-tertiary">
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">
-          <span><kbd className="kbd">←</kbd> / <kbd className="kbd">h</kbd> Previous</span>
-          <span><kbd className="kbd">→</kbd> / <kbd className="kbd">l</kbd> Next</span>
-          <span><kbd className="kbd">Esc</kbd> Exit</span>
+          <button
+            onClick={() => goToSection(currentSection + 1)}
+            className="btn btn-primary"
+          >
+            {isLastSection ? (isLastLesson ? 'Start Practice →' : 'Next Lesson →') : 'Next →'}
+          </button>
         </div>
       </footer>
     </main>

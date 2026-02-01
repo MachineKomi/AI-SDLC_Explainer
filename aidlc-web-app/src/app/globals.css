@@ -91,7 +91,8 @@
      ═══════════════════════════════════════════════════════════════════ */
 
   /* Sunset Hacker (Default) - Pink/Orange/Amber */
-  .theme-sunset {
+  .theme-sunset,
+  .dark.theme-sunset {
     --accent-primary: 236 72 153;
     --accent-secondary: 249 115 22;
     --accent-tertiary: 245 158 11;
@@ -111,7 +112,8 @@
   }
 
   /* Matrix - Green/Lime/Emerald - Deep Digital Green Tint */
-  .theme-matrix {
+  .theme-matrix,
+  .dark.theme-matrix {
     --background: 5 15 10;
     --background-secondary: 10 25 15;
     --background-tertiary: 15 35 20;
@@ -137,7 +139,8 @@
   }
 
   /* Ocean - Cyan/Blue/Indigo - Deep Abyss Gradient */
-  .theme-ocean {
+  .theme-ocean,
+  .dark.theme-ocean {
     --background: 8 12 20;
     --background-secondary: 15 20 30;
     --background-tertiary: 25 35 45;
@@ -162,7 +165,8 @@
   }
 
   /* Monochrome - Silver/Gray/White - Stark High Contrast */
-  .theme-mono {
+  .theme-mono,
+  .dark.theme-mono {
     --background: 0 0 0;
     --background-secondary: 15 15 15;
     --background-tertiary: 30 30 30;

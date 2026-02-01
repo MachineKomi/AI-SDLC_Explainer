@@ -98,7 +98,15 @@ const navItems: NavItem[] = [
     },
 ];
 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useTheme } from '@/context/ThemeContext';
+
 export default function NavigationGrid() {
+    const { toggleTheme } = useTheme();
+
+    // Keyboard shortcuts are now handled globally in GlobalKeyboardShortcuts.tsx
+
     return (
         <section className="py-12">
             <div className="terminal-header mb-6">

@@ -10,6 +10,7 @@ import confetti from 'canvas-confetti';
 
 const ProgressContext = createContext<ProgressContextValue | undefined>(undefined);
 
+// Update DEFAULT_PROGRESS
 const DEFAULT_PROGRESS: ProgressState = {
   xp: 0,
   level: 1,
@@ -18,6 +19,8 @@ const DEFAULT_PROGRESS: ProgressState = {
   quiz: { completed: false, lastScore: 0, bestScore: 0, attempts: 0 },
   gatekeeper: { completed: false, lastScore: 0, bestScore: 0, attempts: 0 },
   simulator: { runs: 0, requestTypesExplored: [], lastRun: null },
+  gym: { completedTasks: [] },
+  transition: { checklist: [] },
   achievements: [],
 };
 
@@ -169,11 +172,55 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, [storedState, persistState, addXp]);
 
+  const toggleGymTask = useCallback((taskId: string) => {
+    const isCompleted = storedState.gym?.completedTasks?.includes(taskId) ?? false;
+    let newCompletedTasks: string[];
+
+    if (isCompleted) {
+      newCompletedTasks = (storedState.gym?.completedTasks || []).filter(id => id !== taskId);
+    } else {
+      newCompletedTasks = [...(storedState.gym?.completedTasks || []), taskId];
+      // Award XP for completing a task
+      addXp('gym_task');
+    }
+
+    const newState: StoredState = {
+      ...storedState,
+      gym: {
+        completedTasks: newCompletedTasks
+      }
+    };
+    persistState(newState);
+  }, [storedState, persistState, addXp]);
+
+  const toggleTransitionItem = useCallback((itemId: string) => {
+    const isCompleted = storedState.transition?.checklist?.includes(itemId) ?? false;
+    let newChecklist: string[];
+
+    if (isCompleted) {
+      newChecklist = (storedState.transition?.checklist || []).filter(id => id !== itemId);
+    } else {
+      newChecklist = [...(storedState.transition?.checklist || []), itemId];
+      // Award XP for checking an item
+      addXp('transition_check');
+    }
+
+    const newState: StoredState = {
+      ...storedState,
+      transition: {
+        checklist: newChecklist
+      }
+    };
+    persistState(newState);
+  }, [storedState, persistState, addXp]);
+
   const resetProgress = useCallback(() => {
     const newState: StoredState = {
       ...DEFAULT_STATE,
       firstOpened: storedState.firstOpened,
       theme: storedState.theme,
+      gym: { completedTasks: [] },
+      transition: { checklist: [] },
     };
     persistState(newState);
   }, [storedState, persistState]);
@@ -192,6 +239,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         saveQuizResult,
         saveGatekeeperResult,
         recordSimulationRun,
+        toggleGymTask,
+        toggleTransitionItem,
         resetProgress,
       }}
     >
