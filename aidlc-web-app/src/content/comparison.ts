@@ -1,4 +1,4 @@
-// Methodology comparison data for Waterfall, Agile, and AI-DLC
+// Methodology comparison data for Waterfall, Agile, and AI-SDLC
 
 export interface Phase {
   id: string;
@@ -121,8 +121,8 @@ export const AGILE: Methodology = {
 
 export const AIDLC: Methodology = {
   id: 'aidlc',
-  name: 'AI-DLC',
-  description: 'AI-augmented development with human oversight at critical gates.',
+  name: 'AI-SDLC',
+  description: 'AI-augmented software development with human oversight at critical gates.',
   phases: [
     { id: 'inception', name: 'Inception', durationUnits: 1, description: 'Intent → Units via Mob Elaboration', handoffs: 0, waitTime: 0 },
     { id: 'construct', name: 'Construction', durationUnits: 2, description: 'Bolts with AI + Human Validation', handoffs: 0, waitTime: 0 },
@@ -269,7 +269,7 @@ export const PROJECT_SCENARIOS: ProjectScenario[] = [
 
 export function simulateProject(scenario: ProjectScenario, methodology: Methodology): SimulationResult {
   const baseWeeks = scenario.baselineWeeks;
-  
+
   // Calculate time
   let timeFactor = methodology.cycleTimeFactor;
   if (scenario.requirementsStability === 'volatile') {
@@ -279,16 +279,16 @@ export function simulateProject(scenario: ProjectScenario, methodology: Methodol
       timeFactor *= 0.9;
     }
   }
-  
+
   const totalWeeks = Math.round(baseWeeks * timeFactor);
-  
+
   // Calculate cost
   let costFactor = methodology.costFactor;
   if (scenario.complexity === 'high') {
     costFactor *= 1.2;
   }
   const totalCost = Math.round(baseWeeks * 10 * costFactor);
-  
+
   // Calculate feedback points
   let feedbackPoints: number;
   if (methodology.id === 'waterfall') {
@@ -298,13 +298,13 @@ export function simulateProject(scenario: ProjectScenario, methodology: Methodol
   } else {
     feedbackPoints = Math.max(1, totalWeeks * 5);
   }
-  
+
   // Calculate handoffs
   let handoffs = methodology.phases.reduce((sum, p) => sum + p.handoffs, 0);
   if (methodology.id === 'agile') {
     handoffs *= Math.max(1, Math.floor(totalWeeks / 2));
   }
-  
+
   // Risk events
   const riskEvents: string[] = [];
   if (methodology.id === 'waterfall') {
@@ -319,7 +319,7 @@ export function simulateProject(scenario: ProjectScenario, methodology: Methodol
       riskEvents.push('Scope creep across sprints');
     }
   }
-  
+
   return {
     methodologyId: methodology.id,
     totalWeeks,

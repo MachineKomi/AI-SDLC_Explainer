@@ -51,19 +51,19 @@ export default function ReferencePage() {
   return (
     <main className="min-h-screen p-4 md:p-8 print:p-2">
       <header className="mb-6 print:mb-4">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block print:hidden">
+        <Link href="/" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block print:hidden">
           ← Back to Home
         </Link>
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl font-bold print:text-xl">📋 Quick Reference</h1>
-          <button 
+          <button
             onClick={() => window.print()}
             className="btn-secondary text-sm print:hidden"
           >
             🖨️ Print
           </button>
         </div>
-        <p className="text-slate-400 print:text-sm">AI-DLC at a glance</p>
+        <p className="text-foreground-muted print:text-sm">AI-SDLC at a glance</p>
       </header>
 
       <div className="grid md:grid-cols-2 gap-6 print:gap-4 print:text-sm">
@@ -77,8 +77,8 @@ export default function ReferencePage() {
                   <span>{phase.icon}</span>
                   <h3 className="font-semibold">{phase.name}</h3>
                 </div>
-                <p className="text-sm text-slate-400">{phase.goal}</p>
-                <p className="text-xs text-slate-500 mt-1">Ritual: {phase.ritual}</p>
+                <p className="text-sm text-foreground-muted">{phase.goal}</p>
+                <p className="text-xs text-foreground-muted/70 mt-1">Ritual: {phase.ritual}</p>
               </div>
             ))}
           </div>
@@ -103,10 +103,10 @@ export default function ReferencePage() {
           <div className="space-y-3">
             {KEY_ARTIFACTS.map(group => (
               <div key={group.phase}>
-                <h3 className="text-sm font-semibold text-slate-400">{group.phase}</h3>
+                <h3 className="text-sm font-semibold text-foreground-muted">{group.phase}</h3>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {group.artifacts.map(artifact => (
-                    <span key={artifact} className="text-xs px-2 py-1 bg-slate-700 rounded">
+                    <span key={artifact} className="text-xs px-2 py-1 bg-background-tertiary rounded">
                       {artifact}
                     </span>
                   ))}
@@ -125,8 +125,8 @@ export default function ReferencePage() {
                 <span className="text-accent-success">✓</span>
                 <div>
                   <span className="font-medium">{gate.name}</span>
-                  <span className="text-slate-500 text-xs ml-2">({gate.phase})</span>
-                  <p className="text-xs text-slate-400">{gate.evidence}</p>
+                  <span className="text-foreground-muted/70 text-xs ml-2">({gate.phase})</span>
+                  <p className="text-xs text-foreground-muted">{gate.evidence}</p>
                 </div>
               </div>
             ))}
@@ -142,7 +142,7 @@ export default function ReferencePage() {
                 <span className="font-mono text-accent-primary font-bold">{principle.id}.</span>
                 <div>
                   <span className="font-medium">{principle.name}</span>
-                  <p className="text-sm text-slate-400">{principle.description}</p>
+                  <p className="text-sm text-foreground-muted">{principle.description}</p>
                 </div>
               </div>
             ))}
@@ -155,7 +155,7 @@ export default function ReferencePage() {
           <div className="grid md:grid-cols-3 gap-4 text-sm">
             <div>
               <h3 className="font-semibold text-accent-success mb-2">Do:</h3>
-              <ul className="space-y-1 text-slate-300">
+              <ul className="space-y-1 text-foreground-muted">
                 <li>✓ Start with clear Intent</li>
                 <li>✓ Validate AI output at gates</li>
                 <li>✓ Document evidence, not just prose</li>
@@ -164,7 +164,7 @@ export default function ReferencePage() {
             </div>
             <div>
               <h3 className="font-semibold text-accent-error mb-2">Don&apos;t:</h3>
-              <ul className="space-y-1 text-slate-300">
+              <ul className="space-y-1 text-foreground-muted">
                 <li>✗ Skip human validation</li>
                 <li>✗ Accept AI output blindly</li>
                 <li>✗ Ignore gate criteria</li>
@@ -173,7 +173,7 @@ export default function ReferencePage() {
             </div>
             <div>
               <h3 className="font-semibold text-accent-warning mb-2">Remember:</h3>
-              <ul className="space-y-1 text-slate-300">
+              <ul className="space-y-1 text-foreground-muted">
                 <li>→ AI generates, humans validate</li>
                 <li>→ Proof over prose</li>
                 <li>→ Adaptive depth based on risk</li>
@@ -184,7 +184,7 @@ export default function ReferencePage() {
         </section>
       </div>
 
-      <footer className="mt-8 pt-4 border-t border-slate-700 text-sm text-slate-500 print:hidden">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary text-sm text-foreground-muted print:hidden">
         <div className="flex justify-center gap-4">
           <span><kbd className="kbd">P</kbd> Print</span>
           <span><kbd className="kbd">Esc</kbd> Home</span>

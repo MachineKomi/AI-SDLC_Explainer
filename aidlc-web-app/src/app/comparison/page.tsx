@@ -106,7 +106,7 @@ export default function ComparisonPage() {
               <ShieldCheck className="w-6 h-6 text-accent-primary" />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-              Why <span className="text-gradient">AI-DLC</span> Wins
+              Why <span className="text-gradient">AI-SDLC</span> Wins
             </h1>
           </div>
           <p className="text-foreground-muted max-w-2xl text-lg">
@@ -121,8 +121,8 @@ export default function ComparisonPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-3 rounded-lg flex items-center gap-3 transition-all font-medium ${activeTab === tab.id
-                  ? 'bg-accent-primary text-white shadow-[0_0_20px_rgba(236,72,153,0.3)]'
-                  : 'bg-background-secondary border border-white/5 text-foreground-muted hover:text-foreground hover:bg-white/5'
+                ? 'bg-accent-primary text-white shadow-[0_0_20px_rgba(236,72,153,0.3)]'
+                : 'bg-background-secondary border border-white/5 text-foreground-muted hover:text-foreground hover:bg-white/5'
                 }`}
             >
               <kbd className="hidden md:inline-flex items-center justify-center h-5 w-5 rounded bg-black/20 text-xs font-mono opacity-50 mr-2">{idx + 1}</kbd>
@@ -168,7 +168,7 @@ export default function ComparisonPage() {
 
                 <div className="space-y-8">
                   {METHODOLOGIES.map((method, idx) => {
-                    // Calculate relative speed (AI-DLC is fastest)
+                    // Calculate relative speed (AI-SDLC is fastest)
                     const speedMultiplier = method.id === 'aidlc' ? 2.5 : method.id === 'agile' ? 1.5 : 1;
                     const displayProgress = Math.min(100, progress * speedMultiplier);
                     const isFinished = displayProgress >= 100;
@@ -268,7 +268,7 @@ export default function ComparisonPage() {
                       <th className="text-left p-4 text-foreground font-mono uppercase text-sm tracking-wider">Metric</th>
                       <th className="text-center p-4 text-foreground-muted font-mono uppercase text-sm tracking-wider">Waterfall</th>
                       <th className="text-center p-4 text-foreground-muted font-mono uppercase text-sm tracking-wider">Agile</th>
-                      <th className="text-center p-4 text-accent-primary font-bold font-mono uppercase text-sm tracking-wider bg-accent-primary/5">AI-DLC</th>
+                      <th className="text-center p-4 text-accent-primary font-bold font-mono uppercase text-sm tracking-wider bg-accent-primary/5">AI-SDLC</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -315,8 +315,8 @@ export default function ComparisonPage() {
                       key={scenario.id}
                       onClick={() => setSelectedScenario(scenario)}
                       className={`p-4 rounded-lg border text-left transition-all ${selectedScenario.id === scenario.id
-                          ? 'border-accent-primary bg-accent-primary/10 shadow-[0_0_15px_rgba(236,72,153,0.1)]'
-                          : 'border-white/10 hover:border-white/20 hover:bg-white/5'
+                        ? 'border-accent-primary bg-accent-primary/10 shadow-[0_0_15px_rgba(236,72,153,0.1)]'
+                        : 'border-white/10 hover:border-white/20 hover:bg-white/5'
                         }`}
                     >
                       <div className="font-bold text-lg mb-1">{scenario.name}</div>
@@ -346,8 +346,8 @@ export default function ComparisonPage() {
                     <div
                       key={result.methodologyId}
                       className={`glass-card p-6 rounded-xl border transition-all ${isBest
-                          ? 'border-accent-success/50 shadow-[0_0_20px_rgba(34,197,94,0.1)]'
-                          : 'border-white/10 opacity-80'
+                        ? 'border-accent-success/50 shadow-[0_0_20px_rgba(34,197,94,0.1)]'
+                        : 'border-white/10 opacity-80'
                         }`}
                     >
                       <h4 className="font-bold text-xl mb-4 flex items-center justify-between">

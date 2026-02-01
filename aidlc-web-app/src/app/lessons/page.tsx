@@ -28,18 +28,18 @@ export default function LessonsPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <header className="mb-8">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Home
         </Link>
         <h1 className="text-2xl md:text-3xl font-bold">📖 Lessons</h1>
-        <p className="text-slate-400">Learn AI-DLC fundamentals step by step</p>
+        <p className="text-foreground-muted">Learn AI-SDLC fundamentals step by step</p>
       </header>
 
       <section className="space-y-4">
         {LESSONS.map((lesson, index) => {
           const isCompleted = state.lessons.completed.includes(lesson.id);
           const inProgress = state.lessons.inProgress[lesson.id];
-          
+
           return (
             <Link
               key={lesson.id}
@@ -47,12 +47,12 @@ export default function LessonsPage() {
               className="card block group"
             >
               <div className="flex items-start gap-4">
-                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-dark-tertiary text-lg">
+                <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-background-tertiary text-lg">
                   {isCompleted ? '✓' : index + 1}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-slate-50 group-hover:text-accent-primary transition-colors">
+                    <h3 className="font-semibold text-foreground group-hover:text-accent-primary transition-colors">
                       {lesson.title}
                     </h3>
                     <kbd className="kbd">{index + 1}</kbd>
@@ -63,8 +63,8 @@ export default function LessonsPage() {
                       <span className="text-xs text-accent-warning">In Progress</span>
                     )}
                   </div>
-                  <p className="text-sm text-slate-400">{lesson.description}</p>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-sm text-foreground-muted">{lesson.description}</p>
+                  <p className="text-xs text-foreground-muted/70 mt-1">
                     {lesson.sections.length} sections
                   </p>
                 </div>
@@ -74,8 +74,8 @@ export default function LessonsPage() {
         })}
       </section>
 
-      <footer className="mt-8 pt-4 border-t border-slate-700">
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">
           <span><kbd className="kbd">1-{LESSONS.length}</kbd> Select lesson</span>
           <span><kbd className="kbd">Esc</kbd> Back to home</span>
         </div>

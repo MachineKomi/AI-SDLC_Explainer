@@ -6,7 +6,7 @@ import { QuizQuestion } from '@/types';
 export const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q1',
-    prompt: 'What are the three phases of AI-DLC?',
+    prompt: 'What are the three phases of AI-SDLC?',
     options: [
       'Planning, Development, Testing',
       'Inception, Construction, Operations',
@@ -14,7 +14,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       'Analysis, Implementation, Maintenance',
     ],
     correct: 1,
-    explanation: 'AI-DLC has three phases: Inception (what/why), Construction (how), and Operations (run/monitor). Each phase has specific goals and mandatory gates.',
+    explanation: 'AI-SDLC has three phases: Inception (what/why), Construction (how), and Operations (run/monitor). Each phase has specific goals and mandatory gates.',
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L76'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
@@ -22,7 +22,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q2',
-    prompt: "What does 'proof over prose' mean in AI-DLC?",
+    prompt: "What does 'proof over prose' mean in AI-SDLC?",
     options: [
       'Documentation is more important than code',
       'Evidence (tests, checks) is required, not just claims',
@@ -38,7 +38,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q3',
-    prompt: "What is the primary purpose of 'gates' in AI-DLC?",
+    prompt: "What is the primary purpose of 'gates' in AI-SDLC?",
     options: [
       'To slow down development',
       'To require human approval before proceeding',
@@ -54,7 +54,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q4',
-    prompt: 'Where should AI-DLC artifacts be stored?',
+    prompt: 'Where should AI-SDLC artifacts be stored?',
     options: [
       'In chat history only',
       'In a separate documentation system',
@@ -62,7 +62,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       'In cloud storage',
     ],
     correct: 2,
-    explanation: 'AI-DLC artifacts must be persisted in-repo (typically aidlc-docs/), not in chat history. This provides durable context, reviewability, and an auditable trail.',
+    explanation: 'AI-SDLC artifacts must be persisted in-repo (typically aidlc-docs/), not in chat history. This provides durable context, reviewability, and an auditable trail.',
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L44-46'],
       upstream: ['https://github.com/aws-samples/sample-aidlc-workflows'],
@@ -86,7 +86,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q6',
-    prompt: 'What is the core AI-DLC mental model?',
+    prompt: 'What is the core AI-SDLC mental model?',
     options: [
       'AI codes, human tests',
       'AI proposes plan → asks questions → implements after validation',
@@ -102,7 +102,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q7',
-    prompt: 'Who owns decisions and outcomes in AI-DLC?',
+    prompt: 'Who owns decisions and outcomes in AI-SDLC?',
     options: [
       'The AI system',
       'The project manager only',
@@ -110,7 +110,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       'The automation framework',
     ],
     correct: 2,
-    explanation: "Human accountability is the 'loss function' in AI-DLC. Humans own decisions and outcomes; AI proposes and executes within bounds set by humans.",
+    explanation: "Human accountability is the 'loss function' in AI-SDLC. Humans own decisions and outcomes; AI proposes and executes within bounds set by humans.",
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L32-35'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
@@ -118,7 +118,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q8',
-    prompt: "What does 'adaptive depth' mean in AI-DLC?",
+    prompt: "What does 'adaptive depth' mean in AI-SDLC?",
     options: [
       'Always generate maximum documentation',
       'Execute only stages that add value, with exactly enough detail',
@@ -150,7 +150,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q10',
-    prompt: "What is a 'unit' in AI-DLC terminology?",
+    prompt: "What is a 'unit' in AI-SDLC terminology?",
     options: [
       'A testing framework',
       'A small, coherent piece of work that can be built and verified independently',
@@ -174,7 +174,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       'Let AI decide the order of work',
     ],
     correct: 1,
-    explanation: 'Plan-first means every meaningful step starts with an explicit plan (with checkpoints) and an approval gate before execution. This is a core AI-DLC principle.',
+    explanation: 'Plan-first means every meaningful step starts with an explicit plan (with checkpoints) and an approval gate before execution. This is a core AI-SDLC principle.',
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L36-39'],
       upstream: ['https://github.com/aws-samples/sample-aidlc-workflows'],
@@ -198,7 +198,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q13',
-    prompt: "What is 'Mob Elaboration' in AI-DLC?",
+    prompt: "What is 'Mob Elaboration' in AI-SDLC?",
     options: [
       'A code review meeting',
       'A collaborative ritual to convert intent into requirements and units',
@@ -214,7 +214,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q14',
-    prompt: "What is a 'Bolt' in AI-DLC?",
+    prompt: "What is a 'Bolt' in AI-SDLC?",
     options: [
       'A security vulnerability',
       'The smallest iteration, measured in hours or days',
@@ -222,7 +222,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       'A testing framework',
     ],
     correct: 1,
-    explanation: "A Bolt is the smallest iteration in AI-DLC, measured in hours or days (not weeks). It's analogous to a Scrum sprint but faster, enabling rapid feedback.",
+    explanation: "A Bolt is the smallest iteration in AI-SDLC, measured in hours or days (not weeks). It's analogous to a Scrum sprint but faster, enabling rapid feedback.",
     sources: {
       local: ['aidlc-method-definition.md#L77-78'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
@@ -278,7 +278,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q18',
-    prompt: "What is 'Mob Construction' in AI-DLC?",
+    prompt: "What is 'Mob Construction' in AI-SDLC?",
     options: [
       'Building physical infrastructure',
       'A collaborative session where AI generates code and humans validate',
@@ -310,7 +310,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q20',
-    prompt: 'What does NFR stand for in AI-DLC?',
+    prompt: 'What does NFR stand for in AI-SDLC?',
     options: [
       'New Feature Request',
       'Non-Functional Requirement',
@@ -342,10 +342,10 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q22',
-    prompt: 'How many core principles does AI-DLC have?',
+    prompt: 'How many core principles does AI-SDLC have?',
     options: ['5', '7', '10', '12'],
     correct: 2,
-    explanation: 'AI-DLC has 10 core principles including human accountability, plan-first, small batches, persisted artifacts, adaptive depth, proof over prose, and more.',
+    explanation: 'AI-SDLC has 10 core principles including human accountability, plan-first, small batches, persisted artifacts, adaptive depth, proof over prose, and more.',
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L30-60'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
@@ -385,8 +385,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
 ];
 
-export const QUIZ_TITLE = 'AI-DLC Knowledge Quiz';
-export const QUIZ_DESCRIPTION = 'Test your understanding of AI-DLC concepts';
+export const QUIZ_TITLE = 'AI-SDLC Knowledge Quiz';
+export const QUIZ_DESCRIPTION = 'Test your understanding of AI-SDLC concepts';
 
 export function getQuizQuestions(): QuizQuestion[] {
   return QUIZ_QUESTIONS;

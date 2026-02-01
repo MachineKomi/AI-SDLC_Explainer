@@ -1,4 +1,4 @@
-// AI-DLC stage definitions derived from AWS aidlc-workflows
+// AI-SDLC stage definitions derived from AWS aidlc-workflows
 
 export interface SimulatorPhase {
   id: string;

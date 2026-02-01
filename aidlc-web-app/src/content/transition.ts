@@ -1,4 +1,4 @@
-// Transition mapping from Agile/Scrum to AI-DLC
+// Transition mapping from Agile/Scrum to AI-SDLC
 
 export interface RoleMapping {
   agileRole: string;
@@ -313,7 +313,7 @@ export const TRANSITION_PHASES: TransitionPhase[] = [
     id: 'awareness',
     name: 'Awareness & Education',
     duration: '1-2 weeks',
-    focus: 'Build understanding of AI-DLC',
+    focus: 'Build understanding of AI-SDLC',
     activities: [
       'Leadership briefing',
       'Team training sessions',
@@ -321,7 +321,7 @@ export const TRANSITION_PHASES: TransitionPhase[] = [
       'Tool procurement',
     ],
     successCriteria: [
-      'All team members understand AI-DLC basics',
+      'All team members understand AI-SDLC basics',
       'Pilot team identified and committed',
       'AI tools available',
     ],
@@ -334,7 +334,7 @@ export const TRANSITION_PHASES: TransitionPhase[] = [
     id: 'pilot',
     name: 'Pilot Project',
     duration: '2-4 weeks',
-    focus: 'Test AI-DLC on real work',
+    focus: 'Test AI-SDLC on real work',
     activities: [
       'Select low-risk pilot project',
       'Run first Mob Elaboration',
@@ -363,7 +363,7 @@ export const TRANSITION_PHASES: TransitionPhase[] = [
       'Refine tooling',
     ],
     successCriteria: [
-      '3+ teams using AI-DLC',
+      '3+ teams using AI-SDLC',
       'Guardrails documented',
       'Metrics showing improvement',
     ],
@@ -402,22 +402,22 @@ export const READINESS_CHECKLIST: ReadinessItem[] = [
   { category: 'Leadership', item: 'Executive Sponsor', description: 'Leader who champions the transition', importance: 'critical' },
   { category: 'Leadership', item: 'Budget Allocated', description: 'Funding for tools and training', importance: 'critical' },
   { category: 'Leadership', item: 'Success Metrics Defined', description: 'How will we measure success?', importance: 'high' },
-  
+
   // Team
-  { category: 'Team', item: 'Pilot Team Identified', description: 'Team eager to try AI-DLC', importance: 'critical' },
+  { category: 'Team', item: 'Pilot Team Identified', description: 'Team eager to try AI-SDLC', importance: 'critical' },
   { category: 'Team', item: 'AI Facilitator Appointed', description: 'Person to lead Mob sessions', importance: 'critical' },
-  { category: 'Team', item: 'Training Plan', description: 'How will team learn AI-DLC?', importance: 'high' },
-  
+  { category: 'Team', item: 'Training Plan', description: 'How will team learn AI-SDLC?', importance: 'high' },
+
   // Tooling
   { category: 'Tooling', item: 'AI Coding Assistant', description: 'Tool for code generation (e.g., Amazon Q, GitHub Copilot)', importance: 'critical' },
   { category: 'Tooling', item: 'IDE Integration', description: 'AI assistant integrated with dev environment', importance: 'high' },
   { category: 'Tooling', item: 'Guardrail Rules', description: 'Initial .ai-rules or similar', importance: 'medium' },
-  
+
   // Process
   { category: 'Process', item: 'Pilot Project Selected', description: 'Low-risk, bounded project for pilot', importance: 'critical' },
   { category: 'Process', item: 'Gate Criteria Defined', description: 'What evidence needed at gates?', importance: 'high' },
   { category: 'Process', item: 'Mob Session Schedule', description: 'When will Mob Elaboration/Construction happen?', importance: 'medium' },
-  
+
   // Culture
   { category: 'Culture', item: 'Growth Mindset', description: 'Team open to new ways of working', importance: 'high' },
   { category: 'Culture', item: 'Psychological Safety', description: 'Safe to experiment and fail', importance: 'high' },

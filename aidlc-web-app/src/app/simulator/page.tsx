@@ -136,7 +136,7 @@ export default function SimulatorPage() {
               </div>
               <h1 className="text-3xl font-bold tracking-tight">Interactive <span className="text-gradient">Simulator</span></h1>
             </div>
-            <p className="text-foreground-muted text-lg">Select a request type to see how AI-DLC adapts.</p>
+            <p className="text-foreground-muted text-lg">Select a request type to see how AI-SDLC adapts.</p>
           </header>
 
           <div className="grid md:grid-cols-2 gap-4">

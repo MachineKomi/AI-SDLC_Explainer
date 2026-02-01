@@ -13,26 +13,26 @@ interface Source {
 
 const SOURCES: Source[] = [
   {
-    title: 'AI-DLC Workflows Repository',
-    description: 'Official AWS Labs repository with AI-DLC workflow definitions and rules',
+    title: 'AI-SDLC Workflows Repository',
+    description: 'Official AWS Labs repository with AI-SDLC workflow definitions and rules',
     url: 'https://github.com/awslabs/aidlc-workflows',
     type: 'repository',
   },
   {
     title: 'AI-Driven Development Life Cycle Blog',
-    description: 'AWS DevOps Blog post introducing AI-DLC methodology',
+    description: 'AWS DevOps Blog post introducing AI-SDLC methodology',
     url: 'https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/',
     type: 'blog',
   },
   {
     title: 'Amazon Q Developer',
-    description: 'AI-powered coding assistant that integrates with AI-DLC workflows',
+    description: 'AI-powered coding assistant that integrates with AI-SDLC workflows',
     url: 'https://aws.amazon.com/q/developer/',
     type: 'documentation',
   },
   {
     title: 'Kiro IDE',
-    description: 'AI-native IDE with built-in AI-DLC support',
+    description: 'AI-native IDE with built-in AI-SDLC support',
     url: 'https://kiro.dev',
     type: 'documentation',
   },
@@ -65,11 +65,11 @@ export default function SourcesPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <header className="mb-6">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Home
         </Link>
         <h1 className="text-2xl md:text-3xl font-bold">🔗 Sources & References</h1>
-        <p className="text-slate-400">Learn more about AI-DLC</p>
+        <p className="text-foreground-muted">Learn more about AI-SDLC</p>
       </header>
 
       {/* External Sources */}
@@ -89,10 +89,10 @@ export default function SourcesPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold group-hover:text-accent-primary transition-colors">
                     {source.title}
-                    <span className="ml-2 text-slate-500 text-sm">↗</span>
+                    <span className="ml-2 text-foreground-muted/70 text-sm">↗</span>
                   </h3>
-                  <p className="text-sm text-slate-400 mt-1">{source.description}</p>
-                  <span className="text-xs text-slate-500 mt-2 inline-block capitalize">
+                  <p className="text-sm text-foreground-muted mt-1">{source.description}</p>
+                  <span className="text-xs text-foreground-muted/70 mt-2 inline-block capitalize">
                     {source.type}
                   </span>
                 </div>
@@ -105,13 +105,13 @@ export default function SourcesPage() {
       {/* Attribution */}
       <section className="card bg-accent-primary/10 border-accent-primary/30">
         <h2 className="font-semibold mb-3">📜 Attribution</h2>
-        <p className="text-sm text-slate-300">
-          AI-DLC (AI-Driven Development Lifecycle) is a methodology developed by AWS.
+        <p className="text-sm text-foreground-muted">
+          AI-SDLC (AI-Driven Software Development Lifecycle) is a methodology developed by AWS.
           This educational application is based on the publicly available documentation
           and is intended for learning purposes.
         </p>
-        <p className="text-sm text-slate-400 mt-2">
-          All content is derived from the official AI-DLC documentation and workflows
+        <p className="text-sm text-foreground-muted/80 mt-2">
+          All content is derived from the official AI-SDLC documentation and workflows
           available at{' '}
           <a
             href="https://github.com/awslabs/aidlc-workflows"
@@ -124,7 +124,7 @@ export default function SourcesPage() {
         </p>
       </section>
 
-      <footer className="mt-8 pt-4 border-t border-slate-700 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary text-sm text-foreground-muted">
         <div className="flex justify-center gap-4">
           <span><kbd className="kbd">Esc</kbd> Home</span>
         </div>
@@ -132,4 +132,3 @@ export default function SourcesPage() {
     </main>
   );
 }
-

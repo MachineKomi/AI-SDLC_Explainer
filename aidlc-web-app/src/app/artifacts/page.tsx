@@ -14,7 +14,7 @@ interface ArtifactNode {
 const ARTIFACT_TREE: ArtifactNode = {
   name: 'aidlc-docs',
   type: 'folder',
-  description: 'Root directory for all AI-DLC documentation',
+  description: 'Root directory for all AI-SDLC documentation',
   children: [
     {
       name: 'aidlc-state.md',
@@ -116,17 +116,16 @@ export default function ArtifactsPage() {
             if (node.type === 'folder') toggleFolder(fullPath);
             setSelectedNode(node);
           }}
-          className={`w-full text-left px-2 py-1 rounded flex items-center gap-2 hover:bg-slate-700 transition-colors ${
-            isSelected ? 'bg-slate-700 border-l-2 border-accent-primary' : ''
-          }`}
+          className={`w-full text-left px-2 py-1 rounded flex items-center gap-2 hover:bg-background-tertiary transition-colors ${isSelected ? 'bg-background-tertiary border-l-2 border-accent-primary' : ''
+            }`}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
         >
           {node.type === 'folder' ? (
             <span className="text-yellow-400">{isExpanded ? '📂' : '📁'}</span>
           ) : (
-            <span className="text-slate-400">📄</span>
+            <span className="text-foreground-muted">📄</span>
           )}
-          <span className={node.type === 'folder' ? 'font-medium' : 'text-slate-300'}>
+          <span className={node.type === 'folder' ? 'font-medium' : 'text-foreground-muted'}>
             {node.name}
           </span>
         </button>
@@ -142,11 +141,11 @@ export default function ArtifactsPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <header className="mb-6">
-        <Link href="/" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Home
         </Link>
         <h1 className="text-2xl md:text-3xl font-bold">📁 Artifact Explorer</h1>
-        <p className="text-slate-400">Browse the AI-DLC documentation structure</p>
+        <p className="text-foreground-muted">Browse the AI-SDLC documentation structure</p>
       </header>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -168,32 +167,32 @@ export default function ArtifactsPage() {
                 </span>
                 <h2 className="text-xl font-bold">{selectedNode.name}</h2>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-400 mb-1">Type</h3>
+                  <h3 className="text-sm font-semibold text-foreground-muted mb-1">Type</h3>
                   <p className="capitalize">{selectedNode.type}</p>
                 </div>
-                
+
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-400 mb-1">Description</h3>
-                  <p className="text-slate-300">{selectedNode.description}</p>
+                  <h3 className="text-sm font-semibold text-foreground-muted mb-1">Description</h3>
+                  <p className="text-foreground-muted">{selectedNode.description}</p>
                 </div>
-                
+
                 {selectedNode.type === 'folder' && selectedNode.children && (
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-400 mb-1">Contents</h3>
-                    <p className="text-slate-300">
+                    <h3 className="text-sm font-semibold text-foreground-muted mb-1">Contents</h3>
+                    <p className="text-foreground-muted">
                       {selectedNode.children.filter(c => c.type === 'folder').length} folders,{' '}
                       {selectedNode.children.filter(c => c.type === 'file').length} files
                     </p>
                   </div>
                 )}
-                
+
                 {selectedNode.type === 'file' && (
-                  <div className="pt-4 border-t border-slate-700">
-                    <h3 className="text-sm font-semibold text-slate-400 mb-2">Template</h3>
-                    <div className="bg-slate-900 p-3 rounded font-mono text-xs text-slate-400">
+                  <div className="pt-4 border-t border-background-tertiary">
+                    <h3 className="text-sm font-semibold text-foreground-muted mb-2">Template</h3>
+                    <div className="bg-background p-3 rounded font-mono text-xs text-foreground-muted">
                       # {selectedNode.name.replace('.md', '').replace(/-/g, ' ').toUpperCase()}
                       <br /><br />
                       ## Overview
@@ -215,7 +214,7 @@ export default function ArtifactsPage() {
               </div>
             </div>
           ) : (
-            <div className="text-center text-slate-500 py-8">
+            <div className="text-center text-foreground-muted py-8">
               <p>Select a file or folder to view details</p>
               <p className="text-sm mt-2">Click on items in the tree view</p>
             </div>
@@ -229,20 +228,20 @@ export default function ArtifactsPage() {
         <div className="flex flex-wrap gap-6 text-sm">
           <div className="flex items-center gap-2">
             <span>📁</span>
-            <span className="text-slate-400">Collapsed folder</span>
+            <span className="text-foreground-muted">Collapsed folder</span>
           </div>
           <div className="flex items-center gap-2">
             <span>📂</span>
-            <span className="text-slate-400">Expanded folder</span>
+            <span className="text-foreground-muted">Expanded folder</span>
           </div>
           <div className="flex items-center gap-2">
             <span>📄</span>
-            <span className="text-slate-400">Markdown file</span>
+            <span className="text-foreground-muted">Markdown file</span>
           </div>
         </div>
       </div>
 
-      <footer className="mt-8 pt-4 border-t border-slate-700 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary text-sm text-foreground-muted">
         <div className="flex justify-center gap-4">
           <span><kbd className="kbd">Esc</kbd> {selectedNode ? 'Deselect' : 'Home'}</span>
         </div>

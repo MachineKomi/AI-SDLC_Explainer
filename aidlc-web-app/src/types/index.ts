@@ -1,5 +1,5 @@
 // ============================================
-// Core Type Definitions for AI-DLC Web App
+// Core Type Definitions for AI-SDLC Web App
 // ============================================
 
 // === Lesson Types ===
@@ -305,10 +305,12 @@ export interface StoredState {
     title: string;
   };
   theme: Theme;
+  colorTheme: ColorTheme;
 }
 
 // === Theme Types ===
 export type Theme = 'dark' | 'light';
+export type ColorTheme = 'sunset' | 'matrix' | 'ocean' | 'mono';
 
 // === Achievement Types ===
 export interface Achievement {
@@ -334,6 +336,8 @@ export interface ProgressContextValue {
 export interface ThemeContextValue {
   theme: Theme;
   toggleTheme: () => void;
+  colorTheme: ColorTheme;
+  setColorTheme: (theme: ColorTheme) => void;
 }
 
 // === Keyboard Hook Types ===

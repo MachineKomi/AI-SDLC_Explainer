@@ -1,4 +1,4 @@
-// AI-DLC Lessons Content
+// AI-SDLC Lessons Content
 // Converted from Python TUI application
 
 import { Lesson } from '@/types';
@@ -6,13 +6,13 @@ import { Lesson } from '@/types';
 export const LESSONS: Lesson[] = [
   {
     id: 'aidlc-overview',
-    title: 'AI-DLC Overview',
-    description: 'Learn the fundamentals of AI-Driven Development Lifecycle',
+    title: 'AI-SDLC Overview',
+    description: 'Learn the fundamentals of AI-Driven Software Development Lifecycle',
     sections: [
       {
         id: 'what-is-aidlc',
-        title: 'What is AI-DLC?',
-        content: `AI-DLC (AI-Driven Development Lifecycle) is a transformative approach
+        title: 'What is AI-SDLC?',
+        content: `AI-SDLC (AI-Driven Software Development Lifecycle) is a transformative approach
 to software development that positions AI as a central collaborator.
 
 Key characteristics:
@@ -29,7 +29,7 @@ This pattern repeats rapidly for every SDLC activity.`,
       {
         id: 'three-phases',
         title: 'The Three Phases',
-        content: `AI-DLC organizes work into three phases, each with specific goals:
+        content: `AI-SDLC organizes work into three phases, each with specific goals:
 
 • INCEPTION: Determines WHAT to build and WHY
   - Requirements analysis and validation
@@ -71,7 +71,7 @@ Benefits of strict gates:
       {
         id: 'artifacts',
         title: 'Artifacts',
-        content: `Persisted artifacts are FIRST-CLASS in AI-DLC.
+        content: `Persisted artifacts are FIRST-CLASS in AI-SDLC.
 
 All lifecycle artifacts live in your repository:
 
@@ -94,7 +94,7 @@ Why artifacts matter:
       {
         id: 'roles',
         title: 'Roles',
-        content: `AI-DLC transforms team roles from "doing" to "approving and designing."
+        content: `AI-SDLC transforms team roles from "doing" to "approving and designing."
 
 Key roles (minimal set):
 
@@ -122,7 +122,7 @@ Key roles (minimal set):
       {
         id: 'mental-model',
         title: 'The Mental Model',
-        content: `The core AI-DLC mental model is a repeating cycle:
+        content: `The core AI-SDLC mental model is a repeating cycle:
 
 1. AI CREATES A PLAN (Level 1, then Level 2...)
    - Detailed work breakdown with checkpoints
@@ -151,11 +151,11 @@ richer artifacts that become context for the next step.`,
       {
         id: 'summary',
         title: 'Summary & Key Takeaways',
-        content: `Congratulations! You've completed the AI-DLC Overview.
+        content: `Congratulations! You've completed the AI-SDLC Overview.
 
 KEY TAKEAWAYS:
 
-1. AI-DLC has 3 phases: Inception, Construction, Operations
+1. AI-SDLC has 3 phases: Inception, Construction, Operations
 
 2. Gates require human approval before proceeding
 
@@ -179,12 +179,12 @@ NEXT STEPS:
   {
     id: 'principles',
     title: '10 Core Principles',
-    description: 'Master the fundamental principles that guide AI-DLC',
+    description: 'Master the fundamental principles that guide AI-SDLC',
     sections: [
       {
         id: 'principle-intro',
         title: 'The 10 Principles',
-        content: `AI-DLC is guided by 10 core principles that ensure quality, 
+        content: `AI-SDLC is guided by 10 core principles that ensure quality, 
 accountability, and effective collaboration between humans and AI.
 
 These principles are derived from AWS best practices and 
@@ -418,7 +418,7 @@ Best practices:
       {
         id: 'principles-summary',
         title: 'Principles Summary',
-        content: `You've learned all 10 core AI-DLC principles!
+        content: `You've learned all 10 core AI-SDLC principles!
 
 QUICK REFERENCE:
 1. Plan-First — Always plan before executing

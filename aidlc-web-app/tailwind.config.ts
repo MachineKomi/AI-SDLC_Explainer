@@ -23,6 +23,7 @@ const config: Config = {
         accent: {
           primary: "rgb(var(--accent-primary) / <alpha-value>)",
           secondary: "rgb(var(--accent-secondary) / <alpha-value>)",
+          tertiary: "rgb(var(--accent-tertiary) / <alpha-value>)",
           glow: "rgb(var(--accent-glow) / <alpha-value>)",
         },
         status: {

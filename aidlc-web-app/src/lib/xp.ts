@@ -23,7 +23,7 @@ export const LEVEL_THRESHOLDS: Array<{ threshold: number; title: string }> = [
   { threshold: 1000, title: 'Expert' },
   { threshold: 1500, title: 'Master' },
   { threshold: 2500, title: 'Grandmaster' },
-  { threshold: 4000, title: 'AI-DLC Champion' },
+  { threshold: 4000, title: 'AI-SDLC Champion' },
 ];
 
 export function calculateXpReward(action: string, multiplier: number = 1): number {

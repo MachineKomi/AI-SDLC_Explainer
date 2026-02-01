@@ -16,13 +16,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AI-DLC Explainer',
-  description: 'Learn the AI-Driven Development Lifecycle methodology through interactive lessons, quizzes, and simulations.',
-  keywords: ['AI-DLC', 'AI-SDLC', 'software development', 'methodology', 'AI engineering', 'learning'],
-  authors: [{ name: 'AI-DLC Community' }],
+  title: 'AI-SDLC Explainer',
+  description: 'Learn the AI-Driven Software Development Lifecycle methodology through interactive lessons, quizzes, and simulations.',
+  keywords: ['AI-SDLC', 'AI-Driven Software Development Lifecycle', 'software development', 'methodology', 'AI engineering', 'learning'],
+  authors: [{ name: 'AI-SDLC Community' }],
   openGraph: {
-    title: 'AI-DLC Explainer',
-    description: 'Interactive learning platform for AI-Driven Development Lifecycle',
+    title: 'AI-SDLC Explainer',
+    description: 'Interactive learning platform for AI-Driven Software Development Lifecycle',
     type: 'website',
   },
 };

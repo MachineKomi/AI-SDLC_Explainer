@@ -30,14 +30,14 @@ export default function GatekeeperPage() {
     if (showResult || !choice) return;
     setDecision(choice);
     setShowResult(true);
-    
+
     const result: ScenarioResult = {
       scenarioId: currentScenario.id,
       userDecision: choice,
       correct: choice === currentScenario.decisions.correct_action,
     };
     setResults(prev => [...prev, result]);
-    
+
     if (result.correct) {
       addXp('gate_correct');
     }
@@ -90,33 +90,32 @@ export default function GatekeeperPage() {
         <div className="max-w-2xl mx-auto">
           <div className="card text-center">
             <h1 className="text-2xl font-bold mb-4">🚪 Gatekeeper Complete!</h1>
-            
+
             <div className="text-6xl font-bold mb-2">
               {finalScore}/{GATEKEEPER_SCENARIOS.length}
             </div>
-            <p className="text-slate-400 mb-6">{percentage}% correct</p>
-            
-            <div className="w-full bg-slate-700 rounded-full h-4 mb-6">
-              <div 
-                className={`h-4 rounded-full transition-all ${
-                  percentage >= 80 ? 'bg-accent-success' : percentage >= 50 ? 'bg-accent-warning' : 'bg-accent-error'
-                }`}
+            <p className="text-foreground-muted mb-6">{percentage}% correct</p>
+
+            <div className="w-full bg-background-tertiary rounded-full h-4 mb-6">
+              <div
+                className={`h-4 rounded-full transition-all ${percentage >= 80 ? 'bg-accent-success' : percentage >= 50 ? 'bg-accent-warning' : 'bg-accent-error'
+                  }`}
                 style={{ width: `${percentage}%` }}
               />
             </div>
-            
+
             {percentage >= 80 && (
               <p className="text-accent-success mb-4">🏆 Excellent! You&apos;ve mastered the gatekeeper role!</p>
             )}
-            
+
             <div className="space-y-2 text-left mb-6">
-              <h3 className="font-semibold text-slate-300">Results:</h3>
+              <h3 className="font-semibold text-foreground">Results:</h3>
               {results.map((result, idx) => {
                 const scenario = GATEKEEPER_SCENARIOS.find(s => s.id === result.scenarioId);
                 return (
                   <div key={result.scenarioId} className="flex items-center gap-2 text-sm">
                     <span>{result.correct ? '✅' : '❌'}</span>
-                    <span className="text-slate-400">Scenario {idx + 1}:</span>
+                    <span className="text-foreground-muted">Scenario {idx + 1}:</span>
                     <span className={result.correct ? 'text-accent-success' : 'text-accent-error'}>
                       {scenario?.stage}
                     </span>
@@ -124,12 +123,12 @@ export default function GatekeeperPage() {
                 );
               })}
             </div>
-            
+
             <div className="flex gap-4 justify-center">
               <Link href="/practice" className="btn-secondary">
                 Back to Practice
               </Link>
-              <button 
+              <button
                 onClick={() => {
                   setCurrentIndex(0);
                   setDecision(null);
@@ -144,8 +143,8 @@ export default function GatekeeperPage() {
             </div>
           </div>
         </div>
-        
-        <footer className="mt-8 text-center text-sm text-slate-500">
+
+        <footer className="mt-8 text-center text-sm text-foreground-muted">
           <kbd className="kbd">Enter</kbd> or <kbd className="kbd">Esc</kbd> to continue
         </footer>
       </main>
@@ -155,12 +154,12 @@ export default function GatekeeperPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <header className="mb-6">
-        <Link href="/practice" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/practice" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Practice
         </Link>
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl font-bold">🚪 Gatekeeper Challenge</h1>
-          <span className="text-slate-400">
+          <span className="text-foreground-muted">
             Scenario {currentIndex + 1}/{GATEKEEPER_SCENARIOS.length}
           </span>
         </div>
@@ -172,21 +171,21 @@ export default function GatekeeperPage() {
           <span className="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full">
             {currentScenario.phase}
           </span>
-          <span className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full">
+          <span className="px-3 py-1 bg-background-tertiary text-foreground-muted rounded-full">
             {currentScenario.stage}
           </span>
         </div>
 
         {/* Context */}
         <div className="card">
-          <h3 className="text-sm font-semibold text-slate-400 mb-2">📋 Context</h3>
-          <p className="text-slate-200">{currentScenario.context}</p>
+          <h3 className="text-sm font-semibold text-foreground-muted mb-2">📋 Context</h3>
+          <p className="text-foreground">{currentScenario.context}</p>
         </div>
 
         {/* AI Plan */}
         <div className="card border-l-4 border-accent-primary">
-          <h3 className="text-sm font-semibold text-slate-400 mb-2">🤖 AI&apos;s Plan</h3>
-          <p className="text-slate-200 whitespace-pre-wrap">{currentScenario.ai_plan}</p>
+          <h3 className="text-sm font-semibold text-foreground-muted mb-2">🤖 AI&apos;s Plan</h3>
+          <p className="text-foreground whitespace-pre-wrap">{currentScenario.ai_plan}</p>
         </div>
 
         {/* Decision Buttons */}
@@ -198,7 +197,7 @@ export default function GatekeeperPage() {
             >
               <span className="text-3xl mb-2 block">✅</span>
               <span className="font-semibold">Approve</span>
-              <span className="text-sm text-slate-400 block mt-1">Press 1 or A</span>
+              <span className="text-sm text-foreground-muted block mt-1">Press 1 or A</span>
             </button>
             <button
               onClick={() => handleDecision('reject')}
@@ -206,7 +205,7 @@ export default function GatekeeperPage() {
             >
               <span className="text-3xl mb-2 block">❌</span>
               <span className="font-semibold">Reject</span>
-              <span className="text-sm text-slate-400 block mt-1">Press 2 or R</span>
+              <span className="text-sm text-foreground-muted block mt-1">Press 2 or R</span>
             </button>
           </div>
         )}
@@ -219,17 +218,17 @@ export default function GatekeeperPage() {
               <span className={`font-bold ${isCorrect ? 'text-accent-success' : 'text-accent-error'}`}>
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </span>
-              <span className="text-slate-400">
+              <span className="text-foreground-muted">
                 The correct action was to <strong>{currentScenario.decisions.correct_action}</strong>
               </span>
             </div>
 
             {/* Flaws */}
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-slate-400 mb-2">🔍 Flaws in the AI&apos;s Plan:</h4>
+              <h4 className="text-sm font-semibold text-foreground-muted mb-2">🔍 Flaws in the AI&apos;s Plan:</h4>
               <ul className="space-y-1">
                 {currentScenario.flaws.map((flaw, idx) => (
-                  <li key={idx} className="text-slate-300 text-sm flex items-start gap-2">
+                  <li key={idx} className="text-foreground-muted text-sm flex items-start gap-2">
                     <span className="text-accent-warning">•</span>
                     {flaw}
                   </li>
@@ -239,10 +238,10 @@ export default function GatekeeperPage() {
 
             {/* Evidence Checklist */}
             <div className="mb-4">
-              <h4 className="text-sm font-semibold text-slate-400 mb-2">📝 Evidence Checklist:</h4>
+              <h4 className="text-sm font-semibold text-foreground-muted mb-2">📝 Evidence Checklist:</h4>
               <ul className="space-y-1">
                 {currentScenario.evidence_checklist.map((item, idx) => (
-                  <li key={idx} className="text-slate-300 text-sm flex items-start gap-2">
+                  <li key={idx} className="text-foreground-muted text-sm flex items-start gap-2">
                     <span className="text-accent-primary">☐</span>
                     {item}
                   </li>
@@ -256,7 +255,7 @@ export default function GatekeeperPage() {
                 <h4 className="font-semibold text-accent-success mb-1">Valid Reasons:</h4>
                 <ul className="space-y-1">
                   {currentScenario.decisions.valid_reasons.map((reason, idx) => (
-                    <li key={idx} className="text-slate-400">• {reason}</li>
+                    <li key={idx} className="text-foreground-muted">• {reason}</li>
                   ))}
                 </ul>
               </div>
@@ -264,7 +263,7 @@ export default function GatekeeperPage() {
                 <h4 className="font-semibold text-accent-error mb-1">Invalid Reasons:</h4>
                 <ul className="space-y-1">
                   {currentScenario.decisions.invalid_reasons.map((reason, idx) => (
-                    <li key={idx} className="text-slate-400">• {reason}</li>
+                    <li key={idx} className="text-foreground-muted">• {reason}</li>
                   ))}
                 </ul>
               </div>
@@ -281,7 +280,7 @@ export default function GatekeeperPage() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-8 pt-4 border-t border-slate-700 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary text-sm text-foreground-muted">
         <div className="flex justify-center gap-4">
           {!showResult ? (
             <>

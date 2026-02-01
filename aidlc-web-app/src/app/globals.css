@@ -4,61 +4,166 @@
 
 @layer base {
   :root {
-    /* Core Deep Space Theme Colors (Dark Mode - Default) */
-    --background: 10 10 15;
-    /* #0a0a0f - Deepest void */
-    --background-secondary: 17 24 39;
-    /* #111827 - Panel bg */
-    --background-tertiary: 31 41 55;
-    /* #1f2937 - Border/Hover */
+    /* ═══════════════════════════════════════════════════════════════════
+       AI-SDLC Explainer - Dark Mode Theme (Default)
+       Design: Dev/Hacker/Retro-Tech Aesthetic with Warm Accents
+       ═══════════════════════════════════════════════════════════════════ */
 
-    --foreground: 248 250 252;
-    /* #f8fafc - Bright text */
-    --foreground-muted: 148 163 184;
-    /* #94a3b8 - Muted text */
+    /* Deep backgrounds - charcoal void */
+    --background: 12 12 16;
+    /* #0c0c10 - Deep charcoal void */
+    --background-secondary: 20 20 26;
+    /* #14141a - Panel bg */
+    --background-tertiary: 32 32 40;
+    /* #202028 - Border/Hover */
 
-    /* Rave Pink & Orange Accents */
+    /* Clean text */
+    --foreground: 245 245 245;
+    /* #f5f5f5 - Clean white */
+    --foreground-muted: 156 163 175;
+    /* #9ca3af - Muted grey */
+
+    /* Warm accent palette (amber/orange/pink - signature colors) */
     --accent-primary: 236 72 153;
     /* #ec4899 - Hot Pink */
     --accent-secondary: 249 115 22;
     /* #f97316 - Orange */
+    --accent-tertiary: 245 158 11;
+    /* #f59e0b - Amber */
     --accent-glow: 236 72 153;
 
     /* Status Indicators */
     --status-success: 34 197 94;
+    /* #22c55e - Green */
     --status-warning: 245 158 11;
+    /* #f59e0b - Amber */
     --status-error: 239 68 68;
+    /* #ef4444 - Red */
+
+    /* Grid effect - subtle but visible */
+    --grid-color: rgba(236, 72, 153, 0.04);
+    --grid-color-secondary: rgba(249, 115, 22, 0.03);
 
     /* Font Variables (mapped in layout.tsx) */
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 
-  /* Light Mode Overrides */
+  /* ═══════════════════════════════════════════════════════════════════
+     Light Mode - Warm Grey Variant
+     ═══════════════════════════════════════════════════════════════════ */
   .light {
-    --background: 248 250 252;
-    /* #f8fafc - Light background */
-    --background-secondary: 241 245 249;
-    /* #f1f5f9 - Light panel bg */
-    --background-tertiary: 226 232 240;
-    /* #e2e8f0 - Light border/hover */
+    /* Warm cream/grey background (NOT stark white) */
+    --background: 245 244 240;
+    /* #f5f4f0 - Warm cream */
+    --background-secondary: 235 234 228;
+    /* #ebeae4 - Warm panel */
+    --background-tertiary: 215 214 208;
+    /* #d7d6d0 - Warm border */
 
-    --foreground: 15 23 42;
-    /* #0f172a - Dark text */
-    --foreground-muted: 71 85 105;
-    /* #475569 - Muted dark text */
+    /* Dark text for contrast */
+    --foreground: 28 28 32;
+    /* #1c1c20 - Near black */
+    --foreground-muted: 82 82 91;
+    /* #52525b - Dark grey */
 
-    /* Deeper accents for light mode contrast */
-    --accent-primary: 219 39 119;
-    /* #db2777 - Deeper pink */
-    --accent-secondary: 234 88 12;
-    /* #ea580c - Deeper orange */
-    --accent-glow: 219 39 119;
+    /* Deeper accent variants for light bg contrast */
+    --accent-primary: 190 24 93;
+    /* #be185d - Deep pink */
+    --accent-secondary: 194 65 12;
+    /* #c2410c - Deep orange */
+    --accent-tertiary: 180 83 9;
+    /* #b45309 - Deep amber */
+    --accent-glow: 190 24 93;
 
-    /* Status - slightly adjusted for light bg */
+    /* Status - adjusted for light bg */
     --status-success: 22 163 74;
-    --status-warning: 217 119 6;
-    --status-error: 220 38 38;
+    --status-warning: 180 83 9;
+    --status-error: 185 28 28;
+
+    /* Grid - visible on light bg */
+    --grid-color: rgba(190, 24, 93, 0.05);
+    --grid-color-secondary: rgba(194, 65, 12, 0.04);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Color Themes - Override accent colors only
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Sunset Hacker (Default) - Pink/Orange/Amber */
+  .theme-sunset {
+    --accent-primary: 236 72 153;
+    --accent-secondary: 249 115 22;
+    --accent-tertiary: 245 158 11;
+    --accent-glow: 236 72 153;
+    --grid-color: rgba(236, 72, 153, 0.04);
+    --grid-color-secondary: rgba(249, 115, 22, 0.03);
+  }
+
+  .light.theme-sunset {
+    --accent-primary: 190 24 93;
+    --accent-secondary: 194 65 12;
+    --accent-tertiary: 180 83 9;
+    --accent-glow: 190 24 93;
+    --grid-color: rgba(190, 24, 93, 0.05);
+    --grid-color-secondary: rgba(194, 65, 12, 0.04);
+  }
+
+  /* Matrix - Green/Lime/Emerald */
+  .theme-matrix {
+    --accent-primary: 34 197 94;
+    --accent-secondary: 132 204 22;
+    --accent-tertiary: 16 185 129;
+    --accent-glow: 34 197 94;
+    --grid-color: rgba(34, 197, 94, 0.04);
+    --grid-color-secondary: rgba(132, 204, 22, 0.03);
+  }
+
+  .light.theme-matrix {
+    --accent-primary: 22 163 74;
+    --accent-secondary: 101 163 13;
+    --accent-tertiary: 13 148 103;
+    --accent-glow: 22 163 74;
+    --grid-color: rgba(22, 163, 74, 0.05);
+    --grid-color-secondary: rgba(101, 163, 13, 0.04);
+  }
+
+  /* Ocean - Cyan/Blue/Indigo */
+  .theme-ocean {
+    --accent-primary: 6 182 212;
+    --accent-secondary: 59 130 246;
+    --accent-tertiary: 99 102 241;
+    --accent-glow: 6 182 212;
+    --grid-color: rgba(6, 182, 212, 0.04);
+    --grid-color-secondary: rgba(59, 130, 246, 0.03);
+  }
+
+  .light.theme-ocean {
+    --accent-primary: 8 145 178;
+    --accent-secondary: 37 99 235;
+    --accent-tertiary: 79 70 229;
+    --accent-glow: 8 145 178;
+    --grid-color: rgba(8, 145, 178, 0.05);
+    --grid-color-secondary: rgba(37, 99, 235, 0.04);
+  }
+
+  /* Monochrome - Silver/Gray/White */
+  .theme-mono {
+    --accent-primary: 163 163 163;
+    --accent-secondary: 115 115 115;
+    --accent-tertiary: 229 229 229;
+    --accent-glow: 163 163 163;
+    --grid-color: rgba(163, 163, 163, 0.04);
+    --grid-color-secondary: rgba(115, 115, 115, 0.03);
+  }
+
+  .light.theme-mono {
+    --accent-primary: 82 82 82;
+    --accent-secondary: 64 64 64;
+    --accent-tertiary: 38 38 38;
+    --accent-glow: 82 82 82;
+    --grid-color: rgba(82, 82, 82, 0.05);
+    --grid-color-secondary: rgba(64, 64, 64, 0.04);
   }
 }
 
@@ -67,125 +172,414 @@
     @apply bg-background text-foreground antialiased selection:bg-accent-primary/20 selection:text-foreground;
     font-family: var(--font-inter);
   }
+
+  /* Smooth transitions for theme switching */
+  * {
+    transition-property: background-color, border-color;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
 }
 
 @layer components {
 
-  /* TUI-Inspired Card Style */
-  .glass-card {
-    @apply bg-background-secondary/60 backdrop-blur-xl border border-white/10 shadow-xl;
+  /* ═══════════════════════════════════════════════════════════════════
+     Card Styles - Glass/TUI Inspired
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Primary card with subtle glass effect */
+  .card {
+    @apply bg-background-secondary/80 backdrop-blur-sm border border-white/[0.08] rounded-lg p-4;
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 4px 6px -1px rgba(0, 0, 0, 0.4),
+      0 1px 2px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .card:hover {
+    @apply border-accent-primary/30;
+    box-shadow:
+      0 0 12px rgba(236, 72, 153, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
-  .glass-card:hover {
-    @apply border-accent-primary/40 transition-all duration-300;
+  /* Glass card - more prominent glass effect */
+  .glass-card {
+    @apply bg-background-secondary/60 backdrop-blur-xl border border-white/[0.08] shadow-lg rounded-lg;
     box-shadow:
-      0 0 20px rgba(236, 72, 153, 0.15),
-      0 0 0 1px rgba(236, 72, 153, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  /* Feature Tile - TUI inspired */
+  .glass-card:hover {
+    @apply border-accent-primary/25 transition-all duration-300;
+    box-shadow:
+      0 0 16px rgba(236, 72, 153, 0.1),
+      0 0 0 1px rgba(236, 72, 153, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Feature Tile - Navigation cards */
   .feature-tile {
-    @apply relative bg-background-secondary/80 border border-white/10 rounded-lg p-4 transition-all duration-200;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    @apply relative bg-background-secondary/80 border border-white/[0.08] rounded-lg p-4 transition-all duration-200;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   .feature-tile:hover {
-    @apply border-accent-primary/50 bg-background-secondary;
+    @apply border-accent-primary/35 bg-background-secondary;
     box-shadow:
-      0 0 20px rgba(236, 72, 153, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      0 0 16px rgba(236, 72, 153, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
-  /* Neon Button Styles - Pink glow */
+  /* ═══════════════════════════════════════════════════════════════════
+     Button Styles - Professional with Subtle Glow
+     ═══════════════════════════════════════════════════════════════════ */
+
   .btn-primary {
-    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/30 hover:bg-accent-primary/20 hover:border-accent-primary/60 active:scale-95 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+    @apply relative overflow-hidden bg-accent-primary/10 text-accent-primary border border-accent-primary/25 hover:bg-accent-primary/15 hover:border-accent-primary/40 active:scale-[0.98] transition-all duration-200 font-medium px-6 py-2 rounded-lg;
   }
 
   .btn-primary:hover {
-    box-shadow: 0 0 20px rgba(236, 72, 153, 0.4), 0 0 40px rgba(236, 72, 153, 0.2);
+    box-shadow: 0 0 16px rgba(236, 72, 153, 0.2), 0 0 24px rgba(236, 72, 153, 0.08);
   }
 
   .btn-secondary {
-    @apply bg-white/5 text-foreground-muted border border-white/10 hover:bg-white/10 hover:text-foreground hover:border-white/20 transition-all duration-200 font-medium px-6 py-2 rounded-lg;
+    @apply bg-white/[0.04] text-foreground-muted border border-white/[0.08] hover:bg-white/[0.08] hover:text-foreground hover:border-white/[0.15] transition-all duration-200 font-medium px-6 py-2 rounded-lg;
   }
 
   .btn-secondary:hover {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.06);
   }
 
-  /* Interactive Elements */
+  /* Ghost button */
+  .btn-ghost {
+    @apply text-foreground-muted hover:text-foreground hover:bg-white/[0.05] transition-all duration-200 font-medium px-4 py-2 rounded-lg;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Interactive Elements
+     ═══════════════════════════════════════════════════════════════════ */
+
   .nav-link {
     @apply text-foreground-muted hover:text-accent-primary transition-colors duration-200;
   }
 
-  /* XP Bar with Pink glow */
-  .xp-bar-glow {
-    filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.6));
-  }
-
   /* Keyboard shortcuts badge */
   .kbd {
-    @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-mono bg-background-tertiary border border-white/20 rounded text-foreground-muted;
+    @apply inline-flex items-center justify-center px-2 py-0.5 text-xs font-mono bg-background-tertiary border border-white/[0.12] rounded text-foreground-muted;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
-  /* Terminal/TUI inspired styles */
+  /* ═══════════════════════════════════════════════════════════════════
+     XP Bar - Subtle Glow
+     ═══════════════════════════════════════════════════════════════════ */
+
+  .xp-bar-glow {
+    filter: drop-shadow(0 0 4px rgba(236, 72, 153, 0.35));
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Terminal/TUI Inspired Elements
+     ═══════════════════════════════════════════════════════════════════ */
+
   .terminal-header {
-    @apply flex items-center gap-2 px-4 py-2 bg-background-tertiary/50 border-b border-white/10 rounded-t-lg;
+    @apply flex items-center gap-2 px-4 py-2 bg-background-tertiary/50 border-b border-white/[0.08] rounded-t-lg;
   }
 
   .terminal-dot {
     @apply w-3 h-3 rounded-full;
   }
 
-  /* Scanline effect for retro feel */
+  /* Code block styling */
+  .code-block {
+    @apply font-mono text-sm bg-background-tertiary/60 border border-white/[0.08] rounded-lg p-4;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Dev/Hacker Effects
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Subtle scanline overlay (optional, for CRT effect) */
   .scanlines {
     background: repeating-linear-gradient(0deg,
         transparent,
         transparent 2px,
-        rgba(0, 0, 0, 0.1) 2px,
-        rgba(0, 0, 0, 0.1) 4px);
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px);
     pointer-events: none;
+  }
+
+  /* CRT overlay - more pronounced */
+  .crt-overlay {
+    background:
+      repeating-linear-gradient(0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.04) 1px,
+        rgba(0, 0, 0, 0.04) 2px);
+    pointer-events: none;
+  }
+
+  /* Terminal blinking cursor */
+  .cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    @apply text-accent-primary;
+  }
+
+  /* Data stream effect - horizontal lines */
+  .data-stream {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(236, 72, 153, 0.05) 50%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: stream 3s linear infinite;
   }
 }
 
 @layer utilities {
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Text Utilities
+     ═══════════════════════════════════════════════════════════════════ */
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-primary to-accent-secondary;
   }
 
-  /* Enhanced grid pattern - more prominent */
+  .text-gradient-warm {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-tertiary via-accent-secondary to-accent-primary;
+  }
+
+  /* Subtle text glow - professional, not rave */
+  .text-glow {
+    text-shadow: 0 0 8px rgba(236, 72, 153, 0.25), 0 0 16px rgba(236, 72, 153, 0.1);
+  }
+
+  .text-glow-subtle {
+    text-shadow: 0 0 6px rgba(236, 72, 153, 0.15);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Background Patterns
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Grid pattern - subtle pink accented */
   .bg-grid-pattern {
     background-size: 50px 50px;
     background-image:
-      linear-gradient(to right, rgba(236, 72, 153, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(236, 72, 153, 0.08) 1px, transparent 1px);
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  /* Dual-tone grid */
+  .bg-grid-dual {
+    background-size: 50px 50px;
+    background-image:
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color-secondary) 1px, transparent 1px);
     mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   }
 
-  /* Glow text effect */
-  .text-glow {
-    text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
+  /* Dot pattern alternative */
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle at 1px 1px, var(--grid-color) 1px, transparent 0);
+    background-size: 24px 24px;
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   }
 
-  /* Pulse animation for accents */
+  /* ═══════════════════════════════════════════════════════════════════
+     Glow Effects - Reduced Intensity
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Subtle box glow */
+  .glow-subtle {
+    box-shadow: 0 0 12px rgba(236, 72, 153, 0.1);
+  }
+
+  /* Accent border glow */
+  .glow-border {
+    box-shadow:
+      0 0 0 1px rgba(236, 72, 153, 0.2),
+      0 0 16px rgba(236, 72, 153, 0.08);
+  }
+
+  /* Pulse glow - for active/important elements */
+  .glow-pulse {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Animations - Dev/Hacker Inspired
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* Slow pulse for ambient effects */
   .animate-pulse-slow {
     animation: pulse-slow 4s ease-in-out infinite;
   }
+
+  /* Typing cursor blink */
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Matrix-style reveal */
+  .animate-matrix-reveal {
+    animation: matrix-reveal 0.5s ease-out forwards;
+  }
+
+  /* Glitch effect - use sparingly */
+  .animate-glitch {
+    animation: glitch 0.3s ease-in-out;
+  }
+
+  /* Data stream horizontal */
+  .animate-stream {
+    animation: stream 3s linear infinite;
+  }
+
+  /* Fade in up - standard reveal */
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+  }
+
+  /* Shimmer effect - loading state */
+  .animate-shimmer {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Keyframe Definitions
+     ═══════════════════════════════════════════════════════════════════ */
 
   @keyframes pulse-slow {
 
     0%,
     100% {
-      opacity: 0.4;
+      opacity: 0.5;
     }
 
     50% {
       opacity: 0.8;
+    }
+  }
+
+  @keyframes blink {
+
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes matrix-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+      filter: blur(4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes glitch {
+
+    0%,
+    100% {
+      transform: translate(0);
+    }
+
+    20% {
+      transform: translate(-1px, 1px);
+    }
+
+    40% {
+      transform: translate(-1px, -1px);
+    }
+
+    60% {
+      transform: translate(1px, 1px);
+    }
+
+    80% {
+      transform: translate(1px, -1px);
+    }
+  }
+
+  @keyframes stream {
+    from {
+      background-position: 200% 0;
+    }
+
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+
+    to {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.15);
+    }
+
+    50% {
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.25), 0 0 30px rgba(236, 72, 153, 0.1);
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     Accessibility - Reduced Motion
+     ═══════════════════════════════════════════════════════════════════ */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

@@ -71,12 +71,12 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
   return (
     <main className="min-h-screen p-4 md:p-8 max-w-4xl mx-auto">
       <header className="mb-6">
-        <Link href="/lessons" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/lessons" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Lessons
         </Link>
         <div className="flex items-center justify-between">
           <h1 className="text-xl md:text-2xl font-bold">{lesson.title}</h1>
-          <span className="text-sm text-slate-400">
+          <span className="text-sm text-foreground-muted">
             Section {currentSection + 1} of {lesson.sections.length}
           </span>
         </div>
@@ -86,7 +86,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
       <article className="card mb-6">
         <h2 className="text-lg font-semibold text-accent-primary mb-4">{section.title}</h2>
         <div className="prose prose-invert max-w-none">
-          <pre className="whitespace-pre-wrap font-sans text-slate-300 leading-relaxed">
+          <pre className="whitespace-pre-wrap font-sans text-foreground-muted leading-relaxed">
             {section.content}
           </pre>
         </div>
@@ -125,10 +125,10 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
               key={i}
               onClick={() => goToSection(i)}
               className={`w-2 h-2 rounded-full transition-colors ${i === currentSection
-                  ? 'bg-accent-primary'
-                  : i < currentSection
-                    ? 'bg-accent-success'
-                    : 'bg-slate-600'
+                ? 'bg-accent-primary'
+                : i < currentSection
+                  ? 'bg-accent-success'
+                  : 'bg-background-tertiary'
                 }`}
               aria-label={`Go to section ${i + 1}`}
             />
@@ -144,8 +144,8 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
         </button>
       </nav>
 
-      <footer className="mt-8 pt-4 border-t border-slate-700">
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">
           <span><kbd className="kbd">←</kbd> / <kbd className="kbd">h</kbd> Previous</span>
           <span><kbd className="kbd">→</kbd> / <kbd className="kbd">l</kbd> Next</span>
           <span><kbd className="kbd">Esc</kbd> Exit</span>

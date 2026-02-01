@@ -10,6 +10,7 @@ import {
 import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useTheme } from "@/context/ThemeContext";
+import ThemePicker from "@/components/ThemePicker";
 
 export default function Sidebar() {
     const pathname = usePathname();
@@ -116,6 +117,10 @@ export default function Sidebar() {
                                 <X className="w-6 h-6 text-foreground-muted" />
                             </button>
                         </div>
+                        {/* Theme Picker - Mobile */}
+                        <div className="px-4 pb-2">
+                            <ThemePicker collapsed={false} />
+                        </div>
                         <div className="flex flex-col gap-2 p-4">
                             {links.map((link) => (
                                 <Link
@@ -186,7 +191,10 @@ export default function Sidebar() {
                     })}
                 </div>
 
-                <div className="p-4 border-t border-white/5 space-y-2">
+                <div className="p-4 border-t border-white/5 space-y-3">
+                    {/* Theme Picker - Desktop */}
+                    <ThemePicker collapsed={isCollapsed} />
+
                     {/* Theme Toggle */}
                     <button
                         onClick={toggleTheme}

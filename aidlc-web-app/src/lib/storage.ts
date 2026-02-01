@@ -1,6 +1,6 @@
 // localStorage utilities for state persistence
 
-import { StoredState, Theme, ProgressState } from '@/types';
+import { StoredState, Theme, ColorTheme, ProgressState } from '@/types';
 
 const STORAGE_KEY = 'aidlc-explainer-state';
 const SCHEMA_VERSION = 'state-v1';
@@ -42,6 +42,7 @@ export const DEFAULT_STATE: StoredState = {
     title: 'Novice',
   },
   theme: 'dark',
+  colorTheme: 'sunset',
 };
 
 export function isLocalStorageAvailable(): boolean {
@@ -68,7 +69,7 @@ export function loadState(): StoredState {
     }
 
     const parsed = JSON.parse(stored) as StoredState;
-    
+
     // Validate schema version
     if (parsed.$schema !== SCHEMA_VERSION) {
       console.warn('Invalid state schema, resetting to defaults');
@@ -172,5 +173,17 @@ export function loadTheme(): Theme {
 export function saveTheme(theme: Theme): void {
   const state = loadState();
   state.theme = theme;
+  saveState(state);
+}
+
+// Color theme helpers
+export function loadColorTheme(): ColorTheme {
+  const state = loadState();
+  return state.colorTheme || 'sunset';
+}
+
+export function saveColorTheme(colorTheme: ColorTheme): void {
+  const state = loadState();
+  state.colorTheme = colorTheme;
   saveState(state);
 }

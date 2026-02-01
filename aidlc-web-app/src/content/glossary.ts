@@ -7,9 +7,9 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   // Core Concepts
   {
     id: 'aidlc',
-    term: 'AI-DLC',
-    definition: 'AI-Driven Development Lifecycle. A methodology where AI is a central collaborator, proposing plans and executing within human-approved bounds.',
-    example: 'In AI-DLC, the AI generates a requirements plan, humans approve it, then AI implements.',
+    term: 'AI-SDLC',
+    definition: 'AI-Driven Software Development Lifecycle. A methodology where AI is a central collaborator, proposing plans and executing within human-approved bounds.',
+    example: 'In AI-SDLC, the AI generates a requirements plan, humans approve it, then AI implements.',
     related: ['sdlc', 'inception', 'construction', 'operations'],
     source: 'AI-SDLC_best-practice_method_principles.md#L24-26',
   },
@@ -32,7 +32,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'bolt',
     term: 'Bolt',
-    definition: 'The smallest iteration in AI-DLC, measured in hours or days (not weeks). Analogous to a Scrum sprint but faster.',
+    definition: 'The smallest iteration in AI-SDLC, measured in hours or days (not weeks). Analogous to a Scrum sprint but faster.',
     example: 'A 4-hour Bolt to implement the login endpoint with tests.',
     related: ['unit', 'sprint', 'construction'],
     source: 'aidlc-method-definition.md#L77-78',
@@ -57,7 +57,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'inception',
     term: 'Inception',
-    definition: 'The first phase of AI-DLC that determines WHAT to build and WHY. Converts intent into testable, decomposed work.',
+    definition: 'The first phase of AI-SDLC that determines WHAT to build and WHY. Converts intent into testable, decomposed work.',
     example: 'Inception produces: intent.md, requirements.md, units/',
     related: ['construction', 'operations', 'mob-elaboration'],
     source: 'AI-SDLC_best-practice_method_principles.md#L80-99',
@@ -65,7 +65,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'construction',
     term: 'Construction',
-    definition: 'The second phase of AI-DLC that determines HOW to build. Transforms units into tested, operations-ready deployment units.',
+    definition: 'The second phase of AI-SDLC that determines HOW to build. Transforms units into tested, operations-ready deployment units.',
     example: 'Construction produces: design.md, code, tests, validation-report.md',
     related: ['inception', 'operations', 'mob-construction'],
     source: 'AI-SDLC_best-practice_method_principles.md#L101-122',
@@ -73,7 +73,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'operations',
     term: 'Operations',
-    definition: 'The third phase of AI-DLC that determines WHERE and WHEN to run. Productionizes with safety and observability.',
+    definition: 'The third phase of AI-SDLC that determines WHERE and WHEN to run. Productionizes with safety and observability.',
     example: 'Operations produces: deployment-plan.md, runbooks.md, observability.md',
     related: ['inception', 'construction', 'production-readiness'],
     source: 'AI-SDLC_best-practice_method_principles.md#L124-138',
@@ -99,7 +99,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'human-accountability',
     term: 'Human Accountability',
-    definition: "The principle that humans own decisions and outcomes; AI proposes and executes within bounds. The 'loss function' of AI-DLC.",
+    definition: "The principle that humans own decisions and outcomes; AI proposes and executes within bounds. The 'loss function' of AI-SDLC.",
     example: 'AI generates a plan; human reviews and approves before execution.',
     related: ['gate', 'approval', 'oversight'],
     source: 'AI-SDLC_best-practice_method_principles.md#L32-34',
@@ -222,7 +222,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'aidlc-docs',
     term: 'aidlc-docs/',
-    definition: 'The standard directory for AI-DLC artifacts in a repository. Contains all durable planning, design, and validation documents.',
+    definition: 'The standard directory for AI-SDLC artifacts in a repository. Contains all durable planning, design, and validation documents.',
     example: 'aidlc-docs/inception/, aidlc-docs/construction/, aidlc-docs/audit.md',
     related: ['artifact', 'execution-plan', 'audit'],
     source: 'AI-SDLC_best-practice_method_principles.md#L153-178',
@@ -280,7 +280,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     id: 'ddd',
     term: 'DDD',
-    definition: 'Domain-Driven Design. A design approach using bounded contexts, aggregates, entities, and value objects. AI-DLC v1 applies DDD patterns.',
+    definition: 'Domain-Driven Design. A design approach using bounded contexts, aggregates, entities, and value objects. AI-SDLC v1 applies DDD patterns.',
     example: 'Bounded Context: Orders. Aggregate: Order. Entity: OrderLine.',
     related: ['functional-design', 'domain-model', 'construction'],
     source: 'aidlc-method-definition.md#L31-32',

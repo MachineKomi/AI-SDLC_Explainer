@@ -49,7 +49,7 @@ export default function QuizPage() {
     if (showFeedback) return;
     setSelectedAnswer(index);
     setShowFeedback(true);
-    
+
     if (index === questions[currentIndex].correctIndex) {
       setScore(s => s + 1);
     }
@@ -91,7 +91,7 @@ export default function QuizPage() {
   if (completed) {
     const finalScore = score;
     const percentage = Math.round((finalScore / questions.length) * 100);
-    
+
     return (
       <main className="min-h-screen p-4 md:p-8 max-w-2xl mx-auto">
         <div className="card text-center">
@@ -99,8 +99,8 @@ export default function QuizPage() {
           <div className="text-5xl font-bold text-accent-primary mb-2">
             {finalScore}/{questions.length}
           </div>
-          <p className="text-slate-400 mb-6">{percentage}% correct</p>
-          
+          <p className="text-foreground-muted mb-6">{percentage}% correct</p>
+
           <div className="flex gap-4 justify-center">
             <button onClick={() => window.location.reload()} className="btn btn-primary">
               Try Again
@@ -120,15 +120,15 @@ export default function QuizPage() {
   return (
     <main className="min-h-screen p-4 md:p-8 max-w-2xl mx-auto">
       <header className="mb-6">
-        <Link href="/practice" className="text-slate-400 hover:text-slate-200 text-sm mb-2 inline-block">
+        <Link href="/practice" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Practice
         </Link>
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold">📝 Knowledge Quiz</h1>
           <div className="text-sm">
             <span className="text-accent-success">{score}</span>
-            <span className="text-slate-500"> / {currentIndex + 1}</span>
-            <span className="text-slate-600 ml-2">
+            <span className="text-foreground-muted/70"> / {currentIndex + 1}</span>
+            <span className="text-foreground-muted/50 ml-2">
               Question {currentIndex + 1} of {questions.length}
             </span>
           </div>
@@ -137,11 +137,11 @@ export default function QuizPage() {
 
       <article className="card mb-6">
         <h2 className="text-lg font-medium mb-6">{question.original.prompt}</h2>
-        
+
         <div className="space-y-3">
           {question.shuffledOptions.map((option, i) => {
             let className = 'card cursor-pointer transition-all';
-            
+
             if (showFeedback) {
               if (i === question.correctIndex) {
                 className += ' border-accent-success bg-accent-success/10';
@@ -151,7 +151,7 @@ export default function QuizPage() {
             } else if (selectedAnswer === i) {
               className += ' border-accent-primary';
             }
-            
+
             return (
               <button
                 key={i}
@@ -180,7 +180,7 @@ export default function QuizPage() {
           <p className={`font-medium mb-2 ${isCorrect ? 'text-accent-success' : 'text-accent-error'}`}>
             {isCorrect ? '✓ Correct!' : '✗ Incorrect'}
           </p>
-          <p className="text-sm text-slate-300">{question.original.explanation}</p>
+          <p className="text-sm text-foreground-muted">{question.original.explanation}</p>
         </div>
       )}
 
@@ -190,8 +190,8 @@ export default function QuizPage() {
         </button>
       )}
 
-      <footer className="mt-8 pt-4 border-t border-slate-700">
-        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-500">
+      <footer className="mt-8 pt-4 border-t border-background-tertiary">
+        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">
           <span><kbd className="kbd">1-4</kbd> Select answer</span>
           <span><kbd className="kbd">Enter</kbd> Next</span>
           <span><kbd className="kbd">Esc</kbd> Exit</span>

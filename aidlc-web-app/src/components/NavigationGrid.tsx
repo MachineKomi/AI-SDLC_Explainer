@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
     {
         id: 'lessons',
         title: 'Lessons',
-        description: 'Learn AI-DLC fundamentals',
+        description: 'Learn AI-SDLC fundamentals',
         href: '/lessons',
         icon: BookOpen,
         shortcut: 1,
@@ -35,7 +35,7 @@ const navItems: NavItem[] = [
     {
         id: 'compare',
         title: 'Compare',
-        description: 'Waterfall vs Agile vs AI-DLC',
+        description: 'Waterfall vs Agile vs AI-SDLC',
         href: '/comparison',
         icon: GitCompare,
         shortcut: 2,
@@ -43,7 +43,7 @@ const navItems: NavItem[] = [
     {
         id: 'transition',
         title: 'Transition',
-        description: 'Agile → AI-DLC mapping',
+        description: 'Agile → AI-SDLC mapping',
         href: '/transition',
         icon: ArrowRightLeft,
         shortcut: 3,
@@ -75,7 +75,7 @@ const navItems: NavItem[] = [
     {
         id: 'glossary',
         title: 'Glossary',
-        description: 'AI-DLC terminology',
+        description: 'AI-SDLC terminology',
         href: '/glossary',
         icon: BookMarked,
         shortcut: 7,
