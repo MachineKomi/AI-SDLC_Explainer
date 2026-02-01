@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import TypewriterText from '@/components/animations/TypewriterText';
 import { useProgress } from '@/context/ProgressContext';
 import { getLessonById, getAllLessons } from '@/content/lessons';
@@ -16,6 +18,8 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
   const router = useRouter();
   const { state, updateLessonProgress, markLessonCompleted } = useProgress();
   const [currentSection, setCurrentSection] = useState(0);
+
+  const isCompleted = state.lessons.completed.includes(lessonId);
 
   const lesson = getLessonById(lessonId);
 
@@ -175,6 +179,6 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
           </button>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }
