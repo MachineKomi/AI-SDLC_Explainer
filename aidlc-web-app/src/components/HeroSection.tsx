@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Terminal, Code2 } from "lucide-react";
 import Link from "next/link";
+import TypewriterText from "@/components/animations/TypewriterText";
+import GlitchText from "@/components/animations/GlitchText";
 
 export default function HeroSection() {
     return (
@@ -23,14 +25,12 @@ export default function HeroSection() {
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-background-secondary/80 border border-white/10 mb-8 font-mono text-sm">
                         <Terminal className="w-4 h-4 text-accent-primary" />
                         <span className="text-foreground-muted">$</span>
-                        <span className="text-accent-primary">learn</span>
-                        <span className="text-foreground">ai-dlc</span>
-                        <span className="text-accent-secondary">--interactive</span>
+                        <TypewriterText text="learn ai-dlc --interactive" delay={500} speed={50} />
                     </div>
 
                     <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
                         <span className="text-foreground">AI-Driven</span>{" "}
-                        <span className="text-gradient text-glow">Development</span>
+                        <GlitchText text="Software Development" as="span" className="text-gradient text-glow" />
                         <br />
                         <span className="text-foreground">Lifecycle</span>
                     </h1>

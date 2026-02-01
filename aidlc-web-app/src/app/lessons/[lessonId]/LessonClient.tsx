@@ -3,10 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import TypewriterText from '@/components/animations/TypewriterText';
 import { useProgress } from '@/context/ProgressContext';
 import { getLessonById } from '@/content/lessons';
-import DiagramRenderer from '@/components/DiagramRenderer';
-import type { DiagramType } from '@/components/DiagramRenderer';
+import DiagramDispatcher from '@/components/DiagramDispatcher';
 
 interface LessonClientProps {
   lessonId: string;
@@ -74,8 +74,11 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
         <Link href="/lessons" className="text-foreground-muted hover:text-foreground text-sm mb-2 inline-block">
           ← Back to Lessons
         </Link>
+
         <div className="flex items-center justify-between">
-          <h1 className="text-xl md:text-2xl font-bold">{lesson.title}</h1>
+          <div className="text-xl md:text-2xl font-bold">
+            <TypewriterText text={lesson.title} speed={30} delay={200} cursor={false} />
+          </div>
           <span className="text-sm text-foreground-muted">
             Section {currentSection + 1} of {lesson.sections.length}
           </span>
@@ -91,10 +94,12 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
           </pre>
         </div>
 
+
+
         {/* Visual Diagram - prefer diagramType over ASCII */}
         {section.diagramType && (
           <div className="mt-6 p-4 bg-background-tertiary/30 rounded-xl">
-            <DiagramRenderer type={section.diagramType as DiagramType} />
+            <DiagramDispatcher type={section.diagramType} />
           </div>
         )}
 

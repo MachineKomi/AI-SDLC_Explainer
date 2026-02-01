@@ -32,40 +32,41 @@ This pattern repeats rapidly for every SDLC activity.`,
         content: `AI-SDLC organizes work into three phases, each with specific goals:
 
 • INCEPTION: Determines WHAT to build and WHY
-  - Requirements analysis and validation
-  - User stories and unit decomposition
-  - Risk assessment
+  - Derived via "Mob Elaboration" (Human + AI)
+  - Output: Intent, Units, User Stories, Risks
+  - Goal: Testable requirements & plan
 
 • CONSTRUCTION: Determines HOW to build it
-  - Detailed design per unit
-  - Code generation and implementation
-  - Build-and-test loops
+  - Derived via "Mob Programming" & "Mob Testing"
+  - Output: Code, Tests, Logical Design
+  - Goal: Deployment-ready artifacts
 
 • OPERATIONS: Deployment and monitoring
-  - Infrastructure as Code
-  - CI/CD pipelines
-  - Observability setup`,
-        diagramType: 'phases',
+  - AI-driven observability & anomaly detection
+  - Output: SLA Compliance, Runbooks
+  - Goal: Reliability & Feedback loop`,
+        diagramType: 'phases-flow',
       },
       {
         id: 'gates',
         title: 'Gates & Approvals',
         content: `Every phase has mandatory GATES requiring human approval.
 
-Core principles:
-• Plan-first, stage-by-stage execution
-• Every meaningful step needs an approval checkpoint
-• "Proof over prose" — evidence required, not just claims
+Gates are not blockers; they are QUALITY FILTERS for the "Golden Thread".
 
-Gate examples:
-• Inception Exit: Requirements + units approved
-• Unit Done: Tests green + acceptance criteria met
-• Production Ready: Deployable + observable + rollbackable
+• The "Golden Thread":
+  - The continuous link from Business Intent → Code → Deployment.
+  - Preserved by artifacts (context), not chat history.
+  - Traditional SDLC breaks this thread at handoffs; AI-SDLC preserves it.
 
-Benefits of strict gates:
-• Prevents AI from "running away" with wrong assumptions
-• Creates audit trail of decisions
-• Ensures human accountability at every critical point`,
+• Gates:
+  - Checkpoints that verify the Golden Thread is intact.
+  - "Proof over prose" — evidence required.
+  - Examples: "Inception Exit" (Is intent clear?), "Unit Done" (Do tests pass?).
+
+Benefits:
+• Prevents AI from "running away" with wrong assumptions.
+• Ensures human accountability without breaking flow.`,
         diagramType: 'gate-loop',
       },
       {
@@ -184,256 +185,193 @@ NEXT STEPS:
       {
         id: 'principle-intro',
         title: 'The 10 Principles',
-        content: `AI-SDLC is guided by 10 core principles that ensure quality, 
-accountability, and effective collaboration between humans and AI.
+        content: `AI-SDLC is guided by 10 core principles that dictate its
+workflow, roles, and artifacts.
 
-These principles are derived from AWS best practices and 
-real-world practitioner experience.
+These principles ensure the methodology is "AI-Native" rather
+than just "AI-Assisted."
 
-Let's explore each one in detail.`,
+We must reimagine software development for an era where
+AI is a collaborator, not just a tool.`,
         diagramType: 'principles-list',
       },
       {
         id: 'principle-1',
-        title: '1. Plan-First',
-        content: `PRINCIPLE: Always create a plan before executing.
+        title: '1. Reimagine, Don\'t Retrofit',
+        content: `PRINCIPLE: Redesign from first principles; don't patch old methods.
 
 What it means:
-• AI proposes detailed work breakdown BEFORE any code
-• Plans include checkpoints and approval gates
-• Humans review and approve plans, not just results
+• Traditional Agile/Scrum assumes long cycles (weeks)
+• AI enables cycles in hours/days ("Bolts")
+• Estimation rituals (story points) are less relevant
+• We must shed legacy constraints to capture AI speed
 
 Why it matters:
-• Prevents "AI running away" with wrong assumptions
-• Gives humans visibility into AI's intended approach
-• Creates natural review points
-
-Anti-pattern:
-• "Just implement feature X" without seeing the plan first
-• AI coding without explicit approval of approach`,
-        diagramType: 'plan-first-comparison',
-      },
-      {
-        id: 'principle-2',
-        title: '2. Human Accountability',
-        content: `PRINCIPLE: Humans own decisions and outcomes; AI executes.
-
-What it means:
-• Every critical decision has a human approver
-• AI proposes, humans dispose
-• Accountability cannot be delegated to AI
-
-Key decisions requiring human sign-off:
-• Requirements scope
-• Architecture choices
-• Security controls
-• Go/no-go for deployment
-
-Why it matters:
-• Legal and ethical responsibility stays with humans
-• AI hallucinations don't become production bugs
-• Clear ownership of outcomes`,
-        diagramType: 'accountability-table',
-      },
-      {
-        id: 'principle-3',
-        title: '3. Small Batches',
-        content: `PRINCIPLE: Decompose work into small, reviewable units.
-
-What it means:
-• Break large tasks into units of 1-3 days work
-• Each unit has clear acceptance criteria
-• Review happens per-unit, not per-project
-
-Benefits:
-• Easier to review and verify
-• Faster feedback loops
-• Lower risk of large-scale errors
-• Progress is measurable
-
-Sizing guidelines:
-• Too small: Overhead exceeds value
-• Too large: Can't review effectively
-• Just right: Reviewable in one sitting`,
-        diagramType: 'small-batches',
-      },
-      {
-        id: 'principle-4',
-        title: '4. Adaptive Depth',
-        content: `PRINCIPLE: Match rigor to risk and complexity.
-
-What it means:
-• Stage selection is BINARY (execute or skip)
-• Detail level WITHIN stages adapts to problem
-• Workflow Planning decides which stages run
-
-Factors influencing depth:
-• Request clarity - How complete is the ask?
-• Problem complexity - How intricate is the solution?
-• Scope - Single file, component, or system-wide?
-• Risk level - What's the impact of errors?
-• Available context - Greenfield vs brownfield?
-
-Key insight from AWS:
-"Create exactly the detail needed for the problem at 
-hand - no more, no less."`,
+• Retrofitting AI into Scrum reinforces inefficiencies
+• AI-Native flows are faster and more fluid`,
         diagramType: 'adaptive-depth',
       },
       {
-        id: 'principle-5',
-        title: '5. Structured Q&A',
-        content: `PRINCIPLE: Use file-based, structured questions.
+        id: 'principle-2',
+        title: '2. Reverse Conversation Direction',
+        content: `PRINCIPLE: AI proposes, Human approves.
 
 What it means:
-• AI asks questions in structured format
-• Answers persist in files, not chat
-• Multiple-choice where possible
+• Old way: Human writes specs, Human writes code
+• New way: Human states intent ("Build a login")
+• AI proposes plan, options, and trade-offs
+• Human validates and approves
 
-Benefits:
-• Answers are reviewable and auditable
-• Can be validated mechanically
-• Context persists across sessions
-• Stakeholders can review asynchronously
+Analogy:
+• Google Maps: You set destination, System routes, You drive.
+• AI is the navigator; Human is the captain.`,
+        diagramType: 'plan-first-comparison',
+      },
+      {
+        id: 'principle-3',
+        title: '3. Integrates Design Techniques',
+        content: `PRINCIPLE: Design techniques (DDD) are core, not optional.
 
-Format example:
-• Questions go in: requirement-verification-questions.md
-• Answers have structured tags: <!-- ANSWER: B -->
-• Both persist in repository`,
-        diagramType: 'structured-qa',
+What it means:
+• AI applies Domain-Driven Design (DDD) during planning
+• Produces "Bounded Contexts" for parallel delivery
+• Design artifacts (Domain Models) are first-class
+
+Why it matters:
+• Prevents "Big Ball of Mud" architectures
+• AI needs structure (Context) to be effective
+• Quality is built-in, not bolted-on`,
+        diagramType: 'context-persistence',
+      },
+      {
+        id: 'principle-4',
+        title: '4. Align with AI Capability',
+        content: `PRINCIPLE: Optimistic about potential, realistic about today.
+
+What it means:
+• AI is not yet fully autonomous for complex systems
+• Humans MUST retain responsibility
+• "AI-Driven" ≠ "AI-Autopilot"
+• We design for "Human-in-the-loop" at critical points
+
+Key takeaway:
+• Trust but verify.
+• Use AI for heavy lifting, Humans for judgment.`,
+        diagramType: 'accountability-table',
+      },
+      {
+        id: 'principle-5',
+        title: '5. Cater to Complex Systems',
+        content: `PRINCIPLE: Designed for complexity, not toy apps.
+
+What it means:
+• AI-SDLC excels where complexity is high
+• Focuses on trade-offs, architecture, and integration
+• Simple "no-code" apps don't need this rigor
+
+Target Environment:
+• Regulated industries
+• Large-scale distributed systems
+• Brownfield modernization`,
+        diagramType: 'small-batches',
       },
       {
         id: 'principle-6',
-        title: '6. Proof over Prose',
-        content: `PRINCIPLE: Evidence required, not just claims.
+        title: '6. User Stories as Contract',
+        content: `PRINCIPLE: Retain artifacts that enhance symbiosis.
 
 What it means:
-• Don't accept "it works" — require proof
-• Tests must pass, not just exist
-• Validation reports show actual results
-
-Examples of proof:
-• Test output showing all green
-• Screenshots of working UI
-• Logs showing successful deployment
-• Metrics showing performance targets met
+• User Stories remain the "Contract"
+• Risk Registers constrain AI creativity
+• Keep what works for human validation
 
 Why it matters:
-• AI can be confidently wrong
-• Prose can mask incomplete work
-• Evidence is verifiable`,
+• Humans need familiar handles to control AI
+• Prose requirements (Stories) are the bridge`,
         diagramType: 'proof-over-prose',
       },
       {
         id: 'principle-7',
-        title: '7. Auditable Trail',
-        content: `PRINCIPLE: Maintain append-only decision logs.
+        title: '7. Transition via Familiarity',
+        content: `PRINCIPLE: Evolution, not Revolution.
 
 What it means:
-• Every decision gets logged with timestamp
-• audit.md is append-only (never edited)
-• Include: decision, rationale, evidence, approver
+• Method should be learnable in a day
+• Rename "Sprints" to "Bolts" (hours/days)
+• Keep familiar concepts (Backlog, Review)
+• Don't alienate experienced engineers
 
-What to log:
-• Phase transitions
-• Gate approvals/rejections
-• Scope changes
-• Architecture decisions
-• Security exceptions
-
-Why it matters:
-• Compliance and governance
-• Post-mortems and debugging
-• Knowledge transfer
-• Legal protection`,
-        diagramType: 'audit-trail',
+Goal:
+• Low barrier to entry
+• High ceiling for mastery`,
+        diagramType: 'principles-list',
       },
       {
         id: 'principle-8',
-        title: '8. Context Persistence',
-        content: `PRINCIPLE: Artifacts persist in-repo, not in chat.
+        title: '8. Streamline Responsibilities',
+        content: `PRINCIPLE: Collapse silos, converge roles.
 
 What it means:
-• All context lives in files, not conversation
-• New sessions can resume from artifacts
-• Chat history is ephemeral; artifacts are durable
+• AI handles undifferentiated heavy lifting
+• Roles collapse: Dev + Ops + QA → "Product Engineer"
+• Product Owner and Developer remain essential
+• Minimize handoffs
 
-Key artifacts:
-• aidlc-state.md — Current position
-• execution-plan.md — What's planned
-• audit.md — What happened
-• prompts.md — What was asked
-
-Benefits:
-• No "context window" limitations
-• Team members can onboard easily
-• AI sessions are reproducible
-• Version control applies`,
-        diagramType: 'context-persistence',
+Outcome:
+• Faster flow
+• Higher ownership
+• Less "waiting for ticket"`,
+        diagramType: 'accountability-table',
       },
       {
         id: 'principle-9',
-        title: '9. Fail Fast, Recover Fast',
-        content: `PRINCIPLE: Detect problems early, have rollback plans.
+        title: '9. Minimise Stages, Maximise Flow',
+        content: `PRINCIPLE: Prune waste with "Loss Functions".
 
 What it means:
-• Run validations at every stage
-• Don't proceed on failing checks
-• Always have a way to undo
+• Validation points act as "loss functions"
+• Catch errors early to prevent compounding
+• Reduce rigidity
+• Flow is paramount
 
-Validation points:
-• Lint checks before commit
-• Tests before merge
-• Smoke tests before deploy
-• Canary before full rollout
-
-Recovery mechanisms:
-• Git revert for code
-• Blue-green deployments
-• Feature flags for rollback
-• Database migrations with down path`,
+Insight:
+• Rigid workflows = "Quick Wet Cement"
+• AI-SDLC = Adaptable flow`,
         diagramType: 'fail-fast',
       },
       {
         id: 'principle-10',
-        title: '10. Prompts as Code',
-        content: `PRINCIPLE: Version, review, and tune prompts like code.
+        title: '10. No Hard-Wired Workflows',
+        content: `PRINCIPLE: Context determines workflow.
 
 What it means:
-• Prompts live in version control
-• Changes go through review
-• Tune based on failure modes
+• No single "One True Way"
+• AI proposes Level 1 Plan based on Intent
+• Green-field? Brown-field? Bug fix?
+• Workflow adapts to the problem
 
-Why it matters:
-• Prompts are the "code" that controls AI behavior
-• Bad prompts → bad AI output
-• Prompts drift needs tracking like code drift
-
-Best practices:
-• Store prompts in prompts.md
-• Log which prompts produced which results
-• A/B test prompt changes
-• Add guardrails for known failure modes`,
-        diagramType: 'prompts-as-code',
+How it works:
+• AI suggests plan → Human refines → Execute
+• The plan *is* the workflow`,
+        diagramType: 'adaptive-depth',
       },
       {
         id: 'principles-summary',
         title: 'Principles Summary',
-        content: `You've learned all 10 core AI-SDLC principles!
+        content: `The 10 Principles of AI-SDLC:
 
-QUICK REFERENCE:
-1. Plan-First — Always plan before executing
-2. Human Accountability — Humans own decisions
-3. Small Batches — Decompose into reviewable units
-4. Adaptive Depth — Match rigor to risk
-5. Structured Q&A — File-based questions/answers
-6. Proof over Prose — Evidence, not claims
-7. Auditable Trail — Append-only decision logs
-8. Context Persistence — Artifacts in-repo
-9. Fail Fast — Validate early, have rollback
-10. Prompts as Code — Version and tune prompts
+1. Reimagine (Don't Retrofit)
+2. Reverse Conversation (AI Proposes)
+3. Design Core (DDD)
+4. AI Capability (Realistic)
+5. Complex Systems
+6. Human Symbiosis (Stories)
+7. Transition/Familiarity (Bolts)
+8. Streamline/Roles
+9. Maximize Flow
+10. No Hard-Wiring
 
-These principles work together to create a safe,
-effective, and accountable AI-human collaboration.`,
+These form the foundation of the AI-Driven era.`,
         diagramType: 'lesson-complete',
       },
     ],
@@ -467,7 +405,7 @@ Inception answers:
 • Who are the users?
 • What are the constraints?
 • How will we measure success?`,
-        diagramType: 'phases',
+        diagramType: 'phases-flow',
       },
       {
         id: 'inception-stages',

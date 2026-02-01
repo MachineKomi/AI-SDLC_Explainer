@@ -75,8 +75,8 @@ export default function ThemePicker({ collapsed = false }: ThemePickerProps) {
                     )} />
                 </button>
 
-                {/* Flyout menu on hover */}
-                <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
+                {/* Flyout menu on hover - pl-2 creates bridge for hover state */}
+                <div className="absolute left-full pl-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
                     <div className="bg-background-tertiary border border-white/10 rounded-lg p-3 shadow-lg">
                         <div className="text-xs text-foreground-muted mb-2 whitespace-nowrap">Color Theme</div>
                         <div className="flex gap-2">

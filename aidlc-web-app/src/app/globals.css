@@ -96,6 +96,7 @@
     --accent-secondary: 249 115 22;
     --accent-tertiary: 245 158 11;
     --accent-glow: 236 72 153;
+    /* Maintain default charcoal bg */
     --grid-color: rgba(236, 72, 153, 0.04);
     --grid-color-secondary: rgba(249, 115, 22, 0.03);
   }
@@ -109,61 +110,80 @@
     --grid-color-secondary: rgba(194, 65, 12, 0.04);
   }
 
-  /* Matrix - Green/Lime/Emerald */
+  /* Matrix - Green/Lime/Emerald - Deep Digital Green Tint */
   .theme-matrix {
+    --background: 5 15 10;
+    --background-secondary: 10 25 15;
+    --background-tertiary: 15 35 20;
     --accent-primary: 34 197 94;
     --accent-secondary: 132 204 22;
     --accent-tertiary: 16 185 129;
     --accent-glow: 34 197 94;
-    --grid-color: rgba(34, 197, 94, 0.04);
-    --grid-color-secondary: rgba(132, 204, 22, 0.03);
+    --grid-color: rgba(34, 197, 94, 0.08);
+    /* More visible grid */
+    --grid-color-secondary: rgba(132, 204, 22, 0.06);
   }
 
   .light.theme-matrix {
+    --background: 240 250 240;
+    --background-secondary: 230 245 230;
+    --background-tertiary: 210 235 210;
     --accent-primary: 22 163 74;
     --accent-secondary: 101 163 13;
     --accent-tertiary: 13 148 103;
     --accent-glow: 22 163 74;
-    --grid-color: rgba(22, 163, 74, 0.05);
-    --grid-color-secondary: rgba(101, 163, 13, 0.04);
+    --grid-color: rgba(22, 163, 74, 0.08);
+    --grid-color-secondary: rgba(101, 163, 13, 0.06);
   }
 
-  /* Ocean - Cyan/Blue/Indigo */
+  /* Ocean - Cyan/Blue/Indigo - Deep Abyss Gradient */
   .theme-ocean {
+    --background: 8 12 20;
+    --background-secondary: 15 20 30;
+    --background-tertiary: 25 35 45;
     --accent-primary: 6 182 212;
     --accent-secondary: 59 130 246;
     --accent-tertiary: 99 102 241;
     --accent-glow: 6 182 212;
-    --grid-color: rgba(6, 182, 212, 0.04);
-    --grid-color-secondary: rgba(59, 130, 246, 0.03);
+    --grid-color: rgba(6, 182, 212, 0.06);
+    --grid-color-secondary: rgba(59, 130, 246, 0.05);
   }
 
   .light.theme-ocean {
+    --background: 240 248 255;
+    --background-secondary: 230 240 250;
+    --background-tertiary: 210 225 240;
     --accent-primary: 8 145 178;
     --accent-secondary: 37 99 235;
     --accent-tertiary: 79 70 229;
     --accent-glow: 8 145 178;
-    --grid-color: rgba(8, 145, 178, 0.05);
-    --grid-color-secondary: rgba(37, 99, 235, 0.04);
+    --grid-color: rgba(8, 145, 178, 0.06);
+    --grid-color-secondary: rgba(37, 99, 235, 0.05);
   }
 
-  /* Monochrome - Silver/Gray/White */
+  /* Monochrome - Silver/Gray/White - Stark High Contrast */
   .theme-mono {
-    --accent-primary: 163 163 163;
-    --accent-secondary: 115 115 115;
-    --accent-tertiary: 229 229 229;
-    --accent-glow: 163 163 163;
-    --grid-color: rgba(163, 163, 163, 0.04);
-    --grid-color-secondary: rgba(115, 115, 115, 0.03);
+    --background: 0 0 0;
+    --background-secondary: 15 15 15;
+    --background-tertiary: 30 30 30;
+    --accent-primary: 255 255 255;
+    --accent-secondary: 163 163 163;
+    --accent-tertiary: 115 115 115;
+    --accent-glow: 255 255 255;
+    --grid-color: rgba(255, 255, 255, 0.08);
+    --grid-color-secondary: rgba(255, 255, 255, 0.04);
   }
 
   .light.theme-mono {
-    --accent-primary: 82 82 82;
+    --background: 255 255 255;
+    --background-secondary: 245 245 245;
+    --background-tertiary: 229 229 229;
+    --accent-primary: 0 0 0;
     --accent-secondary: 64 64 64;
-    --accent-tertiary: 38 38 38;
-    --accent-glow: 82 82 82;
-    --grid-color: rgba(82, 82, 82, 0.05);
-    --grid-color-secondary: rgba(64, 64, 64, 0.04);
+    --accent-tertiary: 115 115 115;
+    --accent-glow: 0 0 0;
+    --grid-color: rgba(0, 0, 0, 0.08);
+    --grid-color-secondary: rgba(0, 0, 0, 0.04);
   }
 }
 

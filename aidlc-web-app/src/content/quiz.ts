@@ -345,9 +345,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     prompt: 'How many core principles does AI-SDLC have?',
     options: ['5', '7', '10', '12'],
     correct: 2,
-    explanation: 'AI-SDLC has 10 core principles including human accountability, plan-first, small batches, persisted artifacts, adaptive depth, proof over prose, and more.',
+    explanation: 'AI-SDLC is guided by 10 principles, including "Reimagine don\'t Retrofit", "Reverse Conversation", "Proof over Prose", and "Human Accountability".',
     sources: {
-      local: ['AI-SDLC_best-practice_method_principles.md#L30-60'],
+      local: ['AI-SDLC_best-practice_method_principles.md#L13-56'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
     },
   },
@@ -380,6 +380,38 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     explanation: 'Operations determines WHERE and WHEN to run. It productionizes the system with safety, observability, deployment plans, runbooks, and cost modeling.',
     sources: {
       local: ['AI-SDLC_best-practice_method_principles.md#L124-138'],
+      upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
+    },
+  },
+  {
+    id: 'q25',
+    prompt: "What is the 'Golden Thread' in AI-SDLC?",
+    options: [
+      'The source code repository',
+      'The continuous path of context/intent from goal to deployment',
+      'The financial budget for AI tools',
+      'The main chat conversation history',
+    ],
+    correct: 1,
+    explanation: "The Golden Thread is the continuous, unbroken path of context and intent from Business Intent → Code → Deployment. It is preserved by artifacts, not ephemeral chat history.",
+    sources: {
+      local: ['lessons.ts'],
+      upstream: ['AI-SDLC definitions'],
+    },
+  },
+  {
+    id: 'q26',
+    prompt: "What does 'Reverse the Conversation Direction' mean?",
+    options: [
+      'Humans should listen more',
+      'AI initiates plans and proposals; Humans approve',
+      'Start with code, then write requirements',
+      'Developers talk to users directly',
+    ],
+    correct: 1,
+    explanation: "It shifts the initiation of work to AI. Instead of humans doing the heavy lifting, AI proposes plans/trade-offs, and humans act as critical confirmers/validators.",
+    sources: {
+      local: ['AI-SDLC_best-practice_method_principles.md#L21'],
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
     },
   },
