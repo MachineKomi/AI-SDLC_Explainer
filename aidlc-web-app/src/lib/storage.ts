@@ -53,6 +53,9 @@ export const DEFAULT_STATE: StoredState = {
   reference: {
     viewed: false,
   },
+  videos: {
+    watched: [],
+  },
   theme: 'dark',
   colorTheme: 'sunset',
 };
@@ -141,6 +144,7 @@ function migrateState(state: StoredState): StoredState {
     transition: { ...DEFAULT_STATE.transition, ...(state.transition || {}) },
     glossary: { ...DEFAULT_STATE.glossary, ...(state.glossary || {}) },
     reference: { ...DEFAULT_STATE.reference, ...(state.reference || {}) },
+    videos: { ...DEFAULT_STATE.videos, ...(state.videos || {}) },
   };
 }
 
@@ -187,6 +191,9 @@ export function toProgressState(stored: StoredState): ProgressState {
     },
     reference: {
       viewed: stored.reference?.viewed || false,
+    },
+    videos: {
+      watched: stored.videos?.watched || [],
     },
     achievements: stored.achievements.unlocked,
   };

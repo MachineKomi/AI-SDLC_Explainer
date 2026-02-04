@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useCallback } from 'react';
 import { useProgress } from '@/context/ProgressContext';
 import { LESSONS } from '@/content/lessons';
+import VideoGrid from '@/components/VideoGrid';
+import { VIDEOS } from '@/content/videos';
 
 export default function LessonsPage() {
   const router = useRouter();
-  const { state } = useProgress();
+  const { state, markVideoWatched } = useProgress();
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -73,6 +75,13 @@ export default function LessonsPage() {
           );
         })}
       </section>
+
+      {/* Video Lessons Section */}
+      <VideoGrid
+        videos={VIDEOS}
+        watchedVideos={state.videos.watched}
+        onToggleWatched={markVideoWatched}
+      />
 
       <footer className="mt-8 pt-4 border-t border-background-tertiary">
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">

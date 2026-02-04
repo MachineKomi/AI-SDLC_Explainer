@@ -119,6 +119,21 @@ export interface RequestType {
   key_gates: string[];
 }
 
+// === Video Types ===
+export interface Video {
+  id: string;
+  title: string;
+  channelName: string;
+  channelUrl: string;
+  videoUrl: string;
+  embedUrl: string;
+  summary: string[];
+}
+
+export interface VideoProgress {
+  watched: string[];
+}
+
 // === Glossary Types ===
 export interface GlossaryTerm {
   id: string;
@@ -281,6 +296,7 @@ export interface ProgressState {
   transition: TransitionProgress;
   glossary: GlossaryProgress;
   reference: ReferenceProgress;
+  videos: VideoProgress;
   achievements: string[];
 }
 
@@ -328,6 +344,9 @@ export interface StoredState {
   reference: {
     viewed: boolean;
   };
+  videos: {
+    watched: string[];
+  };
   achievements: {
     unlocked: string[];
   };
@@ -366,6 +385,7 @@ export interface ProgressContextValue {
   toggleTransitionItem: (itemId: string) => void;
   markGlossaryTermViewed: (termId: string) => void;
   markReferenceViewed: () => void;
+  markVideoWatched: (videoId: string) => void;
   resetProgress: () => void;
 }
 

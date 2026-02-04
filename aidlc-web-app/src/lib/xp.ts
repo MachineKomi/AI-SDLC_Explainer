@@ -17,6 +17,7 @@ export const XP_REWARDS: Record<string, number> = {
   transition_check: 5,           // XP for checking a transition readiness item
   glossary_term_viewed: 3,       // XP for viewing a glossary term (first time)
   reference_section_viewed: 10,  // XP for viewing reference page (first time)
+  video_watched: 40,             // XP for watching a video lesson (first time)
 };
 
 export const LEVEL_THRESHOLDS: Array<{ threshold: number; title: string }> = [

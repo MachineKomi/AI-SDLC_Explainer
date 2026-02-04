@@ -25,6 +25,7 @@ const DEFAULT_PROGRESS: ProgressState = {
   transition: { checklist: [] },
   glossary: { viewedTerms: [] },
   reference: { viewed: false },
+  videos: { watched: [] },
   achievements: [],
 };
 
@@ -355,6 +356,20 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     addXp('reference_section_viewed');
   }, [storedState, persistState, addXp]);
 
+  const markVideoWatched = useCallback((videoId: string) => {
+    const watchedVideos = storedState.videos?.watched || [];
+    if (watchedVideos.includes(videoId)) return; // Already watched, no duplicate XP
+
+    const newState: StoredState = {
+      ...storedState,
+      videos: {
+        watched: [...watchedVideos, videoId]
+      }
+    };
+    persistState(newState);
+    addXp('video_watched');
+  }, [storedState, persistState, addXp]);
+
   const resetProgress = useCallback(() => {
     const newState: StoredState = {
       ...DEFAULT_STATE,
@@ -386,6 +401,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         toggleTransitionItem,
         markGlossaryTermViewed,
         markReferenceViewed,
+        markVideoWatched,
         resetProgress,
       }}
     >
