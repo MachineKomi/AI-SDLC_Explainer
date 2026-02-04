@@ -2,6 +2,10 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.3.1 - Fix: Simulation animation loop
+ * - Fixed animation not running - replaced requestAnimationFrame with setInterval
+ * - Consistent 50ms tick rate for smooth animation
+ * 
  * v2.3.0 - Comparison Simulation Engine
  * - Enhanced race visualization with detailed task-based simulation
  * - Real-time activity logs showing task execution for each methodology
@@ -48,4 +52,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.3.0";
+export const APP_VERSION = "v2.3.1";

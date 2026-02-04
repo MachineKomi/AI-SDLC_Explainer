@@ -13,7 +13,6 @@ import React, {
   useReducer,
   useCallback,
   useEffect,
-  useRef,
 } from 'react';
 import {
   SimulationState,
@@ -63,10 +62,6 @@ const SimulationContext = createContext<SimulationContextValue | undefined>(unde
 export function SimulationProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(simulationReducer, undefined, createInitialState);
   
-  // Animation frame reference
-  const animationFrameRef = useRef<number | null>(null);
-  const lastTickRef = useRef<number>(0);
-  
   // Control functions
   const play = useCallback(() => {
     dispatch({ type: 'PLAY' });
@@ -80,55 +75,21 @@ export function SimulationProvider({ children }: { children: React.ReactNode }) 
     dispatch({ type: 'RESET' });
   }, []);
   
-  // Animation loop
+  // Animation loop using setInterval for consistent timing
   useEffect(() => {
     if (state.phase !== 'running') {
-      // Cancel any pending animation frame
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
       return;
     }
     
-    // Initialize last tick time
-    if (lastTickRef.current === 0) {
-      lastTickRef.current = performance.now();
-    }
-    
-    const tick = (currentTime: number) => {
-      const deltaMs = currentTime - lastTickRef.current;
-      lastTickRef.current = currentTime;
-      
-      // Only dispatch if enough time has passed (target ~20fps = 50ms)
-      if (deltaMs >= DEFAULT_TIME_CONFIG.tickIntervalMs) {
-        dispatch({ type: 'TICK', deltaMs });
-      }
-      
-      // Continue animation loop
-      animationFrameRef.current = requestAnimationFrame(tick);
-    };
-    
-    // Start animation loop
-    animationFrameRef.current = requestAnimationFrame(tick);
+    // Use setInterval for consistent tick rate
+    const intervalId = setInterval(() => {
+      dispatch({ type: 'TICK', deltaMs: DEFAULT_TIME_CONFIG.tickIntervalMs });
+    }, DEFAULT_TIME_CONFIG.tickIntervalMs);
     
     // Cleanup
     return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+      clearInterval(intervalId);
     };
-  }, [state.phase]);
-  
-  // Reset last tick when starting
-  useEffect(() => {
-    if (state.phase === 'running' && lastTickRef.current === 0) {
-      lastTickRef.current = performance.now();
-    }
-    if (state.phase === 'idle') {
-      lastTickRef.current = 0;
-    }
   }, [state.phase]);
   
   // Computed value functions
