@@ -47,6 +47,12 @@ export const DEFAULT_STATE: StoredState = {
   transition: {
     checklist: [],
   },
+  glossary: {
+    viewedTerms: [],
+  },
+  reference: {
+    viewed: false,
+  },
   theme: 'dark',
   colorTheme: 'sunset',
 };
@@ -133,6 +139,8 @@ function migrateState(state: StoredState): StoredState {
     gamification: { ...DEFAULT_STATE.gamification, ...state.gamification },
     gym: { ...DEFAULT_STATE.gym, ...(state.gym || {}) },
     transition: { ...DEFAULT_STATE.transition, ...(state.transition || {}) },
+    glossary: { ...DEFAULT_STATE.glossary, ...(state.glossary || {}) },
+    reference: { ...DEFAULT_STATE.reference, ...(state.reference || {}) },
   };
 }
 
@@ -173,6 +181,12 @@ export function toProgressState(stored: StoredState): ProgressState {
     },
     transition: {
       checklist: stored.transition?.checklist || [],
+    },
+    glossary: {
+      viewedTerms: stored.glossary?.viewedTerms || [],
+    },
+    reference: {
+      viewed: stored.reference?.viewed || false,
     },
     achievements: stored.achievements.unlocked,
   };

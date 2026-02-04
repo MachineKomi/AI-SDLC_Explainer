@@ -1,12 +1,14 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { ProgressState, ProgressContextValue, StoredState } from '@/types';
 import { loadState, saveState, toProgressState, DEFAULT_STATE } from '@/lib/storage';
 import { calculateXpReward, calculateLevel } from '@/lib/xp';
 import { checkAchievements, getAchievementById } from '@/lib/achievements';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import AchievementToast from '@/components/AchievementToast';
+import LevelUpModal from '@/components/LevelUpModal';
 
 const ProgressContext = createContext<ProgressContextValue | undefined>(undefined);
 
@@ -21,6 +23,8 @@ const DEFAULT_PROGRESS: ProgressState = {
   simulator: { runs: 0, requestTypesExplored: [], lastRun: null },
   gym: { completedTasks: [] },
   transition: { checklist: [] },
+  glossary: { viewedTerms: [] },
+  reference: { viewed: false },
   achievements: [],
 };
 
@@ -28,11 +32,23 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<ProgressState>(DEFAULT_PROGRESS);
   const [storedState, setStoredState] = useState<StoredState>(DEFAULT_STATE);
   const [mounted, setMounted] = useState(false);
+  
+  // Level-up modal state
+  const [levelUpModal, setLevelUpModal] = useState<{
+    isOpen: boolean;
+    newLevel: number;
+    newTitle: string;
+    totalXp: number;
+  }>({ isOpen: false, newLevel: 1, newTitle: 'Novice', totalXp: 0 });
+  
+  // Track previous level to detect level-ups
+  const previousLevelRef = useRef<number>(1);
 
   useEffect(() => {
     const loaded = loadState();
     setStoredState(loaded);
     setState(toProgressState(loaded));
+    previousLevelRef.current = loaded.gamification.level;
     setMounted(true);
   }, []);
 
@@ -42,10 +58,88 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     saveState(newStoredState);
   }, []);
 
+  // Function to trigger confetti celebration
+  const triggerConfetti = useCallback(() => {
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+    const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        colors: ['#f97316', '#8b5cf6', '#22c55e', '#eab308'],
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        colors: ['#f97316', '#8b5cf6', '#22c55e', '#eab308'],
+      });
+    }, 250);
+  }, []);
+
+  // Function to show achievement notification
+  const showAchievementNotification = useCallback((achievementId: string, xpAwarded: number) => {
+    const achievement = getAchievementById(achievementId);
+    if (!achievement) return;
+
+    // Trigger confetti for special achievements
+    const specialAchievements = ['completionist', 'perfect-score', 'scholar'];
+    if (specialAchievements.includes(achievementId)) {
+      triggerConfetti();
+    }
+
+    // Show toast notification with custom component
+    toast.custom(
+      (t) => (
+        <AchievementToast
+          achievement={achievement}
+          xpAwarded={xpAwarded}
+          onClose={() => toast.dismiss(t)}
+        />
+      ),
+      {
+        duration: 6000,
+        position: 'bottom-right',
+      }
+    );
+  }, [triggerConfetti]);
+
+  // Function to show level-up celebration
+  const showLevelUpCelebration = useCallback((newLevel: number, newTitle: string, totalXp: number) => {
+    // Trigger confetti for level up
+    triggerConfetti();
+    
+    // Show the modal
+    setLevelUpModal({
+      isOpen: true,
+      newLevel,
+      newTitle,
+      totalXp,
+    });
+  }, [triggerConfetti]);
+
+  const closeLevelUpModal = useCallback(() => {
+    setLevelUpModal(prev => ({ ...prev, isOpen: false }));
+  }, []);
+
   const addXp = useCallback((action: string, multiplier: number = 1): number => {
     const xpGained = calculateXpReward(action, multiplier);
     const newXp = storedState.gamification.xp + xpGained;
     const { level, title } = calculateLevel(newXp);
+    const previousLevel = previousLevelRef.current;
 
     const newState: StoredState = {
       ...storedState,
@@ -61,16 +155,36 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         ...newAchievements,
       ];
       // Award XP for achievements
-      const achievementXp = newAchievements.length * calculateXpReward('achievement_unlocked');
-      newState.gamification.xp += achievementXp;
+      const achievementXpPerUnlock = calculateXpReward('achievement_unlocked');
+      const totalAchievementXp = newAchievements.length * achievementXpPerUnlock;
+      newState.gamification.xp += totalAchievementXp;
       const updated = calculateLevel(newState.gamification.xp);
       newState.gamification.level = updated.level;
       newState.gamification.title = updated.title;
+
+      // Show notification for each new achievement
+      newAchievements.forEach((achievementId) => {
+        // Use setTimeout to stagger notifications if multiple achievements
+        setTimeout(() => {
+          showAchievementNotification(achievementId, achievementXpPerUnlock);
+        }, newAchievements.indexOf(achievementId) * 500);
+      });
     }
 
     persistState(newState);
+
+    // Check for level up (after persisting state)
+    const finalLevel = newState.gamification.level;
+    if (finalLevel > previousLevel) {
+      previousLevelRef.current = finalLevel;
+      // Delay slightly to let state update
+      setTimeout(() => {
+        showLevelUpCelebration(finalLevel, newState.gamification.title, newState.gamification.xp);
+      }, 300);
+    }
+
     return xpGained;
-  }, [storedState, persistState]);
+  }, [storedState, persistState, showAchievementNotification, showLevelUpCelebration]);
 
   const markLessonCompleted = useCallback((lessonId: string) => {
     if (storedState.lessons.completed.includes(lessonId)) return;
@@ -214,6 +328,33 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     persistState(newState);
   }, [storedState, persistState, addXp]);
 
+  const markGlossaryTermViewed = useCallback((termId: string) => {
+    const viewedTerms = storedState.glossary?.viewedTerms || [];
+    if (viewedTerms.includes(termId)) return; // Already viewed
+
+    const newState: StoredState = {
+      ...storedState,
+      glossary: {
+        viewedTerms: [...viewedTerms, termId]
+      }
+    };
+    persistState(newState);
+    addXp('glossary_term_viewed');
+  }, [storedState, persistState, addXp]);
+
+  const markReferenceViewed = useCallback(() => {
+    if (storedState.reference?.viewed) return; // Already viewed
+
+    const newState: StoredState = {
+      ...storedState,
+      reference: {
+        viewed: true
+      }
+    };
+    persistState(newState);
+    addXp('reference_section_viewed');
+  }, [storedState, persistState, addXp]);
+
   const resetProgress = useCallback(() => {
     const newState: StoredState = {
       ...DEFAULT_STATE,
@@ -221,6 +362,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       theme: storedState.theme,
       gym: { completedTasks: [] },
       transition: { checklist: [] },
+      glossary: { viewedTerms: [] },
+      reference: { viewed: false },
     };
     persistState(newState);
   }, [storedState, persistState]);
@@ -241,10 +384,19 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         recordSimulationRun,
         toggleGymTask,
         toggleTransitionItem,
+        markGlossaryTermViewed,
+        markReferenceViewed,
         resetProgress,
       }}
     >
       {children}
+      <LevelUpModal
+        isOpen={levelUpModal.isOpen}
+        newLevel={levelUpModal.newLevel}
+        newTitle={levelUpModal.newTitle}
+        totalXp={levelUpModal.totalXp}
+        onClose={closeLevelUpModal}
+      />
     </ProgressContext.Provider>
   );
 }

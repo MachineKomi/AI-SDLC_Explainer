@@ -3,6 +3,7 @@
 import HeroSection from "@/components/HeroSection";
 import NavigationGrid from "@/components/NavigationGrid";
 import XPBar from "@/components/XPBar";
+import ProgressDashboard from "@/components/ProgressDashboard";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         </div>
         <HeroSection />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <ProgressDashboard />
           <NavigationGrid />
         </div>
       </div>

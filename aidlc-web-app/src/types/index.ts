@@ -261,6 +261,14 @@ export interface TransitionProgress {
   checklist: string[];
 }
 
+export interface GlossaryProgress {
+  viewedTerms: string[];
+}
+
+export interface ReferenceProgress {
+  viewed: boolean;
+}
+
 export interface ProgressState {
   xp: number;
   level: number;
@@ -271,6 +279,8 @@ export interface ProgressState {
   simulator: SimulatorProgress;
   gym: GymProgress;
   transition: TransitionProgress;
+  glossary: GlossaryProgress;
+  reference: ReferenceProgress;
   achievements: string[];
 }
 
@@ -312,6 +322,12 @@ export interface StoredState {
   transition: {
     checklist: string[];
   };
+  glossary: {
+    viewedTerms: string[];
+  };
+  reference: {
+    viewed: boolean;
+  };
   achievements: {
     unlocked: string[];
   };
@@ -348,6 +364,8 @@ export interface ProgressContextValue {
   recordSimulationRun: (requestType: string) => void;
   toggleGymTask: (taskId: string) => void;
   toggleTransitionItem: (itemId: string) => void;
+  markGlossaryTermViewed: (termId: string) => void;
+  markReferenceViewed: () => void;
   resetProgress: () => void;
 }
 

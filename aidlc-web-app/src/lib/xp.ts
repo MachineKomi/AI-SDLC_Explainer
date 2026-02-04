@@ -13,6 +13,10 @@ export const XP_REWARDS: Record<string, number> = {
   achievement_unlocked: 100,
   gym_task_completed: 15,
   gym_phase_completed: 50,
+  gym_task: 15,
+  transition_check: 5,           // XP for checking a transition readiness item
+  glossary_term_viewed: 3,       // XP for viewing a glossary term (first time)
+  reference_section_viewed: 10,  // XP for viewing reference page (first time)
 };
 
 export const LEVEL_THRESHOLDS: Array<{ threshold: number; title: string }> = [

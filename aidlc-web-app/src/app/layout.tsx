@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { ProgressProvider } from '@/context/ProgressContext';
 import Sidebar from '@/components/Sidebar';
 import GlobalKeyboardShortcuts from '@/components/GlobalKeyboardShortcuts';
+import GlobalXPHeader from '@/components/GlobalXPHeader';
 import { Toaster } from 'sonner';
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
             <GlobalKeyboardShortcuts />
             <div className="flex min-h-screen">
               <Sidebar />
+              <GlobalXPHeader />
 
               <main className="flex-1 w-full min-h-screen transition-all duration-300 md:pl-[80px] pt-16 md:pt-0">
                 {children}

@@ -5,12 +5,18 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { GLOSSARY_TERMS, searchTerms, getTermById } from '@/content/glossary';
 import { GlossaryTerm } from '@/types';
+import { useProgress } from '@/context/ProgressContext';
+import { CheckCircle } from 'lucide-react';
 
 export default function GlossaryPage() {
   const router = useRouter();
+  const { state, markGlossaryTermViewed } = useProgress();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTerm, setSelectedTerm] = useState<GlossaryTerm | null>(null);
   const [filteredTerms, setFilteredTerms] = useState(GLOSSARY_TERMS);
+
+  // Track viewed terms
+  const viewedTerms = new Set(state.glossary?.viewedTerms || []);
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -19,6 +25,12 @@ export default function GlossaryPage() {
       setFilteredTerms(GLOSSARY_TERMS);
     }
   }, [searchQuery]);
+
+  // Award XP when selecting a term for the first time
+  const handleSelectTerm = useCallback((term: GlossaryTerm) => {
+    setSelectedTerm(term);
+    markGlossaryTermViewed(term.id);
+  }, [markGlossaryTermViewed]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -41,7 +53,7 @@ export default function GlossaryPage() {
   const handleRelatedClick = (termId: string) => {
     const term = getTermById(termId);
     if (term) {
-      setSelectedTerm(term);
+      handleSelectTerm(term);
     }
   };
 
@@ -73,6 +85,16 @@ export default function GlossaryPage() {
           />
           <kbd className="kbd absolute right-3 top-1/2 -translate-y-1/2">/</kbd>
         </div>
+        {/* Progress indicator */}
+        <div className="mt-2 flex items-center gap-2 text-sm text-foreground-muted">
+          <span>{viewedTerms.size}/{GLOSSARY_TERMS.length} terms explored</span>
+          <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden max-w-32">
+            <div 
+              className="h-full bg-accent-secondary rounded-full transition-all"
+              style={{ width: `${(viewedTerms.size / GLOSSARY_TERMS.length) * 100}%` }}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -81,12 +103,19 @@ export default function GlossaryPage() {
           {sortedTerms.map((term) => (
             <button
               key={term.id}
-              onClick={() => setSelectedTerm(term)}
-              className={`card w-full text-left ${selectedTerm?.id === term.id ? 'border-accent-primary' : ''
+              onClick={() => handleSelectTerm(term)}
+              className={`card w-full text-left relative ${selectedTerm?.id === term.id ? 'border-accent-primary' : ''
                 }`}
             >
-              <h3 className="font-semibold text-foreground">{term.term}</h3>
-              <p className="text-sm text-foreground-muted line-clamp-2">{term.definition}</p>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-foreground">{term.term}</h3>
+                  <p className="text-sm text-foreground-muted line-clamp-2">{term.definition}</p>
+                </div>
+                {viewedTerms.has(term.id) && (
+                  <CheckCircle className="w-4 h-4 text-status-success flex-shrink-0 mt-1" />
+                )}
+              </div>
             </button>
           ))}
           {sortedTerms.length === 0 && (

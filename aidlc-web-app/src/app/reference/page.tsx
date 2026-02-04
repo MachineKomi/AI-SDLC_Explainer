@@ -4,6 +4,8 @@ import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { PHASES } from '@/content/simulator/stages';
+import { useProgress } from '@/context/ProgressContext';
+import { CheckCircle } from 'lucide-react';
 
 const PRINCIPLES = [
   { id: 1, name: 'AI as Collaborator', description: 'AI is a central team member, not just a tool' },
@@ -34,6 +36,12 @@ const KEY_GATES = [
 
 export default function ReferencePage() {
   const router = useRouter();
+  const { state, markReferenceViewed } = useProgress();
+
+  // Award XP on first view
+  useEffect(() => {
+    markReferenceViewed();
+  }, [markReferenceViewed]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -55,7 +63,15 @@ export default function ReferencePage() {
           ← Back to Home
         </Link>
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl md:text-3xl font-bold print:text-xl">📋 Quick Reference</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl md:text-3xl font-bold print:text-xl">📋 Quick Reference</h1>
+            {state.reference?.viewed && (
+              <span className="flex items-center gap-1 text-sm text-status-success">
+                <CheckCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">Explored</span>
+              </span>
+            )}
+          </div>
           <button
             onClick={() => window.print()}
             className="btn-secondary text-sm print:hidden"

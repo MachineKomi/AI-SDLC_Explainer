@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-    Cpu, BookOpen, Calculator, BarChart3, Dumbbell, ChevronLeft, ChevronRight,
+    Cpu, BookOpen, Dumbbell, ChevronLeft, ChevronRight,
     Menu,
     X,
     FolderOpen,
@@ -17,17 +17,27 @@ import {
     Home as HomeIcon,
     Moon,
     Sun,
-    CheckCircle
+    CheckCircle,
+    Circle
 } from 'lucide-react';
 import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useTheme } from "@/context/ThemeContext";
 import ThemePicker from "@/components/ThemePicker";
+import MiniXPIndicator from "@/components/MiniXPIndicator";
 import { useProgress } from "@/context/ProgressContext";
 
-// Counts for progress (consider moving to a shared constants file if changed often)
-const TOTAL_GYM_TASKS = 8;
-const TOTAL_TRANSITION_ITEMS = 20; // Estimated from quick look, update if precise needed
+// Completion thresholds - centralized for easy updates
+const COMPLETION_THRESHOLDS = {
+    TOTAL_LESSONS: 3,           // From lessons.ts - 3 lessons
+    TOTAL_QUIZ_QUESTIONS: 26,   // From quiz.ts - 26 questions
+    QUIZ_PASS_THRESHOLD: 0.8,   // 80% to pass
+    TOTAL_GATEKEEPER_SCENARIOS: 10, // From gates.ts - 10 scenarios
+    GATEKEEPER_PASS_THRESHOLD: 0.8, // 80% to pass
+    TOTAL_SIMULATOR_TYPES: 4,   // 4 request types
+    TOTAL_GYM_TASKS: 8,         // 8 gym tasks
+    TOTAL_TRANSITION_ITEMS: 15, // From transition.ts - 15 readiness items
+};
 
 export default function Sidebar() {
     const pathname = usePathname();
@@ -92,27 +102,76 @@ export default function Sidebar() {
         { href: "/sources", label: "Sources", icon: Link2 },
     ];
 
-    // Check completion status helper
-    const isCompleted = (href: string) => {
-        if (!state) return false;
+    // Check completion status helper - returns { completed: boolean, progress?: number }
+    const getCompletionStatus = (href: string): { completed: boolean; progress?: number; inProgress?: boolean } => {
+        if (!state) return { completed: false };
 
         switch (href) {
+            case '/':
+                // Home is never "completed"
+                return { completed: false };
+                
             case '/lessons':
-                // Simple check: if at least 1 lesson completed, or all? 
-                // Let's go with > 0 for "started/in progress" indicator or specific logic. 
-                // Requirement says "checkmarks for completed sections".
-                // Let's assume 100% completion for checkmark.
-                // Since I don't have total lessons count handy without import, I'll check if array length > 5 (arbitrary for now) or just > 0?
-                // Actually, let's just show it if *any* completed for 'Lessons' usually means 'Some progress'.
-                // But checkmark usually implies done.
-                // Let's skip checkmark for lessons unless I import the constant.
-                return state.lessons.completed.length > 0; // Temporary: show if ANY progress
+                // All lessons completed
+                const lessonsCompleted = state.lessons.completed.length;
+                const lessonsTotal = COMPLETION_THRESHOLDS.TOTAL_LESSONS;
+                return { 
+                    completed: lessonsCompleted >= lessonsTotal,
+                    progress: Math.round((lessonsCompleted / lessonsTotal) * 100),
+                    inProgress: lessonsCompleted > 0 && lessonsCompleted < lessonsTotal
+                };
+                
+            case '/practice':
+                // Quiz 80%+ AND Gatekeeper 80%+
+                const quizPassed = state.quiz.bestScore >= Math.ceil(COMPLETION_THRESHOLDS.TOTAL_QUIZ_QUESTIONS * COMPLETION_THRESHOLDS.QUIZ_PASS_THRESHOLD);
+                const gatekeeperPassed = state.gatekeeper.bestScore >= Math.ceil(COMPLETION_THRESHOLDS.TOTAL_GATEKEEPER_SCENARIOS * COMPLETION_THRESHOLDS.GATEKEEPER_PASS_THRESHOLD);
+                const practiceProgress = ((quizPassed ? 50 : 0) + (gatekeeperPassed ? 50 : 0));
+                return { 
+                    completed: quizPassed && gatekeeperPassed,
+                    progress: practiceProgress,
+                    inProgress: (state.quiz.attempts > 0 || state.gatekeeper.attempts > 0) && !quizPassed && !gatekeeperPassed
+                };
+                
+            case '/simulator':
+                // All 4 request types explored
+                const typesExplored = state.simulator.requestTypesExplored.length;
+                const typesTotal = COMPLETION_THRESHOLDS.TOTAL_SIMULATOR_TYPES;
+                return { 
+                    completed: typesExplored >= typesTotal,
+                    progress: Math.round((typesExplored / typesTotal) * 100),
+                    inProgress: typesExplored > 0 && typesExplored < typesTotal
+                };
+                
             case '/gym':
-                return (state.gym?.completedTasks?.length || 0) >= TOTAL_GYM_TASKS;
+                // All 8 tasks completed
+                const gymCompleted = state.gym?.completedTasks?.length || 0;
+                const gymTotal = COMPLETION_THRESHOLDS.TOTAL_GYM_TASKS;
+                return { 
+                    completed: gymCompleted >= gymTotal,
+                    progress: Math.round((gymCompleted / gymTotal) * 100),
+                    inProgress: gymCompleted > 0 && gymCompleted < gymTotal
+                };
+                
             case '/transition':
-                return (state.transition?.checklist?.length || 0) >= TOTAL_TRANSITION_ITEMS;
+                // All checklist items checked
+                const transitionCompleted = state.transition?.checklist?.length || 0;
+                const transitionTotal = COMPLETION_THRESHOLDS.TOTAL_TRANSITION_ITEMS;
+                return { 
+                    completed: transitionCompleted >= transitionTotal,
+                    progress: Math.round((transitionCompleted / transitionTotal) * 100),
+                    inProgress: transitionCompleted > 0 && transitionCompleted < transitionTotal
+                };
+                
+            // Reference sections - no completion tracking (informational)
+            case '/comparison':
+            case '/artifacts':
+            case '/glossary':
+            case '/reference':
+            case '/sources':
+                return { completed: false };
+                
             default:
-                return false;
+                return { completed: false };
         }
     };
 
@@ -164,7 +223,7 @@ export default function Sidebar() {
                             const isActive = link.href === '/'
                                 ? pathname === '/'
                                 : pathname.startsWith(link.href);
-                            const completed = isCompleted(link.href);
+                            const status = getCompletionStatus(link.href);
 
                             return (
                                 <Link
@@ -185,11 +244,24 @@ export default function Sidebar() {
                                         )} />
                                         {link.label}
                                     </div>
-                                    {completed && <CheckCircle className="w-4 h-4 text-status-success" />}
+                                    {/* Completion indicator */}
+                                    {status.completed ? (
+                                        <CheckCircle className="w-4 h-4 text-status-success" />
+                                    ) : status.inProgress ? (
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="text-xs text-foreground-muted font-mono">{status.progress}%</span>
+                                            <Circle className="w-3 h-3 text-accent-secondary" />
+                                        </div>
+                                    ) : null}
                                 </Link>
                             );
                         })}
                     </nav>
+
+                    {/* Mobile XP Indicator */}
+                    <div className="pt-4 border-t border-white/10">
+                        <MiniXPIndicator variant="sidebar" />
+                    </div>
                 </div>
             </aside>
 
@@ -221,7 +293,7 @@ export default function Sidebar() {
                 <div className="flex-1 py-8 px-4 flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
                     {links.map((link) => {
                         const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
-                        const completed = isCompleted(link.href);
+                        const status = getCompletionStatus(link.href);
 
                         return (
                             <Link
@@ -240,12 +312,23 @@ export default function Sidebar() {
                                     {!isCollapsed && <span className="font-medium whitespace-nowrap">{link.label}</span>}
                                 </div>
 
-                                {!isCollapsed && completed && <CheckCircle className="w-4 h-4 text-status-success" />}
+                                {/* Completion indicator - expanded state */}
+                                {!isCollapsed && status.completed && (
+                                    <CheckCircle className="w-4 h-4 text-status-success" />
+                                )}
+                                {!isCollapsed && status.inProgress && (
+                                    <div className="flex items-center gap-1.5">
+                                        <span className="text-xs text-foreground-muted font-mono">{status.progress}%</span>
+                                        <Circle className="w-3 h-3 text-accent-secondary" />
+                                    </div>
+                                )}
 
                                 {/* Tooltip for collapsed state */}
                                 {isCollapsed && (
                                     <div className="absolute left-full ml-4 px-3 py-1.5 bg-background-tertiary border border-white/10 rounded-md text-sm text-foreground opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-xl">
-                                        {link.label} {completed && "✓"}
+                                        {link.label}
+                                        {status.completed && " ✓"}
+                                        {status.inProgress && ` (${status.progress}%)`}
                                     </div>
                                 )}
                             </Link>
@@ -254,6 +337,13 @@ export default function Sidebar() {
                 </div>
 
                 <div className="p-4 border-t border-white/5 space-y-3">
+                    {/* XP Indicator */}
+                    {isCollapsed ? (
+                        <MiniXPIndicator variant="sidebar-collapsed" />
+                    ) : (
+                        <MiniXPIndicator variant="sidebar" />
+                    )}
+
                     {/* Theme Picker - Desktop */}
                     <ThemePicker collapsed={isCollapsed} />
 

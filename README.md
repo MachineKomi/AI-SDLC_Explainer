@@ -10,12 +10,20 @@ The primary learning experience is delivered through a Next.js web application f
 
 - **Interactive Lessons**: Comprehensive coverage of AI-SDLC phases, gates, artifacts, and roles
 - **Mermaid Diagrams**: Clear, responsive flowcharts and visualizations
-- **Practice Quizzes**: Test your knowledge with 24+ questions
-- **Glossary**: Quick reference for all AI-SDLC terminology
+- **Practice Quizzes**: Test your knowledge with 26+ questions
+- **Gatekeeper Scenarios**: Practice gate approval decisions with 10 scenarios
+- **Workflow Simulator**: Interactive simulation of AI-SDLC workflows
+- **Glossary**: Quick reference for 40+ AI-SDLC terms
 - **Methodology Comparison**: See how AI-SDLC compares to Waterfall and Agile
 - **Transition Guide**: Step-by-step guide for teams adopting AI-SDLC
-- **XP System**: Track your learning progress
-- **Theme Support**: Dark/light modes with multiple color themes
+- **Gamification System**: 
+  - XP rewards for all learning activities
+  - 8 progression levels (Novice → AI-SDLC Champion)
+  - 7 unlockable achievements
+  - Level-up celebrations with confetti
+  - Achievement notifications
+  - Progress dashboard on home page
+- **Theme Support**: Dark/light modes with multiple color themes (Sunset, Matrix, Ocean, Mono)
 
 ### Live Demo
 
