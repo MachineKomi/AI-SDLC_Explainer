@@ -44,10 +44,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   
   // Track previous level to detect level-ups
   const previousLevelRef = useRef<number>(1);
+  
+  // Ref to track current stored state for callbacks (avoids stale closure issues)
+  const storedStateRef = useRef<StoredState>(DEFAULT_STATE);
 
   useEffect(() => {
     const loaded = loadState();
     setStoredState(loaded);
+    storedStateRef.current = loaded;
     setState(toProgressState(loaded));
     previousLevelRef.current = loaded.gamification.level;
     setMounted(true);
@@ -55,6 +59,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   const persistState = useCallback((newStoredState: StoredState) => {
     setStoredState(newStoredState);
+    storedStateRef.current = newStoredState;
     setState(toProgressState(newStoredState));
     saveState(newStoredState);
   }, []);
@@ -330,45 +335,48 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [storedState, persistState, addXp]);
 
   const markGlossaryTermViewed = useCallback((termId: string) => {
-    const viewedTerms = storedState.glossary?.viewedTerms || [];
+    const currentState = storedStateRef.current;
+    const viewedTerms = currentState.glossary?.viewedTerms || [];
     if (viewedTerms.includes(termId)) return; // Already viewed
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       glossary: {
         viewedTerms: [...viewedTerms, termId]
       }
     };
     persistState(newState);
     addXp('glossary_term_viewed');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const markReferenceViewed = useCallback(() => {
-    if (storedState.reference?.viewed) return; // Already viewed
+    const currentState = storedStateRef.current;
+    if (currentState.reference?.viewed) return; // Already viewed
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       reference: {
         viewed: true
       }
     };
     persistState(newState);
     addXp('reference_section_viewed');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const markVideoWatched = useCallback((videoId: string) => {
-    const watchedVideos = storedState.videos?.watched || [];
+    const currentState = storedStateRef.current;
+    const watchedVideos = currentState.videos?.watched || [];
     if (watchedVideos.includes(videoId)) return; // Already watched, no duplicate XP
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       videos: {
         watched: [...watchedVideos, videoId]
       }
     };
     persistState(newState);
     addXp('video_watched');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const resetProgress = useCallback(() => {
     const newState: StoredState = {

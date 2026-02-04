@@ -2,6 +2,11 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.2.2 - Bug Fix: Video Watch Checkbox
+ * - Fixed stale closure issue in markVideoWatched causing infinite XP
+ * - Used ref pattern to track current state in callbacks
+ * - Applied same fix to markGlossaryTermViewed and markReferenceViewed
+ * 
  * v2.2.1 - Bug Fixes
  * - Fixed broken links on sources page (aisdlc -> aidlc)
  * - Removed pulsing border effect from level-up modal
@@ -31,4 +36,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.2.1";
+export const APP_VERSION = "v2.2.2";
