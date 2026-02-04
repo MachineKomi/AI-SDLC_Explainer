@@ -2,6 +2,11 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.2.0 - Sources Page Update
+ * - Expanded sources with 15+ references organized by category
+ * - Added video sources, MCP servers, community resources
+ * - Updated attribution to clarify content derivation
+ * 
  * v2.1.1 - Bug Fix: Infinite XP loop on reference page
  * - Fixed useEffect dependency causing infinite re-renders
  * - markReferenceViewed now only runs once on mount
@@ -21,4 +26,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.1.1";
+export const APP_VERSION = "v2.2.0";
