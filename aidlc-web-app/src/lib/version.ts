@@ -2,6 +2,10 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.1.1 - Bug Fix: Infinite XP loop on reference page
+ * - Fixed useEffect dependency causing infinite re-renders
+ * - markReferenceViewed now only runs once on mount
+ * 
  * v2.1.0 - Video Lessons Feature
  * - 2x2 grid of curated AI-SDLC video lessons on lessons page
  * - YouTube embeds with responsive 16:9 aspect ratio
@@ -17,4 +21,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.1.0";
+export const APP_VERSION = "v2.1.1";

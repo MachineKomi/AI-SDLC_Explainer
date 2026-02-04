@@ -38,10 +38,12 @@ export default function ReferencePage() {
   const router = useRouter();
   const { state, markReferenceViewed } = useProgress();
 
-  // Award XP on first view
+  // Award XP on first view - only run once on mount
+  // The guard inside markReferenceViewed prevents duplicate XP
   useEffect(() => {
     markReferenceViewed();
-  }, [markReferenceViewed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
