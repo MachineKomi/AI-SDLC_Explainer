@@ -2,6 +2,11 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.2.3 - Bug Fix: Complete stale closure fix
+ * - Fixed ALL callbacks to use storedStateRef instead of storedState
+ * - Root cause: addXp was overwriting state changes from other callbacks
+ * - Now all state mutations use the ref for consistent state access
+ * 
  * v2.2.2 - Bug Fix: Video Watch Checkbox
  * - Fixed stale closure issue in markVideoWatched causing infinite XP
  * - Used ref pattern to track current state in callbacks
@@ -36,4 +41,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.2.2";
+export const APP_VERSION = "v2.2.3";

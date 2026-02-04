@@ -142,13 +142,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addXp = useCallback((action: string, multiplier: number = 1): number => {
+    const currentState = storedStateRef.current;
     const xpGained = calculateXpReward(action, multiplier);
-    const newXp = storedState.gamification.xp + xpGained;
+    const newXp = currentState.gamification.xp + xpGained;
     const { level, title } = calculateLevel(newXp);
     const previousLevel = previousLevelRef.current;
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       gamification: { xp: newXp, level, title },
     };
 
@@ -190,17 +191,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
 
     return xpGained;
-  }, [storedState, persistState, showAchievementNotification, showLevelUpCelebration]);
+  }, [persistState, showAchievementNotification, showLevelUpCelebration]);
 
   const markLessonCompleted = useCallback((lessonId: string) => {
-    if (storedState.lessons.completed.includes(lessonId)) return;
+    const currentState = storedStateRef.current;
+    if (currentState.lessons.completed.includes(lessonId)) return;
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       lessons: {
-        ...storedState.lessons,
-        completed: [...storedState.lessons.completed, lessonId],
-        inProgress: { ...storedState.lessons.inProgress },
+        ...currentState.lessons,
+        completed: [...currentState.lessons.completed, lessonId],
+        inProgress: { ...currentState.lessons.inProgress },
       },
     };
 
@@ -209,17 +211,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
     persistState(newState);
     addXp('lesson_completed');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const updateLessonProgress = useCallback((lessonId: string, sectionIndex: number) => {
+    const currentState = storedStateRef.current;
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       lessons: {
-        ...storedState.lessons,
+        ...currentState.lessons,
         inProgress: {
-          ...storedState.lessons.inProgress,
+          ...currentState.lessons.inProgress,
           [lessonId]: {
-            startedAt: storedState.lessons.inProgress[lessonId]?.startedAt || new Date().toISOString(),
+            startedAt: currentState.lessons.inProgress[lessonId]?.startedAt || new Date().toISOString(),
             lastSection: sectionIndex,
           },
         },
@@ -228,17 +231,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
     persistState(newState);
     addXp('lesson_section');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const saveQuizResult = useCallback((score: number, total: number) => {
+    const currentState = storedStateRef.current;
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       quiz: {
         completed: true,
         lastScore: score,
         totalQuestions: total,
-        attempts: storedState.quiz.attempts + 1,
-        bestScore: Math.max(storedState.quiz.bestScore, score),
+        attempts: currentState.quiz.attempts + 1,
+        bestScore: Math.max(currentState.quiz.bestScore, score),
       },
     };
 
@@ -250,17 +254,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     if (score === total) {
       addXp('quiz_perfect');
     }
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const saveGatekeeperResult = useCallback((score: number, total: number) => {
+    const currentState = storedStateRef.current;
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       gatekeeper: {
         completed: true,
         lastScore: score,
         totalScenarios: total,
-        attempts: storedState.gatekeeper.attempts + 1,
-        bestScore: Math.max(storedState.gatekeeper.bestScore, score),
+        attempts: currentState.gatekeeper.attempts + 1,
+        bestScore: Math.max(currentState.gatekeeper.bestScore, score),
       },
     };
 
@@ -269,16 +274,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     // Award XP
     addXp('gate_correct', score);
     addXp('gate_completed');
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const recordSimulationRun = useCallback((requestType: string) => {
-    const explored = storedState.simulator.requestTypesExplored;
+    const currentState = storedStateRef.current;
+    const explored = currentState.simulator.requestTypesExplored;
     const isNewType = !explored.includes(requestType);
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       simulator: {
-        runs: storedState.simulator.runs + 1,
+        runs: currentState.simulator.runs + 1,
         requestTypesExplored: isNewType ? [...explored, requestType] : explored,
         lastRun: new Date().toISOString(),
       },
@@ -290,49 +296,51 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     if (isNewType) {
       addXp('simulator_new_type');
     }
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const toggleGymTask = useCallback((taskId: string) => {
-    const isCompleted = storedState.gym?.completedTasks?.includes(taskId) ?? false;
+    const currentState = storedStateRef.current;
+    const isCompleted = currentState.gym?.completedTasks?.includes(taskId) ?? false;
     let newCompletedTasks: string[];
 
     if (isCompleted) {
-      newCompletedTasks = (storedState.gym?.completedTasks || []).filter(id => id !== taskId);
+      newCompletedTasks = (currentState.gym?.completedTasks || []).filter(id => id !== taskId);
     } else {
-      newCompletedTasks = [...(storedState.gym?.completedTasks || []), taskId];
+      newCompletedTasks = [...(currentState.gym?.completedTasks || []), taskId];
       // Award XP for completing a task
       addXp('gym_task');
     }
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       gym: {
         completedTasks: newCompletedTasks
       }
     };
     persistState(newState);
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const toggleTransitionItem = useCallback((itemId: string) => {
-    const isCompleted = storedState.transition?.checklist?.includes(itemId) ?? false;
+    const currentState = storedStateRef.current;
+    const isCompleted = currentState.transition?.checklist?.includes(itemId) ?? false;
     let newChecklist: string[];
 
     if (isCompleted) {
-      newChecklist = (storedState.transition?.checklist || []).filter(id => id !== itemId);
+      newChecklist = (currentState.transition?.checklist || []).filter(id => id !== itemId);
     } else {
-      newChecklist = [...(storedState.transition?.checklist || []), itemId];
+      newChecklist = [...(currentState.transition?.checklist || []), itemId];
       // Award XP for checking an item
       addXp('transition_check');
     }
 
     const newState: StoredState = {
-      ...storedState,
+      ...currentState,
       transition: {
         checklist: newChecklist
       }
     };
     persistState(newState);
-  }, [storedState, persistState, addXp]);
+  }, [persistState, addXp]);
 
   const markGlossaryTermViewed = useCallback((termId: string) => {
     const currentState = storedStateRef.current;
@@ -379,17 +387,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [persistState, addXp]);
 
   const resetProgress = useCallback(() => {
+    const currentState = storedStateRef.current;
     const newState: StoredState = {
       ...DEFAULT_STATE,
-      firstOpened: storedState.firstOpened,
-      theme: storedState.theme,
+      firstOpened: currentState.firstOpened,
+      theme: currentState.theme,
       gym: { completedTasks: [] },
       transition: { checklist: [] },
       glossary: { viewedTerms: [] },
       reference: { viewed: false },
     };
     persistState(newState);
-  }, [storedState, persistState]);
+  }, [persistState]);
 
   if (!mounted) {
     return null;
