@@ -8,57 +8,140 @@ import {
   COMPARISON_METRICS,
   PROJECT_SCENARIOS,
   simulateProject,
-  Methodology,
   ProjectScenario,
   SimulationResult
 } from '@/content/comparison';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Play, Pause, RotateCcw, User, Bot,
-  CheckCircle2, Clock, GitCommit, Search,
-  Server, ShieldCheck, Terminal, AlertTriangle
+  Play, Pause, RotateCcw,
+  CheckCircle2, Terminal,
+  ShieldCheck, AlertTriangle
 } from 'lucide-react';
+import { SimulationProvider, useSimulation } from '@/context/SimulationContext';
+import { SimulationTrack } from '@/components/simulation';
+import { MethodologyId } from '@/types/simulation';
 
 type Tab = 'timeline' | 'metrics' | 'simulator';
 
+/**
+ * Simulation Controls Component
+ * Uses the simulation context for play/pause/reset
+ */
+function SimulationControls() {
+  const { play, pause, reset, isPlaying, isPaused, isComplete, getFormattedElapsed, state } = useSimulation();
+  
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  };
+  
+  const handleReset = () => {
+    reset();
+  };
+  
+  // Get status text
+  const getStatusText = () => {
+    if (isComplete) return 'COMPLETE';
+    if (isPlaying) return 'RUNNING...';
+    if (isPaused) return 'PAUSED';
+    return 'READY';
+  };
+  
+  return (
+    <div className="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={handleTogglePlay}
+          disabled={isComplete}
+          className={`p-3 rounded-full transition-shadow ${
+            isComplete 
+              ? 'bg-accent-success/20 text-accent-success cursor-default'
+              : 'bg-accent-primary text-white hover:bg-accent-primary/80 hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]'
+          }`}
+        >
+          {isComplete ? (
+            <CheckCircle2 className="w-5 h-5" />
+          ) : isPlaying ? (
+            <Pause className="w-5 h-5" />
+          ) : (
+            <Play className="w-5 h-5 ml-1" />
+          )}
+        </button>
+        <button
+          onClick={handleReset}
+          className="p-3 rounded-full bg-white/5 text-foreground-muted hover:text-white transition-colors"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </button>
+        <div className="flex flex-col">
+          <span className="text-xs text-foreground-muted font-mono uppercase tracking-wider">Simulation Status</span>
+          <span className={`font-mono ${isComplete ? 'text-accent-success' : 'text-accent-primary'}`}>
+            {getStatusText()}
+          </span>
+        </div>
+      </div>
+      <div className="font-mono text-2xl font-bold tabular-nums text-foreground">
+        {getFormattedElapsed()}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Timeline Tab Content with Simulation
+ */
+function TimelineContent() {
+  const methodologies: MethodologyId[] = ['waterfall', 'agile', 'aidlc'];
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      className="space-y-6"
+    >
+      <div className="glass-card p-6 rounded-xl border border-white/10">
+        <SimulationControls />
+        
+        <div className="space-y-8">
+          {methodologies.map((methodologyId) => (
+            <SimulationTrack 
+              key={methodologyId} 
+              methodologyId={methodologyId} 
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* TUI Info Panel */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {[
+          { title: "Plan-First Execution", desc: "No code is written until the plan is explicit and verified.", icon: Terminal },
+          { title: "Proof Over Prose", desc: "Progress isn't a status update; it's a passing test suite.", icon: CheckCircle2 },
+          { title: "Human Accountability", desc: "AI generates the work; Humans verify and own the risk.", icon: ShieldCheck },
+        ].map((item, idx) => (
+          <div key={idx} className="glass-card p-5 rounded-xl border border-white/5 hover:border-accent-primary/30 transition-colors">
+            <item.icon className="w-8 h-8 text-accent-secondary mb-3" />
+            <h3 className="font-bold text-foreground mb-1">{item.title}</h3>
+            <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+/**
+ * Main Comparison Page Component
+ */
 export default function ComparisonPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>('timeline');
   const [selectedScenario, setSelectedScenario] = useState<ProjectScenario>(PROJECT_SCENARIOS[0]);
   const [simulationResults, setSimulationResults] = useState<SimulationResult[]>([]);
-
-  // Animation State
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  // Auto-play on mount
-  useEffect(() => {
-    setActiveTab('timeline');
-    setIsPlaying(true);
-  }, []);
-
-  // Timer for race animation
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          setIsPlaying(false);
-          return 100;
-        }
-        return prev + 0.5;
-      });
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [isPlaying]);
-
-  const togglePlay = () => setIsPlaying(!isPlaying);
-  const resetAnimation = () => {
-    setIsPlaying(false);
-    setProgress(0);
-  };
 
   useEffect(() => {
     if (activeTab === 'simulator') {
@@ -85,7 +168,7 @@ export default function ComparisonPage() {
   }, [handleKeyDown]);
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: 'timeline', label: 'Race Visualization', icon: '🏎️' },
+    { id: 'timeline', label: 'Race Simulation', icon: '🏎️' },
     { id: 'metrics', label: 'Data Comparison', icon: '📊' },
     { id: 'simulator', label: 'Project Simulator', icon: '🔬' },
   ];
@@ -132,125 +215,12 @@ export default function ComparisonPage() {
           ))}
         </div>
 
-        {/* Timeline (Race) Animation */}
+        {/* Tab Content */}
         <AnimatePresence mode="wait">
           {activeTab === 'timeline' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="space-y-6"
-            >
-              <div className="glass-card p-6 rounded-xl border border-white/10">
-                <div className="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={togglePlay}
-                      className="p-3 rounded-full bg-accent-primary text-white hover:bg-accent-primary/80 transition-shadow hover:shadow-[0_0_15px_rgba(236,72,153,0.4)]"
-                    >
-                      {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-1" />}
-                    </button>
-                    <button
-                      onClick={resetAnimation}
-                      className="p-3 rounded-full bg-white/5 text-foreground-muted hover:text-white transition-colors"
-                    >
-                      <RotateCcw className="w-5 h-5" />
-                    </button>
-                    <div className="flex flex-col">
-                      <span className="text-xs text-foreground-muted font-mono uppercase tracking-wider">Simulation Status</span>
-                      <span className="font-mono text-accent-primary">{isPlaying ? 'RUNNING...' : 'PAUSED'}</span>
-                    </div>
-                  </div>
-                  <div className="font-mono text-2xl font-bold tabular-nums text-foreground">
-                    Week {Math.floor(progress / 5)}
-                  </div>
-                </div>
-
-                <div className="space-y-8">
-                  {METHODOLOGIES.map((method, idx) => {
-                    // Calculate relative speed (AI-SDLC is fastest)
-                    const speedMultiplier = method.id === 'aidlc' ? 2.5 : method.id === 'agile' ? 1.5 : 1;
-                    const displayProgress = Math.min(100, progress * speedMultiplier);
-                    const isFinished = displayProgress >= 100;
-
-                    return (
-                      <div key={method.id} className="relative">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className={`font-bold text-lg ${method.id === 'aidlc' ? 'text-accent-primary text-glow' : 'text-foreground'}`}>
-                            {method.name}
-                          </h3>
-                          {isFinished && (
-                            <motion.span
-                              initial={{ opacity: 0, scale: 0.5 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              className="text-accent-success font-bold flex items-center gap-1"
-                            >
-                              <CheckCircle2 className="w-4 h-4" /> Delivered
-                            </motion.span>
-                          )}
-                        </div>
-
-                        {/* Track */}
-                        <div className="h-16 bg-background-tertiary rounded-lg relative overflow-hidden flex items-center px-4 border border-white/5">
-                          {/* Grid lines on track */}
-                          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_100%]" />
-
-                          {/* Progress Indicator */}
-                          <motion.div
-                            className="absolute top-0 bottom-0 left-0 bg-accent-primary/10 border-r border-accent-primary/30"
-                            style={{ width: `${displayProgress}%` }}
-                          />
-
-                          {/* Runner Icon */}
-                          <motion.div
-                            className="absolute z-10"
-                            style={{ left: `${displayProgress}%`, x: '-50%' }}
-                          >
-                            <div className={`
-                              p-2 rounded-lg border shadow-lg backdrop-blur-sm
-                              ${method.id === 'aidlc'
-                                ? 'bg-accent-primary text-white border-accent-primary shadow-[0_0_15px_rgba(236,72,153,0.5)]'
-                                : 'bg-background-secondary text-foreground-muted border-white/10'
-                              }
-                            `}>
-                              {method.id === 'aidlc' ? <Bot className="w-6 h-6" /> : <User className="w-6 h-6" />}
-                            </div>
-
-                            {/* Action Label */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 whitespace-nowrap text-xs font-mono font-bold bg-background/80 px-2 py-0.5 rounded border border-white/10">
-                              {displayProgress < 30 ? 'PLANNING'
-                                : displayProgress < 70 ? (method.id === 'aidlc' ? 'GENERATING' : 'BUILDING')
-                                  : displayProgress < 100 ? 'TESTING' : 'DONE'}
-                            </div>
-                          </motion.div>
-                        </div>
-
-                        {/* Stats */}
-                        <div className="flex gap-6 mt-2 text-sm text-foreground-muted font-mono pl-1">
-                          <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> Time: {method.cycleTimeFactor}x</span>
-                          <span className="flex items-center gap-1.5"><Server className="w-3 h-3" /> Handoffs: {method.id === 'waterfall' ? 'Sequential' : method.id === 'agile' ? 'Sprint-based' : 'Instant'}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* TUI Info Panel */}
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  { title: "Plan-First Execution", desc: "No code is written until the plan is explicit and verified.", icon: Terminal },
-                  { title: "Proof Over Prose", desc: "Progress isn't a status update; it's a passing test suite.", icon: CheckCircle2 },
-                  { title: "Human Accountability", desc: "AI generates the work; Humans verify and own the risk.", icon: ShieldCheck },
-                ].map((item, idx) => (
-                  <div key={idx} className="glass-card p-5 rounded-xl border border-white/5 hover:border-accent-primary/30 transition-colors">
-                    <item.icon className="w-8 h-8 text-accent-secondary mb-3" />
-                    <h3 className="font-bold text-foreground mb-1">{item.title}</h3>
-                    <p className="text-sm text-foreground-muted leading-relaxed">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            <SimulationProvider>
+              <TimelineContent />
+            </SimulationProvider>
           )}
 
           {/* Metrics Tab */}

@@ -2,6 +2,13 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.3.0 - Comparison Simulation Engine
+ * - Enhanced race visualization with detailed task-based simulation
+ * - Real-time activity logs showing task execution for each methodology
+ * - Task timers, wait state indicators, and time breakdowns
+ * - Shows work time vs wait time to highlight AI-SDLC efficiency
+ * - Realistic task sequences for Waterfall, Agile, and AI-SDLC
+ * 
  * v2.2.3 - Bug Fix: Complete stale closure fix
  * - Fixed ALL callbacks to use storedStateRef instead of storedState
  * - Root cause: addXp was overwriting state changes from other callbacks
@@ -41,4 +48,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.2.3";
+export const APP_VERSION = "v2.3.0";
