@@ -165,9 +165,6 @@ export default function LevelUpModal({
                   >
                     <span className="font-bold text-accent-primary">{newLevel}</span>
                   </motion.div>
-
-                  {/* Pulse rings */}
-                  <div className={`absolute inset-0 rounded-2xl border-2 border-current opacity-50 animate-ping bg-gradient-to-br ${theme.gradient}`} style={{ animationDuration: '2s' }} />
                 </motion.div>
 
                 {/* Title */}

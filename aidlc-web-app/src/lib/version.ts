@@ -2,6 +2,11 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.2.1 - Bug Fixes
+ * - Fixed broken links on sources page (aisdlc -> aidlc)
+ * - Removed pulsing border effect from level-up modal
+ * - Fixed video watch checkbox to be disabled after watching (no duplicate XP)
+ * 
  * v2.2.0 - Sources Page Update
  * - Expanded sources with 15+ references organized by category
  * - Added video sources, MCP servers, community resources
@@ -26,4 +31,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.2.0";
+export const APP_VERSION = "v2.2.1";

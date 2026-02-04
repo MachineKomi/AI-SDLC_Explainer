@@ -21,13 +21,13 @@ const OFFICIAL_SOURCES: Source[] = [
   {
     title: 'Open-Sourcing Adaptive Workflows for AI-SDLC',
     description: 'AWS blog post on open-sourcing adaptive workflows',
-    url: 'https://aws.amazon.com/blogs/devops/open-sourcing-adaptive-workflows-for-ai-driven-development-life-cycle-AI-SDLC/',
+    url: 'https://aws.amazon.com/blogs/devops/open-sourcing-adaptive-workflows-for-ai-driven-development-life-cycle-ai-dlc/',
     type: 'blog',
   },
   {
     title: 'AI-SDLC Workflows Repository',
     description: 'Official AWS Labs repository with AI-SDLC workflow definitions and rules',
-    url: 'https://github.com/awslabs/aisdlc-workflows',
+    url: 'https://github.com/awslabs/aidlc-workflows',
     type: 'repository',
   },
   {
@@ -75,7 +75,7 @@ const COMMUNITY_SOURCES: Source[] = [
   {
     title: 'DeepWiki: AI-SDLC Workflows',
     description: 'Community documentation and analysis of AI-SDLC workflows',
-    url: 'https://deepwiki.com/awslabs/aisdlc-workflows',
+    url: 'https://deepwiki.com/awslabs/aidlc-workflows',
     type: 'documentation',
   },
   {
