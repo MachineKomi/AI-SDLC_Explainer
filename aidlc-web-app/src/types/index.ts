@@ -3,6 +3,13 @@
 // ============================================
 
 // === Lesson Types ===
+export interface SectionQuestion {
+  prompt: string;
+  options: string[];
+  correct: number;
+  explanation: string;
+}
+
 export interface Section {
   id: string;
   title: string;
@@ -13,6 +20,7 @@ export interface Section {
   'accountability-table' | 'small-batches' | 'adaptive-depth' |
   'structured-qa' | 'proof-over-prose' | 'audit-trail' |
   'context-persistence' | 'fail-fast' | 'prompts-as-code' | 'inception-flow';
+  question?: SectionQuestion;
 }
 
 export interface Lesson {

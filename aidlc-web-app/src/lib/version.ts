@@ -2,6 +2,13 @@
  * Application version constant
  * Format: vMAJOR.MINOR.PATCH
  * 
+ * v2.4.0 - Lesson Quiz Questions + Gym XP Fix
+ * - Added quiz questions at the end of each lesson section
+ * - Must answer question to proceed to next section (gates progression)
+ * - Awards 20 XP per question answered
+ * - Fixed Gym page XP bug (persistState before addXp to avoid stale closure)
+ * - Fixed Transition page XP bug (same pattern)
+ * 
  * v2.3.1 - Fix: Simulation animation loop
  * - Fixed animation not running - replaced requestAnimationFrame with setInterval
  * - Consistent 50ms tick rate for smooth animation
@@ -52,4 +59,4 @@
  * - XP rewards consistency
  * - Progress dashboard on home
  */
-export const APP_VERSION = "v2.3.1";
+export const APP_VERSION = "v2.4.0";

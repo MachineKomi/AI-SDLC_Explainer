@@ -3,6 +3,7 @@
 export const XP_REWARDS: Record<string, number> = {
   lesson_completed: 100,
   lesson_section: 10,
+  lesson_question: 20,           // XP for answering a lesson section question
   quiz_correct: 25,
   quiz_completed: 50,
   quiz_perfect: 200,

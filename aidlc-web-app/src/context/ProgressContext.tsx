@@ -302,13 +302,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     const currentState = storedStateRef.current;
     const isCompleted = currentState.gym?.completedTasks?.includes(taskId) ?? false;
     let newCompletedTasks: string[];
+    let shouldAwardXp = false;
 
     if (isCompleted) {
       newCompletedTasks = (currentState.gym?.completedTasks || []).filter(id => id !== taskId);
     } else {
       newCompletedTasks = [...(currentState.gym?.completedTasks || []), taskId];
-      // Award XP for completing a task
-      addXp('gym_task');
+      shouldAwardXp = true;
     }
 
     const newState: StoredState = {
@@ -317,20 +317,25 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         completedTasks: newCompletedTasks
       }
     };
+    // IMPORTANT: persistState first, then addXp reads from updated storedStateRef
     persistState(newState);
+    
+    if (shouldAwardXp) {
+      addXp('gym_task');
+    }
   }, [persistState, addXp]);
 
   const toggleTransitionItem = useCallback((itemId: string) => {
     const currentState = storedStateRef.current;
     const isCompleted = currentState.transition?.checklist?.includes(itemId) ?? false;
     let newChecklist: string[];
+    let shouldAwardXp = false;
 
     if (isCompleted) {
       newChecklist = (currentState.transition?.checklist || []).filter(id => id !== itemId);
     } else {
       newChecklist = [...(currentState.transition?.checklist || []), itemId];
-      // Award XP for checking an item
-      addXp('transition_check');
+      shouldAwardXp = true;
     }
 
     const newState: StoredState = {
@@ -339,7 +344,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         checklist: newChecklist
       }
     };
+    // IMPORTANT: persistState first, then addXp reads from updated storedStateRef
     persistState(newState);
+    
+    if (shouldAwardXp) {
+      addXp('transition_check');
+    }
   }, [persistState, addXp]);
 
   const markGlossaryTermViewed = useCallback((termId: string) => {
