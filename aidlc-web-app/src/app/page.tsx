@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import NavigationGrid from "@/components/NavigationGrid";
 import XPBar from "@/components/XPBar";
 import ProgressDashboard from "@/components/ProgressDashboard";
+import { APP_VERSION } from "@/lib/version";
 
 export default function Home() {
   return (
@@ -25,6 +26,11 @@ export default function Home() {
           <NavigationGrid />
         </div>
       </div>
+
+      {/* Version footer */}
+      <footer className="relative z-10 text-center py-4 text-xs text-muted-foreground/60">
+        <span className="font-mono">{APP_VERSION}</span>
+      </footer>
     </div>
   );
 }

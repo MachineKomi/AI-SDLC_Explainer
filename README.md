@@ -4,6 +4,8 @@ An interactive learning platform that teaches the **AI-Driven Software Developme
 
 > **AI-SDLC** is an AI-native methodology that makes AI a central collaborator, redesigning workflows, roles, and iterations for faster decision-making, seamless task execution, and continuous adaptability.
 
+![AI-SDLC Explainer Screenshot](AI-SDLC_Explainer_Screenshot.jpg)
+
 ## 🌐 Web Application
 
 The primary learning experience is delivered through a Next.js web application featuring:
