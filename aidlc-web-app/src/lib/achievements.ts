@@ -101,3 +101,17 @@ export function getAchievementProgress(state: ProgressState): {
     percentage: Math.floor((unlocked / total) * 100),
   };
 }
+
+/** Get a user-friendly hint for how to unlock a specific achievement */
+export function getUnlockHint(achievementId: string): string {
+  switch (achievementId) {
+    case 'first-steps': return 'Complete any lesson to unlock';
+    case 'scholar': return 'Complete all 3 lessons to unlock';
+    case 'quiz-master': return 'Score 80%+ on the quiz to unlock';
+    case 'perfect-score': return 'Get 100% on the quiz to unlock';
+    case 'gatekeeper': return 'Score 80%+ on gatekeeper scenarios to unlock';
+    case 'simulator-explorer': return 'Explore all 4 simulator request types to unlock';
+    case 'completionist': return 'Unlock all other achievements to unlock';
+    default: return 'Keep learning to unlock';
+  }
+}

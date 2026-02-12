@@ -18,7 +18,8 @@ import {
     Moon,
     Sun,
     CheckCircle,
-    Circle
+    Circle,
+    Trophy
 } from 'lucide-react';
 import { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
@@ -100,6 +101,7 @@ export default function Sidebar() {
         { href: "/glossary", label: "Glossary", icon: BookMarked },
         { href: "/reference", label: "Reference", icon: FileText },
         { href: "/sources", label: "Sources", icon: Link2 },
+        { href: "/progress", label: "Progress", icon: Trophy },
     ];
 
     // Check completion status helper - returns { completed: boolean, progress?: number }

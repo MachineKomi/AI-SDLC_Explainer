@@ -126,6 +126,30 @@ const TOOL_SOURCES: Source[] = [
     url: 'https://kiro.dev',
     type: 'documentation',
   },
+  {
+    title: 'OpenAI Codex',
+    description: 'Cloud-based AI coding agent from OpenAI for autonomous software engineering tasks',
+    url: 'https://openai.com/index/introducing-codex/',
+    type: 'documentation',
+  },
+  {
+    title: 'Cursor',
+    description: 'AI-first code editor built for pair-programming with AI',
+    url: 'https://www.cursor.com/',
+    type: 'documentation',
+  },
+  {
+    title: 'Claude Code',
+    description: 'Anthropic\'s agentic coding tool for terminal-based AI development',
+    url: 'https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview',
+    type: 'documentation',
+  },
+  {
+    title: 'GitHub Copilot',
+    description: 'AI pair programmer integrated into VS Code, JetBrains, and more',
+    url: 'https://github.com/features/copilot',
+    type: 'documentation',
+  },
 ];
 
 export default function SourcesPage() {
@@ -239,9 +263,12 @@ export default function SourcesPage() {
 
       {/* Tools */}
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-          <span>🛠️</span> AI-SDLC Tools
+        <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+          <span>🛠️</span> AI Coding Tools
         </h2>
+        <p className="text-sm text-foreground-muted mb-4">
+          AI-SDLC is methodology-agnostic — it works with any AI coding tool. Here are some popular options.
+        </p>
         {renderSourceGrid(TOOL_SOURCES)}
       </section>
 

@@ -303,14 +303,39 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
             ))}
           </div>
 
-          <button
-            onClick={() => goToSection(currentSection + 1)}
-            disabled={!canProceed}
-            className={`btn ${canProceed ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
-            title={!canProceed ? 'Answer the question to continue' : ''}
-          >
-            {isLastSection ? (isLastLesson ? 'Start Practice →' : 'Next Lesson →') : 'Next →'}
-          </button>
+          {isLastSection ? (
+            isLastLesson ? (
+              <button
+                onClick={() => router.push('/practice')}
+                disabled={!canProceed}
+                className={`btn ${canProceed ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+              >
+                Start Practice →
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  const nextLesson = allLessons[currentIndex + 1];
+                  if (nextLesson) {
+                    router.push(`/lessons/${nextLesson.id}`);
+                  }
+                }}
+                disabled={!canProceed}
+                className={`btn ${canProceed ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+              >
+                Next Lesson →
+              </button>
+            )
+          ) : (
+            <button
+              onClick={() => goToSection(currentSection + 1)}
+              disabled={!canProceed}
+              className={`btn ${canProceed ? 'btn-primary' : 'btn-secondary opacity-50 cursor-not-allowed'}`}
+              title={!canProceed ? 'Answer the question to continue' : ''}
+            >
+              Next →
+            </button>
+          )}
         </div>
         
         {hasQuestion && !canProceed && (

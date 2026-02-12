@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useProgress } from '@/context/ProgressContext';
-import { ACHIEVEMENTS, getAchievementProgress } from '@/lib/achievements';
+import { ACHIEVEMENTS, getAchievementProgress, getUnlockHint } from '@/lib/achievements';
 import { 
     Trophy, Zap, BookOpen, Target, Cpu, ArrowRightLeft, 
-    BookMarked, FileText, Sparkles, Lock, CheckCircle
+    BookMarked, FileText, Sparkles, Lock, CheckCircle, Info
 } from 'lucide-react';
 
 /**
@@ -267,17 +267,24 @@ export default function ProgressDashboard() {
                                     initial={{ opacity: 0, scale: 0.8 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.2, delay: idx * 0.05 }}
-                                    className={`relative aspect-square rounded-lg flex items-center justify-center text-2xl transition-all ${
+                                    className={`relative aspect-square rounded-lg flex items-center justify-center text-2xl transition-all group ${
                                         isUnlocked 
                                             ? 'bg-accent-primary/20 border border-accent-primary/30' 
-                                            : 'bg-background-tertiary/50 border border-white/5 grayscale opacity-50'
+                                            : 'bg-background-tertiary/50 border border-white/5 grayscale opacity-50 hover:opacity-75'
                                     }`}
-                                    title={`${achievement.name}: ${achievement.description}`}
+                                    title={isUnlocked ? `${achievement.name}: ${achievement.description}` : getUnlockHint(achievement.id)}
                                 >
                                     {isUnlocked ? (
                                         <span>{achievement.icon}</span>
                                     ) : (
                                         <Lock className="w-4 h-4 text-foreground-muted" />
+                                    )}
+                                    {/* Unlock hint tooltip for locked achievements */}
+                                    {!isUnlocked && (
+                                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1.5 bg-background-tertiary border border-white/10 rounded-md text-xs text-accent-primary opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50 shadow-xl transition-opacity flex items-center gap-1">
+                                            <Info className="w-3 h-3 flex-shrink-0" />
+                                            {getUnlockHint(achievement.id)}
+                                        </div>
                                     )}
                                 </motion.div>
                             );

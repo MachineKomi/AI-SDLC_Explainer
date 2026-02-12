@@ -3,6 +3,7 @@
 import { useProgress } from '@/context/ProgressContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Trophy, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { getProgressToNextLevel, LEVEL_THRESHOLDS } from '@/lib/xp';
 
@@ -65,8 +66,8 @@ export default function MiniXPIndicator({
   // Sidebar collapsed variant - icon only with tooltip
   if (variant === 'sidebar-collapsed') {
     return (
-      <div className="relative group">
-        <div className="w-10 h-10 rounded-lg bg-accent-primary/10 border border-accent-primary/20 flex items-center justify-center cursor-default">
+      <Link href="/progress" className="relative group block">
+        <div className="w-10 h-10 rounded-lg bg-accent-primary/10 border border-accent-primary/20 flex items-center justify-center cursor-pointer hover:bg-accent-primary/20 transition-colors">
           <Trophy className="w-5 h-5 text-accent-primary" />
         </div>
         
@@ -93,14 +94,14 @@ export default function MiniXPIndicator({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </Link>
     );
   }
 
   // Sidebar expanded variant
   if (variant === 'sidebar') {
     return (
-      <div className="px-3 py-3 rounded-lg bg-background-tertiary/50 border border-white/5">
+      <Link href="/progress" className="block px-3 py-3 rounded-lg bg-background-tertiary/50 border border-white/5 hover:border-white/10 transition-colors cursor-pointer">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-accent-secondary" />
@@ -142,16 +143,17 @@ export default function MiniXPIndicator({
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </Link>
     );
   }
 
   // Header variant (default) - compact horizontal display
   return (
+    <Link href="/progress">
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative flex items-center gap-3 px-3 py-2 rounded-lg bg-background-secondary/80 backdrop-blur-sm border border-white/10 shadow-lg"
+      className="relative flex items-center gap-3 px-3 py-2 rounded-lg bg-background-secondary/80 backdrop-blur-sm border border-white/10 shadow-lg cursor-pointer hover:border-white/20 transition-colors"
     >
       {/* Level Badge */}
       <div className="flex items-center gap-1.5">
@@ -203,5 +205,6 @@ export default function MiniXPIndicator({
         )}
       </AnimatePresence>
     </motion.div>
+    </Link>
   );
 }
