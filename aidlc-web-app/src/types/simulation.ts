@@ -15,7 +15,8 @@ export type TaskType =
   | 'review'     // Code/design reviews
   | 'wait'       // Waiting for approval/sign-off
   | 'handoff'    // Transition between teams
-  | 'validation'; // AI-SDLC human validation gates
+  | 'validation' // AI-SDLC human validation gates
+  | 'scenario';  // External holdout scenario validation (AI-SDLC)
 
 /**
  * A discrete unit of work within a methodology simulation

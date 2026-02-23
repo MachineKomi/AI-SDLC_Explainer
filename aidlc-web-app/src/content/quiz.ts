@@ -415,6 +415,135 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
     },
   },
+  // 5 Levels & Operationalization Questions
+  {
+    id: 'q27',
+    prompt: 'In the "5 Levels of AI Coding" framework, what does Level 3 represent?',
+    options: [
+      'AI autocompletes your code (spicy autocomplete)',
+      'AI handles multi-file changes, you read all the code',
+      'You direct AI and review at the PR/feature level',
+      'You write specs and check outcomes — code is a black box',
+    ],
+    correct: 2,
+    explanation: 'Level 3 is "developer as manager" — you direct AI and review what it produces at the feature/PR level. The model does the implementation and submits PRs for your review. Most developers top out here.',
+    sources: {
+      local: ['content/videos.ts#5-levels-ai-coding'],
+      upstream: ['https://youtu.be/bDcgHzCBgmQ'],
+    },
+  },
+  {
+    id: 'q28',
+    prompt: 'What is the key difference between "Scenarios" and traditional "Tests" in a dark factory?',
+    options: [
+      'Scenarios are written in natural language, tests are in code',
+      'Scenarios live outside the codebase so the AI agent cannot see them during development',
+      'Scenarios are faster to run than tests',
+      'Scenarios only test the UI, tests cover the backend',
+    ],
+    correct: 1,
+    explanation: 'Scenarios are behavioral specifications stored externally — a holdout set the agent never sees during development. This prevents the AI from optimizing for test passage rather than building correct software, like preventing "teaching to the test" in education.',
+    sources: {
+      local: ['content/videos.ts#5-levels-ai-coding'],
+      upstream: ['https://youtu.be/bDcgHzCBgmQ'],
+    },
+  },
+  {
+    id: 'q29',
+    prompt: 'What does the "J-curve" describe in AI tool adoption?',
+    options: [
+      'Revenue growth from AI products',
+      'The initial productivity dip before workflows are redesigned around AI',
+      'The learning curve for prompt engineering',
+      'The cost curve of AI compute over time',
+    ],
+    correct: 1,
+    explanation: 'The J-curve is the productivity dip that happens when you bolt AI onto existing workflows without redesigning them. METR found experienced developers got 19% slower with AI tools — while believing they were 24% faster. Most organizations are stuck at the bottom.',
+    sources: {
+      local: ['content/videos.ts#5-levels-ai-coding'],
+      upstream: ['https://youtu.be/bDcgHzCBgmQ'],
+    },
+  },
+  {
+    id: 'q30',
+    prompt: 'In the AI-SDLC RACI matrix, who is NEVER the Accountable party?',
+    options: [
+      'The Product Owner',
+      'The Developer',
+      'The AI Agent',
+      'The Engineering Manager',
+    ],
+    correct: 2,
+    explanation: 'AI is never the Accountable party — this is the fundamental safety mechanism of AI-SDLC. AI is Responsible (does the work), but humans always hold Accountability (approve and own outcomes).',
+    sources: {
+      local: ['content/transition.ts'],
+      upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
+    },
+  },
+  {
+    id: 'q31',
+    prompt: 'What metric replaces "velocity" (story points) in AI-SDLC?',
+    options: [
+      'Lines of code per day',
+      'Number of AI prompts sent',
+      'Business Value Delivered (Intent Completion Rate)',
+      'Number of Bolts completed',
+    ],
+    correct: 2,
+    explanation: 'When AI flattens the effort curve between simple and complex tasks, story points lose meaning. AI-SDLC tracks Intent Completion Rate — the percentage of business goals that become shipped software.',
+    sources: {
+      local: ['content/transition.ts'],
+      upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
+    },
+  },
+  {
+    id: 'q32',
+    prompt: 'What is the red flag when Human Override Rate drops below 5%?',
+    options: [
+      'AI is perfectly calibrated',
+      'The team is too slow at reviewing',
+      'Developers are likely rubber-stamping AI output without meaningful review',
+      'The AI model needs to be upgraded',
+    ],
+    correct: 2,
+    explanation: 'A Human Override Rate below 5% is as concerning as one above 25%. It usually means developers are not scrutinizing AI output — creating "quick-cement" code that is fast to generate but rigid and hard to maintain.',
+    sources: {
+      local: ['content/glossary.ts#human-override-rate'],
+      upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
+    },
+  },
+  {
+    id: 'q33',
+    prompt: 'What is the first step in the brownfield migration path toward autonomous AI development?',
+    options: [
+      'Deploy a dark factory immediately',
+      'Rewrite the entire system from scratch',
+      'Use AI at Level 2–3 to accelerate current development work',
+      'Fire the QA team and replace with AI agents',
+    ],
+    correct: 2,
+    explanation: 'The brownfield path starts with using AI at L2/L3 to accelerate existing work. Then you reverse-engineer specs from code, build scenario suites, upgrade CI/CD for AI volume, and only then shift new development toward higher autonomy.',
+    sources: {
+      local: ['content/videos.ts#5-levels-ai-coding'],
+      upstream: ['https://youtu.be/bDcgHzCBgmQ'],
+    },
+  },
+  {
+    id: 'q34',
+    prompt: 'What does "Elevation" mean in brownfield AI-SDLC?',
+    options: [
+      'Promoting a developer to tech lead',
+      'AI reverse-engineers the existing codebase into static and dynamic models before making changes',
+      'Moving the application to the cloud',
+      'Increasing the AI model\'s context window',
+    ],
+    correct: 1,
+    explanation: 'Elevation is the mandatory brownfield step where AI reverse-engineers the codebase into component models (static) and interaction flows (dynamic). The team validates these models before any construction begins.',
+    sources: {
+      local: ['content/glossary.ts#elevation'],
+      upstream: ['https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle/'],
+    },
+  },
 ];
 
 export const QUIZ_TITLE = 'AI-SDLC Knowledge Quiz';

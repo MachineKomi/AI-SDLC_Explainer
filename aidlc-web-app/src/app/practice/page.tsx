@@ -16,6 +16,8 @@ export default function PracticePage() {
       router.push('/practice/quiz');
     } else if (e.key === '2') {
       router.push('/practice/gatekeeper');
+    } else if (e.key === '3') {
+      router.push('/practice/maturity');
     }
   }, [router]);
 
@@ -90,12 +92,31 @@ export default function PracticePage() {
             </div>
           </div>
         </Link>
+
+        {/* Maturity Assessment Card */}
+        <Link href="/practice/maturity" className="card group md:col-span-2">
+          <div className="flex items-start gap-4">
+            <span className="text-3xl">🏭</span>
+            <div className="flex-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-foreground group-hover:text-accent-primary transition-colors">
+                  AI Maturity Assessment
+                </h3>
+                <kbd className="kbd">3</kbd>
+              </div>
+              <p className="text-sm text-foreground-muted mt-1">
+                7 questions to diagnose your team&apos;s AI maturity level (L0–L5)
+              </p>
+            </div>
+          </div>
+        </Link>
       </section>
 
       <footer className="mt-8 pt-4 border-t border-background-tertiary">
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground-muted">
           <span><kbd className="kbd">1</kbd> Quiz</span>
           <span><kbd className="kbd">2</kbd> Gatekeeper</span>
+          <span><kbd className="kbd">3</kbd> Maturity</span>
           <span><kbd className="kbd">Esc</kbd> Back to home</span>
         </div>
       </footer>

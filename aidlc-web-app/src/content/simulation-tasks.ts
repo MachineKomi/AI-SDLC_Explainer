@@ -53,7 +53,7 @@ export const WATERFALL_TASKS: SimulationTask[] = [
   { 
     id: 'w4', 
     name: 'Waiting for Sign-off', 
-    description: 'Awaiting management approval to proceed',
+    description: 'Awaiting management approval from 3 stakeholders to proceed',
     durationMs: 2500, 
     team: 'Management', 
     type: 'wait', 
@@ -88,6 +88,15 @@ export const WATERFALL_TASKS: SimulationTask[] = [
     type: 'review', 
     icon: 'Search' 
   },
+  {
+    id: 'w7b',
+    name: 'Knowledge Transfer Meeting',
+    description: 'Architects explain design decisions to dev team — context lost in translation',
+    durationMs: 1500,
+    team: 'Architects → Devs',
+    type: 'ceremony',
+    icon: 'Users'
+  },
   { 
     id: 'w8', 
     name: 'Handoff to Dev Team', 
@@ -107,6 +116,15 @@ export const WATERFALL_TASKS: SimulationTask[] = [
     team: 'DevOps', 
     type: 'work', 
     icon: 'Server' 
+  },
+  {
+    id: 'w9b',
+    name: 'Waiting for Environment',
+    description: 'Dev environment provisioning blocked on infrastructure team',
+    durationMs: 1500,
+    team: 'Infrastructure',
+    type: 'wait',
+    icon: 'Clock'
   },
   { 
     id: 'w10', 
@@ -154,6 +172,15 @@ export const WATERFALL_TASKS: SimulationTask[] = [
     team: 'QA Team', 
     type: 'work', 
     icon: 'TestTube' 
+  },
+  {
+    id: 'w14b',
+    name: 'Requirements Change Request',
+    description: 'Stakeholder realizes requirements were wrong — change request filed mid-testing',
+    durationMs: 2000,
+    team: 'Stakeholders',
+    type: 'wait',
+    icon: 'AlertTriangle'
   },
   { 
     id: 'w15', 
@@ -262,7 +289,7 @@ export const AGILE_TASKS: SimulationTask[] = [
     icon: 'MessageCircle' 
   },
   
-  // Sprint 2
+  // Sprint 2 — J-curve friction: team bolted on AI tools without redesigning workflow
   { 
     id: 'a7', 
     name: 'Sprint Planning', 
@@ -283,12 +310,30 @@ export const AGILE_TASKS: SimulationTask[] = [
   },
   { 
     id: 'a9', 
-    name: 'Development Work', 
-    description: 'Implement more user stories',
-    durationMs: 3500, 
+    name: 'Development + AI Assist', 
+    description: 'Implement stories — AI generates code, devs evaluate suggestions',
+    durationMs: 2500, 
     team: 'Developers', 
     type: 'work', 
     icon: 'Code' 
+  },
+  {
+    id: 'a9b',
+    name: 'Review AI Output',
+    description: 'Developer spent 45 min evaluating AI suggestions — "writing code cheaper, owning it more expensive"',
+    durationMs: 1500,
+    team: 'Developers',
+    type: 'review',
+    icon: 'Search'
+  },
+  {
+    id: 'a9c',
+    name: 'Context Switching',
+    description: 'Switching between own mental model and AI output — debugging subtle AI-introduced errors',
+    durationMs: 1000,
+    team: 'Developers',
+    type: 'wait',
+    icon: 'RefreshCw'
   },
   { 
     id: 'a10', 
@@ -327,6 +372,15 @@ export const AGILE_TASKS: SimulationTask[] = [
     team: 'Scrum Team', 
     type: 'ceremony', 
     icon: 'Calendar' 
+  },
+  {
+    id: 'a13b',
+    name: 'Scope Creep Discussion',
+    description: 'PM wants to add features — 30 min debate on what fits in the sprint',
+    durationMs: 800,
+    team: 'Scrum Team',
+    type: 'ceremony',
+    icon: 'MessageCircle'
   },
   { 
     id: 'a14', 
@@ -399,7 +453,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai2', 
     name: 'AI: Generate Spec', 
-    description: 'AI generates requirements specification',
+    description: 'AI generates requirements, stories, NFRs, and risk descriptions',
     durationMs: 600, 
     team: 'AI Agent', 
     type: 'work', 
@@ -408,7 +462,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai3', 
     name: 'Human Validation', 
-    description: 'Human reviews and approves spec',
+    description: 'Human reviews and approves spec — Gate Pass on first review',
     durationMs: 500, 
     team: 'Human', 
     type: 'validation', 
@@ -417,7 +471,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai4', 
     name: 'AI: Elaborate Units', 
-    description: 'AI breaks down into implementation units',
+    description: 'AI breaks down into implementation units with DDD domain models',
     durationMs: 700, 
     team: 'AI Agent', 
     type: 'work', 
@@ -426,7 +480,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai5', 
     name: 'Human Validation', 
-    description: 'Human validates unit breakdown',
+    description: 'Human validates unit breakdown and domain boundaries',
     durationMs: 400, 
     team: 'Human', 
     type: 'validation', 
@@ -437,7 +491,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai6', 
     name: 'AI: Generate Code', 
-    description: 'AI generates implementation code',
+    description: 'AI generates implementation from domain model → logical design → code',
     durationMs: 1200, 
     team: 'AI Agent', 
     type: 'work', 
@@ -446,16 +500,25 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai7', 
     name: 'AI: Generate Tests', 
-    description: 'AI generates test suite',
+    description: 'AI generates test suite concurrent with implementation',
     durationMs: 800, 
     team: 'AI Agent', 
     type: 'work', 
     icon: 'Bot' 
   },
+  {
+    id: 'ai7b',
+    name: 'Scenario Validation',
+    description: 'External holdout scenarios evaluate software — agent never saw these criteria',
+    durationMs: 400,
+    team: 'Scenario Runner',
+    type: 'scenario',
+    icon: 'Shield'
+  },
   { 
     id: 'ai8', 
     name: 'Human Review', 
-    description: 'Human reviews generated code',
+    description: 'Human reviews generated code at gate — Override Rate: 18%',
     durationMs: 600, 
     team: 'Human', 
     type: 'validation', 
@@ -473,7 +536,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai10', 
     name: 'Tests Pass', 
-    description: 'CI runs and all tests pass',
+    description: 'CI runs and all tests pass — proof over prose',
     durationMs: 300, 
     team: 'CI', 
     type: 'work', 
@@ -484,16 +547,25 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai11', 
     name: 'AI: Generate More', 
-    description: 'AI generates next unit',
+    description: 'AI generates next unit — parallel execution',
     durationMs: 1000, 
     team: 'AI Agent', 
     type: 'work', 
     icon: 'Bot' 
   },
+  {
+    id: 'ai11b',
+    name: 'Scenario Validation',
+    description: 'External scenarios verify integration behavior across units',
+    durationMs: 350,
+    team: 'Scenario Runner',
+    type: 'scenario',
+    icon: 'Shield'
+  },
   { 
     id: 'ai12', 
     name: 'Human Validation', 
-    description: 'Human validates implementation',
+    description: 'Human validates implementation — Gate Pass first review',
     durationMs: 500, 
     team: 'Human', 
     type: 'validation', 
@@ -502,7 +574,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai13', 
     name: 'AI: Integration', 
-    description: 'AI integrates all components',
+    description: 'AI integrates all components against digital twin environment',
     durationMs: 600, 
     team: 'AI Agent', 
     type: 'work', 
@@ -511,7 +583,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai14', 
     name: 'All Tests Pass', 
-    description: 'Full test suite passes',
+    description: 'Full test suite + scenario holdout set passes',
     durationMs: 400, 
     team: 'CI', 
     type: 'work', 
@@ -521,8 +593,8 @@ export const AIDLC_TASKS: SimulationTask[] = [
   // Operations
   { 
     id: 'ai15', 
-    name: 'AI: Deploy Script', 
-    description: 'AI generates deployment configuration',
+    name: 'AI: Deploy Config', 
+    description: 'AI generates deployment configuration and IaC',
     durationMs: 400, 
     team: 'AI Agent', 
     type: 'work', 
@@ -531,7 +603,7 @@ export const AIDLC_TASKS: SimulationTask[] = [
   { 
     id: 'ai16', 
     name: 'Human Approval', 
-    description: 'Human approves deployment',
+    description: 'Human approves deployment — evidence reviewed',
     durationMs: 300, 
     team: 'Human', 
     type: 'validation', 

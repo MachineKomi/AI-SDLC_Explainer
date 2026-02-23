@@ -432,3 +432,146 @@ export function getReadinessItemsByCategory(category: string): ReadinessItem[] {
 export function getReadinessCategories(): string[] {
   return [...new Set(READINESS_CHECKLIST.map(item => item.category))];
 }
+
+// === ROSETTA STONE MAPPINGS ===
+
+export interface RosettaStoneEntry {
+  agile: string;
+  aidlc: string;
+  whatChanged: string;
+}
+
+export const ROSETTA_STONE: RosettaStoneEntry[] = [
+  {
+    agile: 'Epic / Project Brief',
+    aidlc: 'Intent',
+    whatChanged: 'A high-level goal statement. AI decomposes it — you don\'t manually break it down anymore.',
+  },
+  {
+    agile: 'Epic / Subdomain',
+    aidlc: 'Unit',
+    whatChanged: 'A cohesive, independently deployable work block. Think bounded context (DDD) — loosely coupled, team-assignable.',
+  },
+  {
+    agile: 'Sprint (2–6 weeks)',
+    aidlc: 'Bolt (hours–days)',
+    whatChanged: 'Same iteration concept, radically compressed. AI handles planning; you validate.',
+  },
+  {
+    agile: 'User Story',
+    aidlc: 'User Story (retained)',
+    whatChanged: 'Kept as-is — the contract between human intent and AI execution. AI drafts them; you refine.',
+  },
+  {
+    agile: 'Sprint Planning',
+    aidlc: 'Mob Elaboration',
+    whatChanged: 'One-room, shared-screen session. AI proposes decomposition; the full team challenges and refines in real-time.',
+  },
+  {
+    agile: 'Sprint Execution',
+    aidlc: 'Mob Construction',
+    whatChanged: 'Collocated teams build Bolts. AI generates domain models → logical design → code → tests. Devs validate at each gate.',
+  },
+  {
+    agile: 'Daily Standup',
+    aidlc: 'Not required',
+    whatChanged: 'With hour/day cycles and real-time AI context, async status is built into the flow.',
+  },
+  {
+    agile: 'Retrospective',
+    aidlc: 'Continuous (embedded)',
+    whatChanged: 'Each human validation point is a mini-retro. Feedback is continuous, not batched.',
+  },
+  {
+    agile: 'Velocity (story points)',
+    aidlc: 'Business Value Delivered',
+    whatChanged: 'When AI flattens effort differences, measuring effort is less meaningful. Measure outcomes.',
+  },
+  {
+    agile: 'Scrum Master',
+    aidlc: 'Role absorbed',
+    whatChanged: 'Process facilitation is handled by AI orchestration. Impediment removal shifts to real-time AI + dev collaboration.',
+  },
+  {
+    agile: 'Separate design phase',
+    aidlc: 'Integrated (DDD baked in)',
+    whatChanged: 'Domain-Driven Design is part of the method core, not an optional add-on. AI applies it during decomposition.',
+  },
+];
+
+// === RACI MATRIX ===
+
+export interface RaciEntry {
+  activity: string;
+  aiAgent: 'R' | 'A' | 'C' | 'I';
+  developer: 'R' | 'A' | 'C' | 'I';
+  productOwner: 'R' | 'A' | 'C' | 'I';
+}
+
+export const RACI_MATRIX: RaciEntry[] = [
+  { activity: 'Intent Clarification', aiAgent: 'R', developer: 'C', productOwner: 'A' },
+  { activity: 'Story & NFR Generation', aiAgent: 'R', developer: 'A', productOwner: 'A' },
+  { activity: 'Unit Decomposition', aiAgent: 'R', developer: 'A', productOwner: 'C' },
+  { activity: 'Bolt Planning', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+  { activity: 'Domain Model Design', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+  { activity: 'Logical Design + ADRs', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+  { activity: 'Code Generation', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+  { activity: 'Test Execution + Fix Proposals', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+  { activity: 'Deployment Approval', aiAgent: 'C', developer: 'A', productOwner: 'I' },
+  { activity: 'Ops Monitoring + Remediation', aiAgent: 'R', developer: 'A', productOwner: 'I' },
+];
+
+// === ANTI-PATTERNS ===
+
+export interface AntiPattern {
+  id: string;
+  name: string;
+  icon: string;
+  problem: string;
+  instead: string;
+}
+
+export const ANTI_PATTERNS: AntiPattern[] = [
+  {
+    id: 'retrofit-scrum',
+    name: 'Retrofitting AI Into Existing Scrum',
+    icon: '🔄',
+    problem: 'Adding an AI tool to your existing sprint workflow misses the point. The conversation direction must reverse: AI proposes, humans validate.',
+    instead: 'Run AI-SDLC as a parallel workstream for your pilot. Don\'t hybridize — replace ceremonies on the pilot team.',
+  },
+  {
+    id: 'rubber-stamping',
+    name: 'Rubber-Stamping AI Output',
+    icon: '🪧',
+    problem: 'Developers clicking "approve" without meaningful review creates "quick-cement" — code that\'s fast to generate but rigid and hard to maintain.',
+    instead: 'Track Override Rate. If it drops below 5%, that\'s a red flag — likely insufficient scrutiny, not perfect AI.',
+  },
+  {
+    id: 'skip-design',
+    name: 'Skipping Domain Design',
+    icon: '⏭️',
+    problem: 'Jumping from Intent to code skips the quality mechanism. Design adds minutes, not days, to each Bolt.',
+    instead: 'Enforce Domain Model → Logical Design → Code. This prevents structural debt that compounds exponentially.',
+  },
+  {
+    id: 'over-engineer-simple',
+    name: 'Applying AI-SDLC to Simple Systems',
+    icon: '🔨',
+    problem: 'AI-SDLC is for complex systems. Using it for a CRUD app is over-engineering.',
+    instead: 'Use low-code/no-code for simple systems. Reserve AI-SDLC for architectural complexity, scalability, or regulatory constraints.',
+  },
+  {
+    id: 'legacy-ceremonies',
+    name: 'Keeping All Legacy Ceremonies',
+    icon: '📋',
+    problem: 'Running standups, sprint planning, and retros alongside Bolts creates ceremony fatigue and slows the rapid cadence.',
+    instead: 'Sunset legacy ceremonies progressively on AI-SDLC workstreams. Mob Elaboration replaces planning. Continuous validation replaces retros.',
+  },
+  {
+    id: 'skip-elevation',
+    name: 'Ignoring Brownfield Context Elevation',
+    icon: '🏚️',
+    problem: 'Letting AI modify legacy code without creating static/dynamic models first leads to fragile, context-blind changes.',
+    instead: 'Always run the Elevation step. AI reverse-engineers into component models. Devs validate before any changes begin.',
+  },
+];

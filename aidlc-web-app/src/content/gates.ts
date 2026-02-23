@@ -547,6 +547,182 @@ We'd like to deploy Monday. Can we get production approval?`,
       'Dependencies between new units mapped',
     ],
   },
+  // 5 Levels & Operationalization Scenarios
+  {
+    id: 'g11',
+    phase: 'Construction',
+    stage: 'Domain Model Validation',
+    context: 'Your team has been using AI-SDLC for three weeks. You notice the Human Override Rate has dropped to 2% — developers are approving AI-generated domain models in under 30 seconds. The AI just submitted a domain model for a payment processing unit.',
+    ai_plan: `## Domain Model: Payment Processing Unit
+
+### Entities
+- Payment (id, amount, currency, status, created_at)
+- PaymentMethod (id, type, last_four, expiry)
+- Transaction (id, payment_id, gateway_response, timestamp)
+
+### Services
+- PaymentService: processPayment(), refundPayment()
+- GatewayAdapter: chargeCard(), voidTransaction()
+
+### Status
+Developer approved in 22 seconds.
+Human Override Rate this week: 2%
+Gate Pass Rate: 98%
+
+### Request
+Domain model approved. Proceeding to logical design.`,
+    flaws: [
+      'Human Override Rate at 2% is a red flag — likely rubber-stamping',
+      '22-second review is insufficient for a payment domain model',
+      'No currency conversion handling in the model',
+      'No idempotency mechanism for duplicate payment prevention',
+      'Missing audit trail entity for financial compliance',
+      'No fraud detection or risk scoring consideration',
+      'Gate Pass Rate of 98% combined with 2% override = insufficient scrutiny',
+    ],
+    decisions: {
+      correct_action: 'reject',
+      valid_reasons: [
+        'Override Rate below 5% indicates rubber-stamping',
+        'Payment domain requires thorough review — 22 seconds is insufficient',
+        'Missing idempotency for duplicate prevention',
+        'Missing audit trail for compliance',
+        'No fraud/risk considerations',
+        'Currency conversion not addressed',
+      ],
+      invalid_reasons: [
+        'The model looks clean and simple',
+        '98% gate pass rate means AI is well-calibrated',
+        'Payment processing is straightforward',
+      ],
+    },
+    evidence_checklist: [
+      'Override Rate investigation — coach team on meaningful review',
+      'Idempotency key mechanism added to Payment entity',
+      'AuditEntry entity added for financial compliance',
+      'Currency conversion strategy documented',
+      'Fraud detection / risk scoring consideration documented',
+      'Review time logged — minimum 5 minutes for financial domain models',
+      'PCI-DSS compliance requirements cross-referenced',
+    ],
+  },
+  {
+    id: 'g12',
+    phase: 'Inception',
+    stage: 'Brownfield Elevation',
+    context: 'The team wants to add a new recommendation engine to a 10-year-old e-commerce monolith. The tech lead proposes skipping the Elevation step to save time, arguing "we built this system, we know it."',
+    ai_plan: `## Recommendation Engine — Inception Plan
+
+### Approach
+Skip Elevation (reverse engineering) — team has deep institutional knowledge.
+Proceed directly to Requirements Analysis.
+
+### Justification
+- 3 senior engineers have been on the project 5+ years
+- "We know where everything is"
+- Elevation would take 2 days we don't have
+- The recommendation engine is a new module, minimal legacy interaction
+
+### Proposed Timeline
+- Requirements: 1 day
+- Construction: 1 week
+- Operations: 1 day
+
+### Request
+Approve skipping Elevation to begin Requirements Analysis immediately.`,
+    flaws: [
+      'Institutional knowledge is not documented knowledge — it lives in heads',
+      '"Minimal legacy interaction" is an assumption without evidence',
+      'Recommendation engines touch product catalog, user behavior, order history — deep legacy integration',
+      'The 3 engineers who "know everything" are single points of failure',
+      'Skipping Elevation for brownfield violates AI-SDLC methodology',
+      'AI agents need explicit models to work with, not tribal knowledge',
+    ],
+    decisions: {
+      correct_action: 'reject',
+      valid_reasons: [
+        'Elevation is mandatory for brownfield projects',
+        'Institutional knowledge must be documented for AI agents',
+        '"We know it" is prose, not proof',
+        'Recommendation engine has deep legacy dependencies',
+        'Single points of failure in knowledge holders',
+        'AI cannot work from tribal knowledge',
+      ],
+      invalid_reasons: [
+        'The team has enough experience',
+        '2 days is too long for Elevation',
+        'New modules don\'t need legacy analysis',
+      ],
+    },
+    evidence_checklist: [
+      'Static model: component diagram of existing system',
+      'Dynamic model: interaction flows for product catalog, user behavior, order history',
+      'Dependency map: which legacy modules the recommendation engine must integrate with',
+      'Data model: existing schemas the engine will read from',
+      'API contracts: existing endpoints the engine will call or extend',
+      'Risk assessment: what breaks if the recommendation engine misbehaves',
+    ],
+  },
+  {
+    id: 'g13',
+    phase: 'Construction',
+    stage: 'Spec Quality Review',
+    context: 'A Level 4 team is writing specs for autonomous AI implementation. The AI agent will implement without human code review — only outcome checks. Review the spec quality.',
+    ai_plan: `## Spec: User Notification Preferences
+
+### Intent
+Users should be able to manage their notification preferences.
+
+### Requirements
+- Users can turn notifications on and off
+- Support email and push notifications
+- Handle edge cases gracefully
+- Make it user-friendly
+- Should work on mobile
+
+### Acceptance Criteria
+- Notifications can be toggled
+- Settings are saved
+- It works
+
+### Request
+Spec approved. AI agent will implement autonomously and we'll check outcomes.`,
+    flaws: [
+      '"Handle edge cases gracefully" is fatally ambiguous — AI will fill gaps with guesses',
+      '"Make it user-friendly" is not a testable requirement',
+      '"Should work on mobile" has no specific breakpoints or behavior defined',
+      '"It works" is not an acceptance criterion — no measurable outcome',
+      'No specification of notification types, frequency limits, or quiet hours',
+      'No data model for preferences (per-channel? per-event-type? global?)',
+      'At Level 4, spec quality IS the product — this spec will produce bad software',
+    ],
+    decisions: {
+      correct_action: 'reject',
+      valid_reasons: [
+        'Spec is too ambiguous for autonomous implementation',
+        '"Handle edge cases gracefully" will produce silent exception swallowing',
+        'No measurable acceptance criteria',
+        '"User-friendly" is not testable',
+        'Missing data model and notification taxonomy',
+        'At L4, spec quality is the only quality gate — this fails',
+      ],
+      invalid_reasons: [
+        'The intent is clear enough',
+        'AI can figure out the details',
+        'We\'ll catch issues in outcome checks',
+      ],
+    },
+    evidence_checklist: [
+      'Notification taxonomy: list every event type with default on/off',
+      'Per-channel preferences: email, push, SMS — each independently configurable',
+      'Frequency limits: max notifications per hour/day per channel',
+      'Quiet hours: time-based suppression with timezone handling',
+      'Data model: preferences schema with per-event, per-channel granularity',
+      'Mobile spec: specific breakpoints, touch targets, offline behavior',
+      'Acceptance criteria: measurable outcomes for each requirement',
+      'Edge cases enumerated: what happens when email bounces, push token expires, user has no channels enabled',
+    ],
+  },
 ];
 
 export const GATEKEEPER_TITLE = 'Gatekeeper Practice';

@@ -197,7 +197,31 @@ export const COMPARISON_METRICS: ComparisonMetric[] = [
     description: 'How quality is ensured',
     waterfall: 'Test phase at end',
     agile: 'Testing in sprint',
-    aidlc: 'Proof at every gate',
+    aidlc: 'Proof at every gate + holdout scenarios',
+    winner: 'aidlc',
+  },
+  {
+    name: 'Coordination Overhead',
+    description: 'Roles, ceremonies, and handoffs required',
+    waterfall: 'High (many roles, handoffs)',
+    agile: 'Medium (ceremonies, Scrum Master)',
+    aidlc: 'Minimal (3 actors, AI orchestrates)',
+    winner: 'aidlc',
+  },
+  {
+    name: 'Spec Quality Dependency',
+    description: 'How much output quality depends on specification precision',
+    waterfall: 'Low (humans fill gaps)',
+    agile: 'Low (conversations fill gaps)',
+    aidlc: 'Critical (machines build what you describe)',
+    winner: 'waterfall',
+  },
+  {
+    name: 'Brownfield Readiness',
+    description: 'How existing codebases are handled',
+    waterfall: 'Manual analysis',
+    agile: 'Sprint-based discovery',
+    aidlc: 'AI Elevation (reverse-engineer into models)',
     winner: 'aidlc',
   },
   {
@@ -213,7 +237,15 @@ export const COMPARISON_METRICS: ComparisonMetric[] = [
     description: 'How risk is identified and managed',
     waterfall: 'Late discovery',
     agile: 'Sprint-level visibility',
-    aidlc: 'Continuous with gates',
+    aidlc: 'Continuous with gates + external scenarios',
+    winner: 'aidlc',
+  },
+  {
+    name: 'AI Maturity Ceiling',
+    description: 'Maximum level of AI integration achievable',
+    waterfall: 'L1 (autocomplete only)',
+    agile: 'L2-L3 (human-centric review)',
+    aidlc: 'L4-L5 (spec-driven, autonomous)',
     winner: 'aidlc',
   },
   {
@@ -265,6 +297,24 @@ export const PROJECT_SCENARIOS: ProjectScenario[] = [
     teamSize: 12,
     baselineWeeks: 52,
   },
+  {
+    id: 'dark-factory-greenfield',
+    name: 'Dark Factory Greenfield',
+    description: 'Small L5 team building a new service autonomously. Specs in, software out. No human writes or reviews code.',
+    complexity: 'high',
+    requirementsStability: 'stable',
+    teamSize: 3,
+    baselineWeeks: 20,
+  },
+  {
+    id: 'legacy-ai-bolton',
+    name: 'Legacy Monolith + AI Bolt-On',
+    description: 'Large team adding AI tools to a 15-year monolith without redesigning workflows. The J-curve in action.',
+    complexity: 'high',
+    requirementsStability: 'evolving',
+    teamSize: 15,
+    baselineWeeks: 40,
+  },
 ];
 
 export function simulateProject(scenario: ProjectScenario, methodology: Methodology): SimulationResult {
@@ -280,12 +330,30 @@ export function simulateProject(scenario: ProjectScenario, methodology: Methodol
     }
   }
 
+  // J-curve: AI bolt-on scenario penalizes Agile (workflow disruption without redesign)
+  if (scenario.id === 'legacy-ai-bolton' && methodology.id === 'agile') {
+    timeFactor *= 1.25; // 25% slower — AI tools + old workflows = friction
+  }
+
+  // Dark factory greenfield: AI-SDLC is dramatically faster at L5
+  if (scenario.id === 'dark-factory-greenfield' && methodology.id === 'aidlc') {
+    timeFactor *= 0.4; // 3-person team, fully autonomous
+  }
+
   const totalWeeks = Math.round(baseWeeks * timeFactor);
 
   // Calculate cost
   let costFactor = methodology.costFactor;
   if (scenario.complexity === 'high') {
     costFactor *= 1.2;
+  }
+  // Dark factory: tiny team = much lower cost
+  if (scenario.id === 'dark-factory-greenfield' && methodology.id === 'aidlc') {
+    costFactor *= 0.5;
+  }
+  // AI bolt-on: added tooling cost + disruption overhead
+  if (scenario.id === 'legacy-ai-bolton' && methodology.id === 'agile') {
+    costFactor *= 1.15;
   }
   const totalCost = Math.round(baseWeeks * 10 * costFactor);
 
@@ -317,6 +385,15 @@ export function simulateProject(scenario: ProjectScenario, methodology: Methodol
   } else if (methodology.id === 'agile') {
     if (scenario.requirementsStability === 'volatile') {
       riskEvents.push('Scope creep across sprints');
+    }
+    if (scenario.id === 'legacy-ai-bolton') {
+      riskEvents.push('J-curve: AI tools slowed team before workflows adapted');
+      riskEvents.push('Context switching between AI suggestions and manual coding');
+      riskEvents.push('Review overhead: reading AI output costs more than writing it');
+    }
+  } else if (methodology.id === 'aidlc') {
+    if (scenario.id === 'legacy-ai-bolton') {
+      riskEvents.push('Elevation step required: AI must model existing architecture first');
     }
   }
 

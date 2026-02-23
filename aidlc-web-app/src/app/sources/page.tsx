@@ -8,7 +8,7 @@ interface Source {
   title: string;
   description: string;
   url: string;
-  type: 'documentation' | 'blog' | 'repository' | 'video' | 'article';
+  type: 'documentation' | 'blog' | 'repository' | 'video' | 'article' | 'reference';
 }
 
 const OFFICIAL_SOURCES: Source[] = [
@@ -110,6 +110,12 @@ const VIDEO_SOURCES: Source[] = [
     description: 'Nate B Jones on codebase entropy and AI solutions',
     url: 'https://youtu.be/NoRePxSrhpw',
     type: 'video',
+  },
+  {
+    title: 'AI-DLC Operationalization Cheat Sheet for B2B Leaders',
+    description: 'Jonas Directory of AI Strategy — Rosetta Stone, RACI, metrics, adoption playbook, anti-patterns',
+    url: 'https://claude.ai/public/artifacts/3c048375-8f70-4e43-a3e4-ab5aaa9ec876',
+    type: 'reference',
   },
 ];
 

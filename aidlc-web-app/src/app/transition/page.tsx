@@ -9,17 +9,20 @@ import {
   ARTIFACT_MAPPINGS,
   TRANSITION_PHASES,
   READINESS_CHECKLIST,
-  getReadinessCategories
+  getReadinessCategories,
+  ROSETTA_STONE,
+  RACI_MATRIX,
+  ANTI_PATTERNS,
 } from '@/content/transition';
 
 import { useProgress } from '@/context/ProgressContext';
 
-type Tab = 'roles' | 'processes' | 'artifacts' | 'phases' | 'checklist';
+type Tab = 'rosetta' | 'roles' | 'processes' | 'artifacts' | 'raci' | 'phases' | 'checklist' | 'antipatterns';
 
 export default function TransitionPage() {
   const router = useRouter();
   const { state, toggleTransitionItem } = useProgress();
-  const [activeTab, setActiveTab] = useState<Tab>('roles');
+  const [activeTab, setActiveTab] = useState<Tab>('rosetta');
 
   // Derived state
   const checkedItems = new Set(state.transition?.checklist || []);
@@ -27,11 +30,14 @@ export default function TransitionPage() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       router.push('/');
-    } else if (e.key === '1') setActiveTab('roles');
-    else if (e.key === '2') setActiveTab('processes');
-    else if (e.key === '3') setActiveTab('artifacts');
-    else if (e.key === '4') setActiveTab('phases');
-    else if (e.key === '5') setActiveTab('checklist');
+    } else if (e.key === '1') setActiveTab('rosetta');
+    else if (e.key === '2') setActiveTab('roles');
+    else if (e.key === '3') setActiveTab('processes');
+    else if (e.key === '4') setActiveTab('raci');
+    else if (e.key === '5') setActiveTab('artifacts');
+    else if (e.key === '6') setActiveTab('phases');
+    else if (e.key === '7') setActiveTab('checklist');
+    else if (e.key === '8') setActiveTab('antipatterns');
   }, [router]);
 
   useEffect(() => {
@@ -41,11 +47,14 @@ export default function TransitionPage() {
 
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
+    { id: 'rosetta', label: 'Rosetta Stone', icon: '🗿' },
     { id: 'roles', label: 'Roles', icon: '👥' },
     { id: 'processes', label: 'Processes', icon: '🔄' },
+    { id: 'raci', label: 'RACI', icon: '📊' },
     { id: 'artifacts', label: 'Artifacts', icon: '📄' },
     { id: 'phases', label: 'Phases', icon: '📈' },
     { id: 'checklist', label: 'Checklist', icon: '✅' },
+    { id: 'antipatterns', label: 'Anti-Patterns', icon: '🚫' },
   ];
 
   return (
@@ -75,6 +84,41 @@ export default function TransitionPage() {
           </button>
         ))}
       </div>
+
+      {/* Rosetta Stone Tab */}
+      {activeTab === 'rosetta' && (
+        <div className="space-y-4">
+          <div className="card bg-accent-primary/5 border-accent-primary/20">
+            <p className="text-sm text-foreground-muted leading-relaxed">
+              Every AI-SDLC concept maps to something you already know. Print this table and hand it to your team on Day 1. Most of the &quot;new&quot; is actually familiar — just faster and AI-initiated.
+            </p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-background-tertiary">
+                  <th className="text-left p-3 text-blue-400 font-mono text-sm uppercase tracking-wider">Agile / Waterfall</th>
+                  <th className="text-left p-3 text-accent-primary font-mono text-sm uppercase tracking-wider">AI-SDLC Term</th>
+                  <th className="text-left p-3 text-foreground-muted font-mono text-sm uppercase tracking-wider">What Changed &amp; Why</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ROSETTA_STONE.map((entry, idx) => (
+                  <tr key={idx} className="border-b border-background-tertiary/50 hover:bg-white/5 transition-colors">
+                    <td className="p-3">
+                      <span className="font-medium text-blue-300">{entry.agile}</span>
+                    </td>
+                    <td className="p-3">
+                      <span className="font-bold text-accent-primary">{entry.aidlc}</span>
+                    </td>
+                    <td className="p-3 text-sm text-foreground-muted leading-relaxed">{entry.whatChanged}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Roles Tab */}
       {activeTab === 'roles' && (
@@ -303,13 +347,89 @@ export default function TransitionPage() {
         </div>
       )}
 
+      {/* RACI Tab */}
+      {activeTab === 'raci' && (
+        <div className="space-y-4">
+          <div className="card bg-accent-primary/5 border-accent-primary/20">
+            <p className="text-sm text-foreground-muted leading-relaxed">
+              AI-SDLC intentionally minimizes roles to 3 actors. The critical pattern: AI is never the Accountable party. Humans always approve. This is the fundamental safety mechanism.
+            </p>
+            <div className="flex gap-6 mt-3 text-xs font-mono text-foreground-muted">
+              <span><span className="text-accent-primary font-bold">R</span> = Responsible</span>
+              <span><span className="text-accent-success font-bold">A</span> = Accountable</span>
+              <span><span className="text-blue-400 font-bold">C</span> = Consulted</span>
+              <span><span className="text-foreground-muted/50 font-bold">I</span> = Informed</span>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-background-tertiary">
+                  <th className="text-left p-3 font-mono text-sm uppercase tracking-wider text-foreground">Activity</th>
+                  <th className="text-center p-3 font-mono text-sm uppercase tracking-wider text-foreground-muted">🤖 AI Agent</th>
+                  <th className="text-center p-3 font-mono text-sm uppercase tracking-wider text-foreground-muted">👩‍💻 Developer</th>
+                  <th className="text-center p-3 font-mono text-sm uppercase tracking-wider text-foreground-muted">📋 Product Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                {RACI_MATRIX.map((entry, idx) => {
+                  const raciColor = (val: string) => {
+                    if (val === 'R') return 'text-accent-primary font-bold';
+                    if (val === 'A') return 'text-accent-success font-bold';
+                    if (val === 'C') return 'text-blue-400 font-bold';
+                    return 'text-foreground-muted/50';
+                  };
+                  return (
+                    <tr key={idx} className="border-b border-background-tertiary/50 hover:bg-white/5 transition-colors">
+                      <td className="p-3 font-medium">{entry.activity}</td>
+                      <td className={`p-3 text-center text-lg ${raciColor(entry.aiAgent)}`}>{entry.aiAgent}</td>
+                      <td className={`p-3 text-center text-lg ${raciColor(entry.developer)}`}>{entry.developer}</td>
+                      <td className={`p-3 text-center text-lg ${raciColor(entry.productOwner)}`}>{entry.productOwner}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Anti-Patterns Tab */}
+      {activeTab === 'antipatterns' && (
+        <div className="space-y-4">
+          <div className="card bg-red-900/10 border-red-500/20">
+            <p className="text-sm text-foreground-muted leading-relaxed">
+              The most common mistakes leaders make when transitioning to AI-SDLC — and how to avoid them.
+            </p>
+          </div>
+          {ANTI_PATTERNS.map(pattern => (
+            <div key={pattern.id} className="card border-l-4 border-red-500/50">
+              <div className="flex items-start gap-4">
+                <span className="text-2xl">{pattern.icon}</span>
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg text-red-300 mb-2">✗ {pattern.name}</h3>
+                  <p className="text-sm text-foreground-muted mb-4 leading-relaxed">{pattern.problem}</p>
+                  <div className="bg-accent-success/5 border border-accent-success/20 rounded-lg p-3">
+                    <p className="text-sm text-accent-success font-medium mb-1">Instead:</p>
+                    <p className="text-sm text-foreground-muted leading-relaxed">{pattern.instead}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <footer className="mt-8 pt-4 border-t border-background-tertiary text-sm text-foreground-muted">
         <div className="flex justify-center gap-4 flex-wrap">
-          <span><kbd className="kbd">1</kbd> Roles</span>
-          <span><kbd className="kbd">2</kbd> Processes</span>
-          <span><kbd className="kbd">3</kbd> Artifacts</span>
-          <span><kbd className="kbd">4</kbd> Phases</span>
-          <span><kbd className="kbd">5</kbd> Checklist</span>
+          <span><kbd className="kbd">1</kbd> Rosetta</span>
+          <span><kbd className="kbd">2</kbd> Roles</span>
+          <span><kbd className="kbd">3</kbd> Processes</span>
+          <span><kbd className="kbd">4</kbd> RACI</span>
+          <span><kbd className="kbd">5</kbd> Artifacts</span>
+          <span><kbd className="kbd">6</kbd> Phases</span>
+          <span><kbd className="kbd">7</kbd> Checklist</span>
+          <span><kbd className="kbd">8</kbd> Anti-Patterns</span>
           <span><kbd className="kbd">Esc</kbd> Home</span>
         </div>
       </footer>
