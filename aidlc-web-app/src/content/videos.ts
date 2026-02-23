@@ -49,17 +49,18 @@ export const VIDEOS: Video[] = [
     ]
   },
   {
-    id: 'llm-reality-check',
-    title: 'Software engineering with LLMs in 2025: reality check (at LDX3 by LeadDev)',
-    channelName: 'Pragmatic Engineer',
-    channelUrl: 'https://www.youtube.com/@pragmaticengineer',
-    videoUrl: 'https://youtu.be/EO3_qN_Ynsk?si=m1i7iGk9GfKyBtZh',
-    embedUrl: 'https://www.youtube.com/embed/EO3_qN_Ynsk?si=CieKZGsBzePmNHkg',
+    id: '5-levels-ai-coding',
+    title: 'The 5 Levels of AI Coding (Why Most of You Won\'t Make It Past Level 2)',
+    channelName: 'Nate B Jones',
+    channelUrl: 'https://www.youtube.com/@NateBJones',
+    videoUrl: 'https://youtu.be/bDcgHzCBgmQ?si=BjtzCIvBXmEb8qxa',
+    embedUrl: 'https://www.youtube.com/embed/bDcgHzCBgmQ?si=BjtzCIvBXmEb8qxa',
     summary: [
-      'The talk contrasts executive hype about AI-written code with messy reality: agents still struggle in complex production codebases and can introduce expensive bugs. The practical question is where AI is reliably useful, not whether it will replace engineers.',
-      'In AI dev-tool companies and parts of Big Tech, AI-assisted development is now common and growing, especially when integrated into IDEs and daily workflows. Biggest gains show up on well-defined tasks, with tight feedback loops (run tests/builds, iterate).',
-      'Impact is uneven: some teams, especially in novel or correctness-sensitive domains, find review and rework costs erase the speedup. Typical adoption is around half of developers using AI weekly, with reported savings measured in hours per week, not blanket "10x."',
-      'AI-SDLC takeaway: connect models to real engineering context (repos, tickets, docs, systems) and reinforce the delivery "receiver infrastructure" (testing, CI/CD, code review, feature flags, observability) so higher throughput does not reduce quality.'
+      'There is a widening gap between "dark factories" (spec in, autonomous build/test/ship; humans only define specs and judge outcomes) and most teams using AI as an assistant inside legacy SDLC, often getting slower at first (J-curve).',
+      '"Five levels" maturity: L0 autocomplete, L1 scoped tasks with full human review, L2 multi-file changes with full human reading, L3 PR-level management, L4 spec + outcome checks (code as black box), L5 fully autonomous factory.',
+      'Crossing the gap is not a tooling problem; it requires redesigning the SDLC and org structures built for human limitations (standups/sprints/reviews/QA) into artifact-driven specs plus evidence gates.',
+      'Level-5 enablers: external holdout "scenarios" the agent cannot see (reduces gaming) and digital-twin environments for safe end-to-end integration validation.',
+      'Brownfield path: use AI to accelerate work today, then reverse-engineer real system behavior into specs and scenario suites, upgrade CI/CD gates for AI-volume changes, and only then shift new development toward higher autonomy.'
     ]
   }
 ];

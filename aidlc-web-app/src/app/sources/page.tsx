@@ -100,9 +100,9 @@ const VIDEO_SOURCES: Source[] = [
     type: 'video',
   },
   {
-    title: 'Software Engineering with LLMs in 2025: Reality Check',
-    description: 'Pragmatic Engineer at LDX3 by LeadDev',
-    url: 'https://youtu.be/EO3_qN_Ynsk',
+    title: 'The 5 Levels of AI Coding (Why Most of You Won\'t Make It Past Level 2)',
+    description: 'Nate B Jones on the maturity levels of AI-assisted development',
+    url: 'https://youtu.be/bDcgHzCBgmQ',
     type: 'video',
   },
   {
