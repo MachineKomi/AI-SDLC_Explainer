@@ -35,7 +35,7 @@ export function PrinciplesListDiagram() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-background-tertiary/30 border border-background-tertiary"
                 >
                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent-primary/20 text-accent-primary flex items-center justify-center text-xs font-bold ring-1 ring-accent-primary/40">
                         {i + 1}
@@ -51,23 +51,23 @@ export function PrinciplesListDiagram() {
 export function PlanFirstComparisonDiagram() {
     return (
         <div className="grid md:grid-cols-2 gap-6 py-4">
-            <div className="p-4 rounded-xl border border-red-500/20 bg-red-500/5">
-                <div className="flex items-center gap-2 mb-3 text-red-400 font-bold">
+            <div className="p-4 rounded-xl border border-accent-error/20 bg-accent-error/5">
+                <div className="flex items-center gap-2 mb-3 text-accent-error font-bold">
                     <X className="w-5 h-5" /> BAD: Prose Request
                 </div>
-                <div className="font-mono text-sm text-foreground-muted bg-black/20 p-3 rounded">
+                <div className="font-mono text-sm text-foreground-muted bg-background-tertiary/60 p-3 rounded">
                     &quot;Build me a login page&quot;
                 </div>
-                <p className="text-xs text-red-300/70 mt-2">Vague, assumes AI knows context, no safety checks.</p>
+                <p className="text-xs text-accent-error/70 mt-2">Vague, assumes AI knows context, no safety checks.</p>
             </div>
-            <div className="p-4 rounded-xl border border-green-500/20 bg-green-500/5">
-                <div className="flex items-center gap-2 mb-3 text-green-400 font-bold">
+            <div className="p-4 rounded-xl border border-accent-success/20 bg-accent-success/5">
+                <div className="flex items-center gap-2 mb-3 text-accent-success font-bold">
                     <Check className="w-5 h-5" /> GOOD: Plan Request
                 </div>
-                <div className="font-mono text-sm text-foreground-muted bg-black/20 p-3 rounded">
+                <div className="font-mono text-sm text-foreground-muted bg-background-tertiary/60 p-3 rounded">
                     &quot;Create a plan for login page with checkpoints. Stop for approval.&quot;
                 </div>
-                <p className="text-xs text-green-300/70 mt-2">Explicit, verifiable, human-in-the-loop.</p>
+                <p className="text-xs text-accent-success/70 mt-2">Explicit, verifiable, human-in-the-loop.</p>
             </div>
         </div>
     );
@@ -76,22 +76,22 @@ export function PlanFirstComparisonDiagram() {
 // Accountability Table
 export function AccountabilityTableDiagram() {
     return (
-        <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5 my-4">
+        <div className="overflow-x-auto rounded-xl border border-background-tertiary bg-background-secondary/50 my-4">
             <table className="w-full text-sm min-w-[300px]">
                 <thead>
-                    <tr className="bg-white/5 text-left border-b border-white/10">
+                    <tr className="bg-background-tertiary/50 text-left border-b border-background-tertiary">
                         <th className="p-4 font-bold text-accent-primary">AI OWNS (Execution)</th>
                         <th className="p-4 font-bold text-accent-secondary">HUMAN OWNS (Decisions)</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-background-tertiary/50">
                     {[
                         ["Code Generation", "Requirements Scope"],
                         ["Test Execution", "Architecture Choices"],
                         ["Documentation Writing", "Security Controls"],
                         ["Infrastructure Plans", "Go/No-Go Approvals"]
                     ].map(([ai, human], i) => (
-                        <tr key={i} className="hover:bg-white/5">
+                        <tr key={i} className="hover:bg-background-tertiary/30">
                             <td className="p-4 flex items-center gap-2">
                                 <Terminal className="w-4 h-4 text-accent-primary opacity-70" /> {ai}
                             </td>

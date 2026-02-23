@@ -39,9 +39,9 @@ flowchart LR
     CONSTRUCTION --> |"Gate 2"| OPERATIONS
     OPERATIONS -.-> |"Feedback"| INCEPTION
 
-    style INCEPTION fill:#1a1a24,stroke:#ec4899,stroke-width:2px
-    style CONSTRUCTION fill:#1a1a24,stroke:#f97316,stroke-width:2px
-    style OPERATIONS fill:#1a1a24,stroke:#22c55e,stroke-width:2px
+    style INCEPTION stroke:#ec4899,stroke-width:2px
+    style CONSTRUCTION stroke:#f97316,stroke-width:2px
+    style OPERATIONS stroke:#22c55e,stroke-width:2px
 `;
 
 // ============================================
@@ -61,9 +61,9 @@ flowchart TB
         EXEC --> |"Next Unit"| PLAN
     end
 
-    style PLAN fill:#2d2d3a,stroke:#ec4899,stroke-width:2px
-    style GATE fill:#2d2d3a,stroke:#f59e0b,stroke-width:2px
-    style EXEC fill:#2d2d3a,stroke:#22c55e,stroke-width:2px
+    style PLAN stroke:#ec4899,stroke-width:2px
+    style GATE stroke:#f59e0b,stroke-width:2px
+    style EXEC stroke:#22c55e,stroke-width:2px
 `;
 
 // ============================================
@@ -131,10 +131,10 @@ flowchart LR
     D1["Domain<br/>Design"] --> BOLT
     BOLT --> D2["Deployment<br/>Unit"]
 
-    style P fill:#2d2d3a,stroke:#ec4899
-    style A fill:#2d2d3a,stroke:#f97316
-    style V fill:#2d2d3a,stroke:#f59e0b
-    style I fill:#2d2d3a,stroke:#22c55e
+    style P stroke:#ec4899
+    style A stroke:#f97316
+    style V stroke:#f59e0b
+    style I stroke:#22c55e
 `;
 
 // ============================================
@@ -172,7 +172,7 @@ flowchart TB
     
     style START fill:#ec4899,color:#fff,stroke:#ec4899
     style GATE fill:#f59e0b,color:#000,stroke:#f59e0b
-    style MOB fill:#1a1a24,stroke:#3b82f6,stroke-width:2px
+    style MOB stroke:#3b82f6,stroke-width:2px
 `;
 
 // ============================================
@@ -212,11 +212,11 @@ flowchart TB
 
     BAD -.-> |"Transform"| GOOD
 
-    style BAD fill:#7f1d1d,stroke:#ef4444,stroke-width:2px
-    style GOOD fill:#14532d,stroke:#22c55e,stroke-width:2px
-    style S1 fill:#166534,stroke:#22c55e
-    style S2 fill:#166534,stroke:#22c55e
-    style S3 fill:#166534,stroke:#22c55e
+    style BAD stroke:#ef4444,stroke-width:2px
+    style GOOD stroke:#22c55e,stroke-width:2px
+    style S1 stroke:#22c55e
+    style S2 stroke:#22c55e
+    style S3 stroke:#22c55e
 `;
 
 // ============================================
@@ -243,8 +243,8 @@ flowchart LR
     INTENT(["Intent"]) --> |"High Risk"| COMPLEX
     INTENT --> |"Low Risk"| SIMPLE
 
-    style COMPLEX fill:#1e1b4b,stroke:#6366f1,stroke-width:2px
-    style SIMPLE fill:#1e3a5f,stroke:#3b82f6,stroke-width:2px
+    style COMPLEX stroke:#6366f1,stroke-width:2px
+    style SIMPLE stroke:#3b82f6,stroke-width:2px
     style INTENT fill:#ec4899,color:#fff,stroke:#ec4899
 `;
 
@@ -269,9 +269,9 @@ flowchart TB
     NEXT["AI proceeds with decision context"]
     RATIONALE --> NEXT
 
-    style Q fill:#2d2d3a,stroke:#ec4899,stroke-width:2px
-    style B fill:#166534,stroke:#22c55e,stroke-width:2px
-    style RATIONALE fill:#2d2d3a,stroke:#f59e0b,stroke-width:2px
+    style Q stroke:#ec4899,stroke-width:2px
+    style B stroke:#22c55e,stroke-width:2px
+    style RATIONALE stroke:#f59e0b,stroke-width:2px
 `;
 
 // ============================================
@@ -294,8 +294,8 @@ flowchart LR
 
     PROSE -.-> |"Replace with"| PROOF
 
-    style PROSE fill:#7f1d1d,stroke:#ef4444,stroke-width:2px
-    style PROOF fill:#14532d,stroke:#22c55e,stroke-width:2px
+    style PROSE stroke:#ef4444,stroke-width:2px
+    style PROOF stroke:#22c55e,stroke-width:2px
 `;
 
 // ============================================
@@ -315,9 +315,9 @@ flowchart TB
     BENEFIT["Every decision traceable<br/>Full accountability"]
     LOG --> BENEFIT
 
-    style E1 fill:#166534,stroke:#22c55e
-    style E2 fill:#854d0e,stroke:#f59e0b
-    style E3 fill:#1e40af,stroke:#3b82f6
+    style E1 stroke:#22c55e
+    style E2 stroke:#f59e0b
+    style E3 stroke:#3b82f6
     style BENEFIT fill:#ec4899,color:#fff,stroke:#ec4899
 `;
 
@@ -342,10 +342,10 @@ flowchart LR
 
     CHAT -.-> |"Persisted as"| REPO
 
-    style CHAT fill:#7f1d1d,stroke:#ef4444,stroke-width:2px
-    style REPO fill:#14532d,stroke:#22c55e,stroke-width:2px
-    style C3 fill:#991b1b,stroke:#ef4444
-    style R4 fill:#166534,stroke:#22c55e
+    style CHAT stroke:#ef4444,stroke-width:2px
+    style REPO stroke:#22c55e,stroke-width:2px
+    style C3 stroke:#ef4444
+    style R4 stroke:#22c55e
 `;
 
 // ============================================
@@ -360,12 +360,10 @@ flowchart LR
     
     STOP --> ROLLBACK["↩️ Rollback Ready"]
     
-    style CODE fill:#2d2d3a,stroke:#6b7280
-    style LINT fill:#2d2d3a,stroke:#6b7280
-    style TEST fill:#7f1d1d,stroke:#ef4444,stroke-width:2px
-    style STOP fill:#991b1b,stroke:#ef4444,stroke-width:3px
-    style ROLLBACK fill:#166534,stroke:#22c55e
-    style DEPLOY fill:#166534,stroke:#22c55e
+    style TEST stroke:#ef4444,stroke-width:2px
+    style STOP fill:#ef4444,color:#fff,stroke:#ef4444,stroke-width:3px
+    style ROLLBACK stroke:#22c55e
+    style DEPLOY stroke:#22c55e
 `;
 
 // ============================================
@@ -387,9 +385,9 @@ flowchart TB
     BENEFITS["✅ Reproducible<br/>✅ Auditable<br/>✅ Reviewable"]
     GIT --> BENEFITS
 
-    style PROMPT fill:#1e1b4b,stroke:#a855f7,stroke-width:2px
-    style GIT fill:#1e40af,stroke:#3b82f6
-    style BENEFITS fill:#166534,stroke:#22c55e
+    style PROMPT stroke:#a855f7,stroke-width:2px
+    style GIT stroke:#3b82f6
+    style BENEFITS stroke:#22c55e
 `;
 
 // ============================================

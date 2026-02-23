@@ -10,6 +10,90 @@ import { getLessonById, getAllLessons } from '@/content/lessons';
 import DiagramDispatcher from '@/components/DiagramDispatcher';
 import { SectionQuestion } from '@/types';
 
+// Parse ASCII table-like content into structured table data
+function parseContentWithTables(content: string): Array<{ type: 'text' | 'table'; data: string | string[][] }> {
+  const lines = content.split('\n');
+  const parts: Array<{ type: 'text' | 'table'; data: string | string[][] }> = [];
+  let textBuffer: string[] = [];
+  let tableBuffer: string[] = [];
+  let inTable = false;
+
+  const flushText = () => {
+    if (textBuffer.length > 0) {
+      parts.push({ type: 'text', data: textBuffer.join('\n') });
+      textBuffer = [];
+    }
+  };
+
+  const flushTable = () => {
+    if (tableBuffer.length > 0) {
+      // Parse table rows — split by the arrow separator or column alignment
+      const rows: string[][] = [];
+      for (const line of tableBuffer) {
+        // Handle arrow-separated tables (Rosetta Stone style): "Left  →  Right"
+        if (line.includes('→')) {
+          const parts = line.split('→').map(s => s.trim());
+          rows.push(parts);
+        }
+        // Handle space-aligned tables (RACI style): detect 3+ columns of short tokens
+        else {
+          // Split by 2+ spaces for column-aligned data
+          const cols = line.split(/\s{2,}/).map(s => s.trim()).filter(Boolean);
+          if (cols.length >= 2) {
+            rows.push(cols);
+          }
+        }
+      }
+      if (rows.length > 0) {
+        parts.push({ type: 'table', data: rows });
+      }
+      tableBuffer = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    // Detect separator lines (─── or ═══)
+    if (/^[─═━\-]{5,}/.test(trimmed)) {
+      // This is a table separator — the line before was a header, lines after are data
+      if (!inTable) {
+        // The previous text line was actually a table header
+        const headerLine = textBuffer.pop();
+        flushText();
+        if (headerLine) {
+          tableBuffer.push(headerLine);
+        }
+        inTable = true;
+      }
+      continue;
+    }
+
+    if (inTable) {
+      // Check if this line looks like table data (has → or is column-aligned)
+      if (trimmed === '' || (!trimmed.includes('→') && !/\s{2,}/.test(line) && !(/^[A-Z]/.test(trimmed) && trimmed.length < 80))) {
+        // End of table
+        flushTable();
+        inTable = false;
+        textBuffer.push(line);
+      } else if (trimmed !== '') {
+        tableBuffer.push(line);
+      }
+    } else {
+      textBuffer.push(line);
+    }
+  }
+
+  // Flush remaining
+  if (inTable) {
+    flushTable();
+  }
+  flushText();
+
+  return parts;
+}
+
 interface LessonClientProps {
   lessonId: string;
 }
@@ -135,7 +219,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mt-8 p-6 bg-background-secondary/50 rounded-xl border border-white/10"
+        className="mt-8 p-6 bg-background-secondary/50 rounded-xl border border-background-tertiary"
       >
         <div className="flex items-center gap-2 mb-4">
           <HelpCircle className="w-5 h-5 text-accent-primary" />
@@ -149,7 +233,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
             const isSelected = selectedAnswer === idx;
             const isCorrectAnswer = idx === question.correct;
             let bgClass = 'bg-background-tertiary/30 hover:bg-background-tertiary/50';
-            let borderClass = 'border-white/10';
+            let borderClass = 'border-background-tertiary';
             
             if (showResult) {
               if (isCorrectAnswer) {
@@ -174,7 +258,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-sm font-mono">
+                  <span className="w-6 h-6 rounded-full bg-background-tertiary/50 flex items-center justify-center text-sm font-mono">
                     {idx + 1}
                   </span>
                   <span className="flex-1">{option}</span>
@@ -226,11 +310,11 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
   return (
     <div className="flex flex-col h-full max-h-screen">
       {/* Header */}
-      <header className="flex-none p-6 border-b border-white/10 bg-background/50 backdrop-blur-sm">
+      <header className="flex-none p-6 border-b border-background-tertiary bg-background/50 backdrop-blur-sm">
         <div className="flex items-center gap-4">
           <Link
             href="/lessons"
-            className="p-2 rounded-lg hover:bg-white/5 text-foreground-muted hover:text-foreground transition-colors"
+            className="p-2 rounded-lg hover:bg-background-tertiary/50 text-foreground-muted hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
@@ -247,7 +331,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
       </header>
 
       {/* Content Area */}
-      <main className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+      <main className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-foreground-muted/20 scrollbar-track-transparent">
         <div className="max-w-4xl mx-auto space-y-8">
           <AnimatePresence mode="wait">
             <motion.div
@@ -262,8 +346,45 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
               </h2>
 
               <div className="prose prose-invert max-w-none mb-8">
-                <div className="whitespace-pre-wrap font-sans text-lg leading-relaxed text-foreground/90">
-                  {currentSectionData?.content}
+                <div className="font-sans text-lg leading-relaxed text-foreground/90">
+                  {parseContentWithTables(currentSectionData?.content || '').map((part, idx) => {
+                    if (part.type === 'table') {
+                      const rows = part.data as string[][];
+                      const header = rows[0];
+                      const body = rows.slice(1);
+                      return (
+                        <div key={idx} className="overflow-x-auto my-6 rounded-lg border border-background-tertiary">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="bg-background-tertiary/50 border-b border-background-tertiary">
+                                {header.map((cell, ci) => (
+                                  <th key={ci} className="p-3 text-left font-semibold text-accent-primary whitespace-nowrap">
+                                    {cell}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-background-tertiary/50">
+                              {body.map((row, ri) => (
+                                <tr key={ri} className="hover:bg-background-tertiary/20">
+                                  {row.map((cell, ci) => (
+                                    <td key={ci} className={`p-3 ${ci === 0 ? 'font-medium' : 'text-foreground-muted'}`}>
+                                      {cell}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={idx} className="whitespace-pre-wrap">
+                        {part.data as string}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -279,7 +400,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
       </main>
 
       {/* Footer Navigation */}
-      <footer className="flex-none p-6 border-t border-white/10 bg-background/50 backdrop-blur-sm">
+      <footer className="flex-none p-6 border-t border-background-tertiary bg-background/50 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <button
             onClick={() => goToSection(currentSection - 1)}
@@ -297,7 +418,7 @@ export default function LessonClient({ lessonId }: LessonClientProps) {
                   ? 'bg-accent-primary'
                   : idx < currentSection
                     ? 'bg-accent-primary/50'
-                    : 'bg-white/10'
+                    : 'bg-background-tertiary/50'
                   }`}
               />
             ))}
